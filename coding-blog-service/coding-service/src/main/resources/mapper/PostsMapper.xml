@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coding.blog.service.mapper.PostsMapper">
+
+    <select id="getFrontIntroductionMsg" resultType="com.coding.blog.service.vo.FrontPostVo">
+        SELECT
+            posts_id,
+            post_title,
+            post_excerpt,
+            post_date,
+            post_modified,
+            attribute,
+            menu_order
+        FROM
+            posts
+        ORDER BY
+            menu_order DESC,
+            post_modified DESC
+    </select>
+    <select id="getPostsByTermId" resultType="com.coding.blog.service.vo.FrontPostVo">
+        SELECT p.posts_id,
+               p.post_title,
+               p.post_excerpt,
+               p.post_date,
+               p.post_modified,
+               p.attribute
+        FROM posts p
+                 JOIN
+             term_relationships tr
+             ON
+                 tr.term_relationships_id = p.posts_id
+        WHERE tr.term_taxonomy_id = #{termTaxonomyId}
+        ORDER BY post_modified DESC
+    </select>
+    <select id="getPostsByTagId" resultType="com.coding.blog.service.vo.FrontPostVo">
+        SELECT p.posts_id,
+               p.post_title,
+               p.post_excerpt,
+               p.post_date,
+               p.post_modified,
+               p.attribute
+        FROM posts p
+                 JOIN
+             post_tag_relation ptr
+             ON
+                 ptr.post_id = p.posts_id
+        WHERE ptr.post_tag_id = #{postTagId}
+        ORDER BY post_modified DESC
+    </select>
+
+    <select id="getPostByTime" resultType="com.coding.blog.service.vo.FrontPostVo">
+        SELECT posts_id,
+               post_title,
+               post_excerpt,
+               post_date,
+               post_modified,
+               attribute,
+               menu_order, YEAR ( post_date ) as year
+        FROM
+            posts
+        ORDER BY
+            year desc, post_modified DESC
+    </select>
+
+    <select id="recommendPosts" resultType="com.coding.blog.service.entity.Posts">
+        SELECT posts_id, post_title, attribute, post_date
+        FROM posts
+        WHERE posts_id != #{postsId}
+        ORDER BY RAND() LIMIT 0,3
+    </select>
+
+    <select id="getPostsByContent" resultType="com.coding.blog.service.entity.Posts">
+        SELECT *
+        FROM posts
+        WHERE MATCH (post_title, post_content) AGAINST(#{content} IN BOOLEAN MODE)
+        ORDER BY posts_id;
+    </select>
+</mapper>

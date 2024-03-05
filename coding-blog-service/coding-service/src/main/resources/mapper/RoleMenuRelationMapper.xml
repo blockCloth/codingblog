@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coding.blog.service.mapper.RoleMenuRelationMapper">
+
+    <select id="selectMenuIdsByRoleId" resultType="java.lang.Long">
+        SELECT menu_id
+        FROM role_menu_relation
+        WHERE role_id = #{roleId}
+    </select>
+
+    <select id="listMenu" resultType="com.coding.blog.service.entity.Menu">
+        SELECT m.*
+        FROM menu m
+                 JOIN
+                 (SELECT menu_id FROM role_menu_relation WHERE role_id = #{roleId}) rm
+                 on
+                     m.menu_id = rm.menu_id
+        where m.hidden = 0
+    </select>
+</mapper>

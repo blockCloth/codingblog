@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coding.blog.service.mapper.RoleMapper">
+
+    <select id="getListMensByUserId" resultType="com.coding.blog.service.entity.Menu">
+        SELECT m.*
+        FROM admin_role_relation arr
+                 LEFT JOIN role r on arr.role_id = r.role_id
+                 LEFT JOIN role_menu_relation amr on arr.role_id = amr.role_id
+                 LEFT JOIN menu m on amr.menu_id = m.menu_id
+        WHERE arr.users_id = #{usersId}
+          and m.menu_id is not null
+        GROUP BY m.menu_id
+    </select>
+
+    <select id="getListRoleByUserId" resultType="com.coding.blog.service.entity.Role">
+        SELECT
+            r.*
+        FROM
+            admin_role_relation arr
+                LEFT JOIN role r ON arr.role_id = r.role_id
+        WHERE
+            arr.users_id = #{userId}
+          AND r.role_id IS NOT NULL
+        GROUP BY
+            r.role_id
+    </select>
+</mapper>

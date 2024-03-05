@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coding.blog.service.mapper.RoleResourceRelationMapper">
+
+    <select id="selectResIdsByRoleId" resultType="java.lang.Long">
+        SELECT resource_id
+        FROM role_resource_relation
+        WHERE role_id = #{roleId}
+    </select>
+
+    <select id="listResource" resultType="com.coding.blog.service.entity.Resource">
+        SELECT r.*
+        FROM resource r
+                 JOIN
+             (SELECT resource_id FROM role_resource_relation WHERE role_id = #{roleId}) rs
+             on
+                 r.resource_id = rs.resource_id
+
+    </select>
+</mapper>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coding.blog.service.mapper.PostTagRelationMapper">
+
+    <select id="queryPostByTagId" resultType="com.coding.blog.service.vo.PostTagVo">
+        SELECT p.post_title   as title,
+               u.user_login   as userLogin,
+               pt.description as description,
+               p.post_date    as postDate
+        FROM post_tag_relation ptr
+                 left JOIN posts p on ptr.post_id = p.posts_id
+                 LEFT JOIN users u on p.post_author = u.users_id
+                 LEFT JOIN post_tag pt on ptr.post_tag_id = pt.post_tag_id
+        WHERE ptr.post_tag_id = #{postTagId}
+          and p.posts_id is not NULL
+        GROUP BY p.posts_id
+    </select>
+    <select id="queryPostTagsById" resultType="com.coding.blog.service.entity.PostTag">
+        SELECT pt.*
+        FROM post_tag_relation ptr
+                 LEFT JOIN post_tag pt on ptr.post_tag_id = pt.post_tag_id
+        WHERE ptr.post_id = #{postId}
+          and pt.post_tag_id is not NULL
+        GROUP BY pt.post_tag_id
+    </select>
+</mapper>

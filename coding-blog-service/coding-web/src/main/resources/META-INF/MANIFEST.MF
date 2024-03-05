@@ -1,0 +1,58 @@
+Manifest-Version: 1.0
+Main-Class: com.coding.blog.web.CodingBlogApplication
+Class-Path: snakeyaml-1.30.jar reactive-streams-1.0.4.jar spring-web-5.3
+ .30.jar jakarta.activation-1.2.2.jar spring-boot-starter-aop-2.7.17.jar
+  spring-boot-starter-data-redis-2.7.17.jar spring-security-web-5.7.11.j
+ ar springfox-core-2.10.5.jar base-plugin-3.0.0.jar hutool-all-5.7.16.ja
+ r aliyun-sdk-oss-3.17.1.jar knife4j-core-4.0.0.jar tomcat-embed-core-9.
+ 0.82.jar spring-boot-starter-security-2.7.17.jar commons-codec-1.15.jar
+  opentracing-util-0.33.0.jar byte-buddy-1.12.23.jar mybatis-spring-2.1.
+ 1.jar spring-core-5.3.30.jar log4j-api-2.17.2.jar aspectjweaver-1.9.7.j
+ ar jackson-module-parameter-names-2.13.5.jar spring-context-support-5.3
+ .30.jar jakarta.mail-1.6.7.jar aliyun-java-sdk-kms-2.11.0.jar ini4j-0.5
+ .4.jar spring-plugin-metadata-2.0.0.RELEASE.jar spring-data-commons-2.7
+ .17.jar javassist-3.25.0-GA.jar spring-security-core-5.7.11.jar spring-
+ plugin-core-2.0.0.RELEASE.jar spring-boot-starter-mail-2.7.17.jar jacks
+ on-core-2.13.5.jar opentracing-api-0.33.0.jar qrcode-plugin-3.0.0.jar c
+ ommons-logging-1.2.jar j2objc-annotations-2.8.jar commons-lang3-3.12.0.
+ jar jettison-1.5.4.jar jackson-databind-2.13.5.jar mybatis-3.5.13.jar g
+ son-2.9.1.jar log4j-to-slf4j-2.17.2.jar jul-to-slf4j-1.7.36.jar org.jac
+ oco.agent-0.8.5-runtime.jar javax.activation-api-1.2.0.jar jackson-anno
+ tations-2.13.5.jar spring-boot-starter-tomcat-2.7.17.jar jdom2-2.0.6.1.
+ jar knife4j-openapi2-ui-4.0.0.jar jsqlparser-4.6.jar freemarker-2.3.32.
+ jar core-3.5.0.jar swagger-annotations-1.6.6.jar spring-context-5.3.30.
+ jar spring-tx-5.3.30.jar tomcat-embed-websocket-9.0.82.jar mapstruct-1.
+ 4.2.Final.jar netty-transport-4.1.100.Final.jar failureaccess-1.0.2.jar
+  netty-handler-4.1.100.Final.jar aliyun-java-sdk-core-4.5.10.jar netty-
+ common-4.1.100.Final.jar opentracing-noop-0.33.0.jar jackson-datatype-j
+ sr310-2.13.5.jar mybatis-plus-annotation-3.5.4.1.jar mybatis-plus-sprin
+ g-boot-autoconfigure-3.5.4.1.jar jsr305-3.0.2.jar validation-api-2.0.1.
+ Final.jar spring-boot-devtools-2.7.17.jar guava-33.0.0-jre.jar springfo
+ x-spring-web-2.10.5.jar springfox-swagger2-2.10.5.jar jackson-datatype-
+ jdk8-2.13.5.jar aliyun-java-sdk-ram-3.1.0.jar fluent-hc-4.5.14.jar spri
+ ng-security-crypto-5.7.11.jar reactor-core-3.4.33.jar logback-classic-1
+ .2.12.jar lombok-1.18.30.jar springfox-schema-2.10.5.jar spring-boot-2.
+ 7.17.jar netty-buffer-4.1.100.Final.jar netty-resolver-4.1.100.Final.ja
+ r spring-boot-starter-2.7.17.jar slf4j-api-1.7.36.jar spring-boot-start
+ er-logging-2.7.17.jar spring-webmvc-5.3.30.jar spring-expression-5.3.30
+ .jar checker-qual-3.41.0.jar error_prone_annotations-2.23.0.jar swagger
+ -models-1.6.6.jar knife4j-openapi2-spring-boot-starter-4.0.0.jar spring
+ -aop-5.3.30.jar springfox-spring-webmvc-2.10.5.jar druid-1.2.6.jar spri
+ ng-jcl-5.3.30.jar spring-boot-autoconfigure-2.7.17.jar listenablefuture
+ -9999.0-empty-to-avoid-conflict-with-guava.jar classmate-1.5.1.jar spri
+ ng-data-keyvalue-2.7.17.jar mybatis-plus-extension-3.5.4.1.jar mybatis-
+ plus-3.5.4.1.jar jai-imageio-core-1.4.0.jar mysql-connector-java-8.0.26
+ .jar springfox-spi-2.10.5.jar jcommander-1.82.jar logback-core-1.2.12.j
+ ar jakarta.annotation-api-1.3.5.jar netty-codec-4.1.100.Final.jar sprin
+ g-boot-starter-web-2.7.17.jar mybatis-plus-core-3.5.4.1.jar mybatis-plu
+ s-generator-3.5.3.2.jar lettuce-core-6.1.10.RELEASE.jar jaxb-api-2.3.1.
+ jar mybatis-plus-boot-starter-3.5.4.1.jar spring-jdbc-5.3.30.jar spring
+ -boot-starter-json-2.7.17.jar springfox-bean-validators-2.10.5.jar spri
+ ng-security-config-5.7.11.jar httpcore-4.4.16.jar protobuf-java-3.11.4.
+ jar spring-data-redis-2.7.17.jar javase-3.5.0.jar jjwt-0.9.1.jar httpcl
+ ient-4.5.14.jar netty-transport-native-unix-common-4.1.100.Final.jar sp
+ ring-beans-5.3.30.jar mapstruct-processor-1.4.2.Final.jar spring-boot-s
+ tarter-jdbc-2.7.17.jar spring-oxm-5.3.30.jar classgraph-4.1.7.jar tomca
+ t-embed-el-9.0.82.jar springfox-swagger-common-2.10.5.jar HikariCP-4.0.
+ 3.jar
+

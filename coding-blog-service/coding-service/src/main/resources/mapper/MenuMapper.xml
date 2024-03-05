@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coding.blog.service.mapper.MenuMapper">
+    <resultMap id="menuDetailMap" type="com.coding.blog.service.vo.MenuDetailVo">
+        <id property="menuId" column="menu_id" />
+        <result property="parentId" column="parent_id" />
+        <result property="createTime" column="create_time" />
+        <result property="title" column="title" />
+        <result property="level" column="level" />
+        <result property="sort" column="sort" />
+        <result property="name" column="name" />
+        <result property="icon" column="icon" />
+        <result property="hidden" column="hidden" />
+    </resultMap>
+
+    <select id="queryMenuTreeById" resultMap="menuDetailMap">
+        WITH RECURSIVE MenuCTE AS (SELECT
+                  menu_id,
+                  parent_id,
+                  create_time,
+                  title,
+                  level,
+                  sort,
+                  name,
+                  icon,
+                  hidden
+           FROM menu
+           WHERE menu_id = #{menuId} -- 顶级菜单
+           UNION ALL
+           SELECT m.menu_id,
+                  m.parent_id,
+                  m.create_time,
+                  m.title,
+                  m.level,
+                  m.sort,
+                  m.name,
+                  m.icon,
+                  m.hidden
+           FROM menu m
+                    INNER JOIN MenuCTE cte ON
+               m.parent_id = cte.menu_id -- 关联父菜单
+        )
+        SELECT *
+        FROM MenuCTE
+        ORDER BY level, sort;
+    </select>
+
+
+
+   <!-- <select id="selectTopLevelMenus" resultMap="MenuResultMap">
+        SELECT * FROM menus WHERE parent_id IS NULL ORDER BY sort
+    </select>
+
+    <select id="queryAllMenus" resultMap="menuDetailMap">
+        WITH RECURSIVE MenuCTE AS (
+            SELECT
+                menu_id,
+                parent_id,
+                create_time,
+                title,
+                level,
+                sort,
+                name,
+                icon,
+                hidden
+            FROM
+                menus
+            WHERE
+                parent_id IS NULL &#45;&#45; 顶级菜单
+            UNION ALL
+            SELECT
+                m.menu_id,
+                m.parent_id,
+                m.create_time,
+                m.title,
+                m.level,
+                m.sort,
+                m.name,
+                m.icon,
+                m.hidden
+            FROM
+                menus m
+                    INNER JOIN MenuCTE cte ON
+                    m.parent_id = cte.menu_id &#45;&#45; 关联父菜单
+        )
+        SELECT * FROM MenuCTE ORDER BY level, sort;
+    </select>-->
+    <select id="selectAllMenus" resultMap="menuDetailMap">
+        SELECT menu_id, parent_id, create_time, title, level, sort, name, icon, hidden
+        FROM menu
+        ORDER BY level, sort
+    </select>
+</mapper>

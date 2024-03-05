@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coding.blog.service.mapper.AdminRoleRelationMapper">
+    <delete id="roleRemove">
+        DELETE
+        FROM admin_role_relation
+        WHERE users_id = #{userId}
+          and role_id = #{roleId}
+    </delete>
+
+    <select id="selectRoleIdsByUserId" resultType="java.lang.Long">
+        SELECT role_id
+        FROM admin_role_relation
+        WHERE users_id = #{userId}
+    </select>
+
+    <select id="queryRoles" resultType="com.coding.blog.service.entity.Role">
+        SELECT r.*
+        FROM admin_role_relation ar
+                 LEFT JOIN role r ON ar.role_id = r.role_id
+        WHERE ar.users_id = #{userId}
+    </select>
+    <select id="getRoleByUserId" resultType="com.coding.blog.service.entity.Role">
+        SELECT
+            r.*
+        FROM
+            admin_role_relation ar
+                JOIN role r ON r.role_id = ar.role_id
+        WHERE
+            ar.users_id = #{userId}
+
+    </select>
+    <select id="getResourceList" resultType="com.coding.blog.service.entity.Resource">
+        SELECT ru.*
+        FROM admin_role_relation ar
+                 LEFT JOIN role r ON ar.role_id = r.role_id
+                 LEFT JOIN role_resource_relation rr on r.role_id = rr.role_id
+                 LEFT JOIN resource ru on rr.resource_id = ru.resource_id
+        WHERE ar.users_id = #{userId}
+          AND ru.resource_id IS NOT NULL
+        GROUP BY ru.resource_id
+    </select>
+
+</mapper>
