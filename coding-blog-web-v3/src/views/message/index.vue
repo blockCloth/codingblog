@@ -8,7 +8,6 @@ import { ElNotification, ElMessageBox } from "element-plus";
 
 import TypeWriter from "@/components/TypeWriter/type-writer";
 import { gsapTransXScale } from "@/utils/transform";
-import empty from "@/components/Empty/empty.vue";
 
 import {
   getMessageList,
@@ -36,6 +35,7 @@ const { getUserInfo } = storeToRefs(userStore);
 const messageList = ref([]);
 const total = ref(0);
 const loading = ref(false);
+const scrollLoading = ref(false);
 let observe;
 let box;
 const param = reactive({
@@ -59,7 +59,6 @@ const changeTab = (key, label) => {
     param.tag = "";
   }
   param.current = 1;
-
   pageGetMessageList();
 };
 
@@ -85,27 +84,29 @@ const observeBox = () => {
 const pageGetMessageList = async () => {
   if (param.current == 1) {
     loading.value = true;
+  } else {
+    scrollLoading.value = true;
   }
-  let res = await getMessageList(param);
-  if (res.code == 0) {
-    const { list } = res.result;
-    messageList.value =
-      param.current == 1 ? res.result.list : messageList.value.concat(res.result.list);
-    let classList = res.result.list.map((item, index) => {
-      return ".message" + (messageList.value.length - list.length + index);
-    });
-    total.value = res.result.total;
-    if (messageList.value.length < total.value) {
-      observeBox();
-    } else {
-      observe && observe.unobserve(box);
-      observe = null;
+  try {
+    console.log("param", param);
+    let res = await getMessageList(param);
+    if (res.code == 200) {
+      const list = res.result;
+      messageList.value =
+        param.current == 1 ? res.result : messageList.value.concat(res.result);
+      let classList = res.result.map((item, index) => {
+        return ".message" + (messageList.value.length - list.length + index);
+      });
+
+      total.value = res.result.total;
+      nextTick(() => {
+        gsapTransXScale(classList, 0, 1.2);
+      });
     }
-    nextTick(() => {
-      gsapTransXScale(classList, 0, 1.2);
-    });
+  } finally {
+    loading.value = false;
+    scrollLoading.value = false;
   }
-  loading.value = false;
 };
 
 const like = async (item, index) => {
@@ -192,14 +193,14 @@ const handleDeleteMessage = (item) => {
 const getHotMessageTag = async () => {
   tabList.value = [];
   const res = await getMessageTag();
-  if (res.code == 0) {
+  if (res.code == 200) {
     tabList.value = Array.isArray(res.result)
       ? res.result.map((v, i) => {
-          return {
-            key: i + 1,
-            label: v.tag,
-          };
-        })
+        return {
+          key: i + 1,
+          label: v,
+        };
+      })
       : [];
 
     tabList.value.unshift({ key: 0, label: "全部" });
@@ -222,6 +223,7 @@ onMounted(async () => {
   _removeLocalItem("message-refresh");
   await getHotMessageTag();
   await pageGetMessageList();
+  observeBox();
 });
 
 onActivated(async () => {
@@ -266,13 +268,10 @@ onBeforeUnmount(() => {
     <div class="message-header">
       <div class="message-title">留言板</div>
       <div class="flex items-center !h-[5rem]">
-        <TypeWriter size="1.2rem" :typeList="['玉可碎而不可改其白，竹可焚而不可毁其节!']"></TypeWriter>
+        <TypeWriter size="1.2rem" :typeList="['生活原本沉闷，但跑起来就会有风!']"></TypeWriter>
       </div>
     </div>
-    <div v-if="tabList.length === 0">
-      <empty />
-    </div>
-    <div v-else class="message-body center_box">
+    <div class="message-body center_box">
       <div class="search-tab" @click.stop="showSearchInput">
         <ul class="tab">
           <li v-for="item in tabList" :key="item.key" @click="changeTab(item.key, item.label)">
@@ -281,20 +280,11 @@ onBeforeUnmount(() => {
             </div>
           </li>
         </ul>
-        <Transition
-          :duration="{ enter: 0, leave: 500 }"
-          enter-active-class="animate__animated animate__fadeIn"
-          leave-active-class="animate__animated animate__fadeOut"
-        >
+        <Transition :duration="{ enter: 0, leave: 500 }" enter-active-class="animate__animated animate__fadeIn"
+          leave-active-class="animate__animated animate__fadeOut">
           <div v-if="showSearch" class="!py-[5px] flex justify-center items-center">
-            <el-input
-              :prefix-icon="Search"
-              class="search"
-              v-model="searchTag"
-              placeholder="搜索留言内容"
-              @change="changeSearch"
-              clearable
-            ></el-input>
+            <el-input :prefix-icon="Search" class="search" v-model="searchTag" placeholder="搜索留言内容"
+              @change="changeSearch" clearable></el-input>
           </div>
         </Transition>
       </div>
@@ -305,88 +295,59 @@ onBeforeUnmount(() => {
           </div>
         </template>
         <el-row class="row-height" :gutter="16">
-          <el-col
-            :class="'message' + index"
-            :xs="24"
-            :sm="12"
-            v-for="(message, index) in messageList"
-            :key="index"
-          >
+          <el-col :class="'message' + index" :xs="24" :sm="12" v-for="(message, index) in messageList" :key="index">
             <el-card class="card-hover">
-              <div
-                :style="{ backgroundColor: message.bg_color }"
-                class="message-card animate__animated animate__fadeIn"
-              >
+              <div :style="{ backgroundColor: message.bg_color }"
+                class="message-card animate__animated animate__fadeIn">
                 <div class="img-loading" v-if="message.bg_url" v-image="message.bg_url"></div>
-                <div
-                  class="top"
-                  :style="{ backgroundImage: message.bg_url ? `url(${message.bg_url})` : '' }"
-                >
+                <div class="top" :style="{ backgroundImage: message.bg_url ? `url(${message.bg_url})` : '' }">
                   <div class="top-header">
                     <div class="flex items-center">
-                      <el-avatar class="left-avatar" :src="message.avatar"
-                        >{{ message.nick_name }}
+                      <el-avatar class="left-avatar" :src="message.avatar">{{ message.nick_name }}
                       </el-avatar>
                       <span class="nick-name"> {{ message.nick_name }}</span>
                     </div>
-                    <div
-                      class="flex items-center cursor-pointer option-top"
-                      v-if="
-                        (getUserInfo.id && getUserInfo.id == message.user_id) ||
-                        getUserInfo.role == 1
-                      "
-                    >
-                      <el-icon @click="handleEditMessage(message)"><Edit /></el-icon>
-                      <el-icon class="!ml-[10px]" @click="handleDeleteMessage(message)"
-                        ><Delete
-                      /></el-icon>
+                    <div class="flex items-center cursor-pointer option-top" v-if="(getUserInfo.id && getUserInfo.id == message.user_id) ||
+    getUserInfo.role == 1
+    ">
+                      <el-icon @click="handleEditMessage(message)">
+                        <Edit />
+                      </el-icon>
+                      <el-icon class="!ml-[10px]" @click="handleDeleteMessage(message)">
+                        <Delete />
+                      </el-icon>
                     </div>
                   </div>
-                  <div
-                    v-if="containHTML(filterMessage(message.message))"
-                    v-html="filterMessage(message.message)"
+                  <div v-if="containHTML(filterMessage(message.message))" v-html="filterMessage(message.message)"
                     :style="{
-                      color: message.color,
-                      fontSize: message.font_size + 'px',
-                      fontWeight: message.font_weight,
-                    }"
-                  ></div>
-                  <div
-                    v-else
-                    :style="{
-                      color: message.color,
-                      fontSize: message.font_size + 'px',
-                      fontWeight: message.font_weight,
-                    }"
-                  >
+    color: message.color,
+    fontSize: message.font_size + 'px',
+    fontWeight: message.font_weight,
+  }"></div>
+                  <div v-else :style="{
+    color: message.color,
+    fontSize: message.font_size + 'px',
+    fontWeight: message.font_weight,
+  }">
                     {{ message.message }}
                   </div>
                 </div>
                 <div class="bottom">
                   <div class="left flex items-center">
                     <div class="time">{{ returnTime(message.createdAt) }}前</div>
-                    <div
-                      class="message-comment cursor-pointer !mr-[10px]"
-                      @click="comment(message)"
-                    >
+                    <!-- <div class="message-comment cursor-pointer !mr-[10px]" @click="comment(message)">
                       <span>评论</span>
                       <span class="!ml-[5px]">{{ message.comment_total }}</span>
-                    </div>
+                    </div> -->
                     <div class="index-tag">#{{ message.tag }}</div>
                   </div>
                   <div class="flex justify-start items-center option">
-                    <div
-                      class="cursor-pointer scale flex items-center"
-                      @click="like(message, index)"
-                    >
-                      <svg-icon
-                        :name="message.is_like ? 'redHeart' : 'greyHeart'"
-                        :width="1.5"
-                      ></svg-icon>
+                    <!-- <div class="cursor-pointer scale flex items-center" @click="like(message, index)">
+                      <svg-icon :name="message.is_like ? 'redHeart' : 'greyHeart'" :width="1.5"></svg-icon>
                       <span :style="{ color: message.is_like ? '#f00' : '' }" class="!ml-[5px]">{{
-                        message.like_times || 0
-                      }}</span>
-                    </div>
+    message.like_times || 0
+  }}</span>
+                    </div> -->
                   </div>
                 </div>
               </div>
@@ -395,13 +356,10 @@ onBeforeUnmount(() => {
         </el-row>
       </el-skeleton>
       <div class="observer">
-        {{
-          total == 0
-            ? "这片土地需要你来开辟"
-            : messageList.length >= total
-            ? "已经到底了~"
-            : "加载中~"
-        }}
+        <Loading :size="32" v-if="scrollLoading" />
+        <template v-else>
+          {{ messageList.length >= total ? "已经到底了~" : "下拉加载更多～" }}
+        </template>
       </div>
     </div>
   </div>
@@ -413,6 +371,7 @@ onBeforeUnmount(() => {
     min-height: 22rem;
     transition: height 0.8s;
   }
+
   &-header {
     padding-top: 130px;
     width: 100%;
@@ -421,21 +380,24 @@ onBeforeUnmount(() => {
     justify-content: center;
     align-items: center;
   }
+
   .message-title {
     font-size: 2.4rem;
     font-weight: 600;
-    color: #000;
+    color: var(--global-black);
   }
+
   .type-writer {
-    color: #000;
+    color: var(--global-black);
   }
 
   .space {
-    color: #000;
+    color: var(--global-black);
   }
 
   &-body {
     min-height: 35rem;
+
     .search-tab {
       width: 100%;
       min-height: 3rem;
@@ -443,6 +405,7 @@ onBeforeUnmount(() => {
       margin-bottom: 1rem;
       border-radius: 2rem;
     }
+
     .tab {
       width: 100%;
       min-height: 3rem;
@@ -466,8 +429,9 @@ onBeforeUnmount(() => {
         padding: 0 0.6rem;
         border-radius: 1rem;
       }
+
       .active-tab {
-        color: #fff;
+        color: var(--global-white);
         background-color: var(--primary);
       }
     }
@@ -490,7 +454,7 @@ onBeforeUnmount(() => {
     }
 
     .nick-name {
-      color: #fff;
+      color: var(--global-white);
       margin-left: 1rem;
       letter-spacing: 1px;
       padding: 3px 8px;
@@ -506,31 +470,32 @@ onBeforeUnmount(() => {
 
     .time {
       font-size: 12px;
-      color: #fff;
+      color: var(--global-white);
       letter-spacing: 1px;
       margin-right: 10px;
     }
 
     .message-comment {
       font-size: 12px;
-      color: #fff;
+      color: var(--global-white);
       letter-spacing: 1px;
       padding: 3px 8px;
     }
 
     .option-top {
-      color: #fff;
+      color: var(--global-white);
       padding: 3px 8px;
       border-radius: 8px;
       background-color: rgba(0, 0, 0, 0.2);
     }
 
     .option {
-      color: #fff;
+      color: var(--global-white);
       padding: 1px 8px;
       border-radius: 8px;
       background-color: rgba(0, 0, 0, 0.2);
     }
+
     .top-header {
       height: 4rem;
       display: flex;
@@ -548,13 +513,15 @@ onBeforeUnmount(() => {
       background-position: center center;
       background-size: cover;
       background-repeat: no-repeat;
+
       &::-webkit-scrollbar {
         display: none;
       }
     }
+
     .index-tag {
       font-size: 12px;
-      color: #fff;
+      color: var(--global-white);
     }
 
     .bottom {
@@ -572,13 +539,17 @@ onBeforeUnmount(() => {
     font-size: 16px;
   }
 }
+
 .observer {
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-size: 1.2rem;
   color: var(--font-color);
   margin-top: 30px;
   letter-spacing: 1px;
 }
+
 .btn {
   margin-left: 3px;
   color: var(--primary);
@@ -588,6 +559,7 @@ onBeforeUnmount(() => {
 .scale {
   transition: all 0.3s;
 }
+
 .scale:hover {
   transform: scale(1.2);
 }
@@ -626,6 +598,7 @@ onBeforeUnmount(() => {
 .search {
   height: 28px;
   width: 220px;
+
   :deep(.el-input__wrapper) {
     border-radius: 20px;
   }

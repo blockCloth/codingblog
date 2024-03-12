@@ -1,8 +1,3 @@
-<!--
-* @Author: Zhang Yuming
-* @Date: 2023-08-08 10:59:19
-* @Description: 发布/编辑留言页面
--->
 <script setup>
 import { ref, reactive, onMounted, h } from "vue";
 import { useRouter, useRoute } from "vue-router";
@@ -103,18 +98,20 @@ const leaveMessage = async () => {
   loading.value = true;
   if (form.bgList.length && !form.bgList[0].id) {
     const img = await imgUpload(form.bgList[0]);
-    if (img.code == 0) {
-      const { url } = img.result;
-      form.bg_url = url;
+    if (img.code == 200) {
+      const { imagePath } = img.result;
+      form.bg_url = imagePath;
     }
   }
+  //将数据转成JSON字符串
+  const messageJson = JSON.parse(JSON.stringify(form));
   let res;
   if (form.id) {
-    res = await updateMessage(form);
+    res = await updateMessage(messageJson);
   } else {
-    res = await addMessage(form);
+    res = await addMessage(messageJson);
   }
-  if (res && res.code == 0) {
+  if (res && res.code == 200) {
     ElNotification({
       offset: 60,
       title: "提示",
@@ -141,14 +138,14 @@ const leaveMessage = async () => {
 
 const getHotMessageTag = async () => {
   const res = await getMessageTag();
-  if (res.code == 0) {
+  if (res.code == 200) {
     tabList.value = Array.isArray(res.result)
       ? res.result.map((v, i) => {
-          return {
-            key: i + 1,
-            label: v.tag,
-          };
-        })
+        return {
+          key: i + 1,
+          label: v,
+        };
+      })
       : [];
   }
 };
@@ -159,6 +156,7 @@ const changeTab = (key) => {
 
 onMounted(async () => {
   await getHotMessageTag();
+
   if (route.query.type == "edit") {
     const item = _getLocalItem("blog-message-item");
     if (item) {
@@ -192,11 +190,9 @@ onMounted(async () => {
   <div class="message">
     <div class="center_box !pt-[80px]">
       <div class="flex items-center justify-center !h-[1rem]">
-        <TypeWriter
-          size="1.2rem"
-          :typeList="['世间真假，皆我所求，苦与乐，都可奉酒。']"
-        ></TypeWriter>
+        <TypeWriter size="1.2rem" :typeList="['世间真假，皆我所求，苦与乐，都可奉酒。']"></TypeWriter>
       </div>
+
       <el-card class="!mt-[2rem]">
         <div class="!h-[22rem]" :style="{ backgroundColor: form.bg_color }">
           <div class="top" :style="{ backgroundImage: form.bg_url ? `url(${form.bg_url})` : '' }">
@@ -206,18 +202,12 @@ onMounted(async () => {
                 <span class="nick-name"> {{ form.nick_name }}</span>
               </div>
             </div>
-            <div
-              class="content"
-              :style="{
-                color: form.color,
-                fontSize: form.font_size + 'px',
-                fontWeight: form.font_weight,
-              }"
-              ref="inputCommentRef"
-              contenteditable="true"
-              @input="inputComment(val)"
-              @focus="focusCommentInput"
-            ></div>
+            <div class="content" :style="{
+          color: form.color,
+          fontSize: form.font_size + 'px',
+          fontWeight: form.font_weight,
+        }" ref="inputCommentRef" contenteditable="true" @input="inputComment(val)" @focus="focusCommentInput">
+            </div>
           </div>
           <div class="bottom">
             <div class="tag">{{ form.tag }}</div>
@@ -237,72 +227,28 @@ onMounted(async () => {
             <el-color-picker v-model="form.bg_color" show-alpha :predefine="predefineColors" />
           </div>
           <div v-else-if="activeTab == 1" class="flex items-center">
-            <el-select
-              v-model="form.font_size"
-              class="!w-[160px] !mr-[20px]"
-              placeholder="请选择字体大小"
-              size="large"
-            >
-              <el-option
-                v-for="item in fontSizeList"
-                :key="item.key"
-                :label="item.key"
-                :value="item.key"
-              />
+            <el-select v-model="form.font_size" class="!w-[160px] !mr-[20px]" placeholder="请选择字体大小" size="large">
+              <el-option v-for="item in fontSizeList" :key="item.key" :label="item.key" :value="item.key" />
             </el-select>
             <el-color-picker v-model="form.color" show-alpha :predefine="predefineColors" />
-            <el-select
-              v-model="form.font_weight"
-              class="!w-[160px] !ml-[20px]"
-              placeholder="请选择字体宽度"
-              size="large"
-            >
-              <el-option
-                v-for="item in fontWeightList"
-                :key="item.key"
-                :label="item.key"
-                :value="item.key"
-              />
+            <el-select v-model="form.font_weight" class="!w-[160px] !ml-[20px]" placeholder="请选择字体宽度" size="large">
+              <el-option v-for="item in fontWeightList" :key="item.key" :label="item.key" :value="item.key" />
             </el-select>
           </div>
           <div v-else-if="activeTab == 2">
-            <Upload
-              v-model:file-list="form.bgList"
-              :limit="1"
-              :width="280"
-              :height="140"
-              :preview="false"
-            />
+            <Upload v-model:file-list="form.bgList" :limit="1" :width="280" :height="140" :preview="false" />
           </div>
           <div v-else>
-            <el-select
-              v-model="form.tag"
-              class="!w-[180px]"
-              placeholder="请选择或输入标签"
-              size="large"
-              filterable
-              allow-create
-              clearable
-            >
-              <el-option
-                v-for="item in tabList"
-                :key="item.key"
-                :label="item.label"
-                :value="item.label"
-              />
+            <el-select v-model="form.tag" class="!w-[180px]" placeholder="请选择或输入标签" size="large" filterable allow-create
+              clearable>
+              <el-option v-for="item in tabList" :key="item.key" :label="item.label" :value="item.label" />
             </el-select>
           </div>
         </div>
         <div class="!h-[4rem] !p-[15px] flex justify-center items-center">
-          <el-button
-            :disabled="loading"
-            :loading="loading"
-            class="leave-message"
-            @click="leaveMessage"
-            >{{
-              loading ? "努力上传中..." : route.query.type == "edit" ? "保存" : "发布"
-            }}</el-button
-          >
+          <el-button :disabled="loading" :loading="loading" class="leave-message" @click="leaveMessage">{{
+          loading ? "努力上传中..." : route.query.type == "edit" ? "保存" : "发布"
+        }}</el-button>
         </div>
       </div>
     </div>
@@ -330,7 +276,7 @@ onMounted(async () => {
   }
 
   .nick-name {
-    color: #fff;
+    color: var(--global-white);
     margin-left: 1rem;
     letter-spacing: 1px;
     padding: 3px 8px;
@@ -354,7 +300,7 @@ onMounted(async () => {
 
   .tag {
     font-size: 12px;
-    color: #fff;
+    color: var(--global-white);
     background-color: rgba(0, 0, 0, 0.2);
     padding: 3px 8px;
     border-radius: 8px;
@@ -395,15 +341,18 @@ onMounted(async () => {
       text-align: center;
       border-radius: 1rem;
     }
+
     .active-tab {
-      color: #fff;
+      color: var(--global-white);
       background-color: var(--primary);
     }
   }
 }
+
 .center_box {
   min-height: calc(100vh - 128px);
 }
+
 .loading {
   position: absolute;
   top: 0;
@@ -414,18 +363,28 @@ onMounted(async () => {
   justify-content: center;
   align-items: center;
 }
+
 .coffee_cup {
   transform: scale(2);
 }
+
 .type-writer {
-  color: #000 !important;
+  color: var(--global-black) !important;
 }
+
 .leave-message {
+  color: var(--font-color);
   width: 200px;
   height: 40px;
   border-radius: 20px;
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: var(--shadow-button-bg);
+  transition: all 0.3s;
+
+  &:hover {
+    transform: translateY(-3px);
+  }
 }
+
 :deep(.el-upload--picture-card) {
   width: 280px !important;
   height: 140px !important;
@@ -452,6 +411,7 @@ onMounted(async () => {
       height: 48px;
     }
   }
+
   .center_box {
     max-width: 600px !important;
   }

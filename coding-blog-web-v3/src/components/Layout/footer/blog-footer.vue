@@ -3,8 +3,8 @@
   <div class="footer_box flex flex-col items-center justify-center">
     <!-- eslint-disable-next-line -->
     <div class="footer-color">&copy 青的个人博客 2024</div>
-    <!-- <a class="footer-color change-color mt-[5px]" href="http://beian.miit.gov.cn/" target="_blank"
-      >蜀ICP备2023007772号</a -->
+    <a class="footer-color change-color mt-[5px]" href="http://beian.miit.gov.cn/" target="_blank"
+      >赣ICP备2024025197号</a>
     
     <!-- <div class="footer-color mt-[5px] flex justify-center flex-wrap">
       <a

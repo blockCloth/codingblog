@@ -33,6 +33,7 @@ export const allIconArray = [
   'el-icon-link',
   'el-icon-picture-outline',
   'el-icon-s-home',
+  'el-icon-chat-dot-square',
   // iconpark-开头的是字节图标库的，后面可以按需引用添加即可
   'iconpark-list-two',
   'iconpark-config',

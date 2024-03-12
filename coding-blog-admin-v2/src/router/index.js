@@ -19,6 +19,7 @@ import columns from '../views/system-management/column-management'
 import link from '../views/system-management/link-management'
 import background from '../views/system-management/background-management'
 import home from '../views/home-management'
+import messageBoard from '../views/system-management/message-management'
 
 Vue.use(Router)
 
@@ -220,6 +221,15 @@ export const pageRouters = [
         component: background,
         meta: {
           title: '背景管理'
+        }
+      },
+      {
+        path: 'board',
+        name: 'message-board-management',
+        icon: 'el-icon-chat-dot-square',
+        component: messageBoard,
+        meta: {
+          title: '留言板管理'
         }
       }
       // {

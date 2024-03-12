@@ -58,7 +58,6 @@ http.interceptors.response.use(
     // 超出 2xx 范围的状态码都会触发该函数。
     // 对响应错误做点什么
     const { status, data } = error.response;
-
     switch (status + "") {
       case "401":
         // 403 表示用户未登录，或者token过期了

@@ -1,9 +1,9 @@
 <template>
   <div class="outer">
     <el-card class="box-card">
-      <div slot="header" class="clearfix">
+      <div slot="header" class="clearfix login-img">
         <!-- <h2>CodingMore后台管理登陆</h2> -->
-        <img :src="logoUrl" width="360" height="240"/>
+        <img :src="logoUrl" width="340" height="220" alight="center"/>
       </div>
       <el-form ref="form" :model="form" label-width="60px">
         <el-form-item label="用户名">
@@ -38,7 +38,7 @@ export default {
       // itwangerQrcodeUrl: require('@/assets/wanger-qrcode.jpg'),
 
       // logo图片url
-      logoUrl: require('@/assets/login-main.png')
+      logoUrl: 'https://blockcloth.cn/codingblog/login-main-2.png'
     }
   },
   methods: {
@@ -71,7 +71,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: url(../../assets/login-bg.jpg) no-repeat center center;
+  background: url(https://pic4.zhimg.com/80/v2-8e470221c2ccb98da5eaac20c8e95e6f_720w.webp) no-repeat center center;
   /* background: url(https://cdn.tobebetterjavaer.com/codingmore-admin-web/login-bg.jpeg) no-repeat center center; */
   background-size: 100% 100%;
 }
@@ -89,5 +89,10 @@ export default {
 .img-qrcode {
   width: 160px;
   height: 160px;
+}
+.login-img{
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

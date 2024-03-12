@@ -131,31 +131,31 @@ const routes = [
           },
         ],
       },
-      // {
-      //   path: "/resources",
-      //   name: "Resources",
-      //   meta: {
-      //     name: "资源导航",
-      //   },
-      //   children: [
-      //     {
-      //       path: "/resources/front",
-      //       name: "Front",
-      //       meta: {
-      //         name: "前端",
-      //       },
-      //       component: () => import("@/views/resources/category-list.vue"),
-      //     },
-      //     {
-      //       path: "/resources/back",
-      //       name: "Back",
-      //       meta: {
-      //         name: "后端",
-      //       },
-      //       component: () => import("@/views/resources/category-list.vue"),
-      //     },
-      //   ],
-      // },
+      {
+        path: "/resources",
+        name: "Resources",
+        meta: {
+          name: "资源导航",
+        },
+        children: [
+          {
+            path: "/resources/front",
+            name: "Front",
+            meta: {
+              name: "前端",
+            },
+            component: () => import("@/views/resources/category-list.vue"),
+          },
+          {
+            path: "/resources/back",
+            name: "Back",
+            meta: {
+              name: "后端",
+            },
+            component: () => import("@/views/resources/category-list.vue"),
+          },
+        ],
+      },
       {
         path: "/siteList",
         name: "SiteList",
@@ -178,7 +178,7 @@ const routes = [
         meta: {
           name: "留言",
         },
-        component: () => import("@/views/message/index.vue"),
+        // component: () => import("@/views/message/index.vue"),
 
         children: [
           {
@@ -258,9 +258,12 @@ router.beforeEach((to, from, next) => {
   next();
 });
 
+// 不滚动到顶部的路由名单
+const whiteList = ["/message/list"];
+
 router.afterEach((to) => {
   // 切换就滚动到顶部
-  if (to.path !== "/message/list") {
+  if (!whiteList.includes(to.path)) {
     window.scrollTo({
       top: 0,
       behavior: "smooth",

@@ -1,8 +1,3 @@
-<!--
-* @Author: Zhang Yuming
-* @Date: 2023-08-08 10:59:19
-* @Description: 留言详情页
--->
 <script setup>
 import { reactive, onMounted, h } from "vue";
 import { storeToRefs } from "pinia";

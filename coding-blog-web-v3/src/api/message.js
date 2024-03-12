@@ -3,7 +3,7 @@ import http from "@/config/request";
 /** 获取留言列表 */
 export const getMessageList = (data) => {
   return new Promise((resolve, reject) => {
-    http.post("/api/message/getMessageList", data).then((res) => {
+    http.post("/api/front/message/getList", data).then((res) => {
       resolve(res);
     });
   });
@@ -12,7 +12,7 @@ export const getMessageList = (data) => {
 /** 新增留言 */
 export const addMessage = (data) => {
   return new Promise((resolve, reject) => {
-    http.post("/api/message/add", data).then((res) => {
+    http.post("/api/front/message/save", data).then((res) => {
       resolve(res);
     });
   });
@@ -57,7 +57,7 @@ export const deleteMessage = (id) => {
 /** 获取热门标签 */
 export const getMessageTag = () => {
   return new Promise((resolve, reject) => {
-    http.get("/api/message/getHotTagList", {}).then((res) => {
+    http.get("/api/front/message/getHotTagList", {}).then((res) => {
       resolve(res);
     });
   });

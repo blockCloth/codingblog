@@ -66,7 +66,6 @@ const getConfigDetail = async () => {
   rightSizeLoading.value = true;
   let res = await homeGetConfig();
 
-  console.log(res);
   if (res.code == 200 && typeof res.result != "string") {
     res.result.site = transformSite(res.result.site);
 
@@ -93,8 +92,6 @@ const transformSite = (site) => {
 // 获取所有的标签
 const getAllTags = async () => {
   let res = await getAllTag();
-
-  console.log(res);
   if (res.code == 200) {
     tags.value = res.result.map((r) => {
       r.color = randomFontColor();
