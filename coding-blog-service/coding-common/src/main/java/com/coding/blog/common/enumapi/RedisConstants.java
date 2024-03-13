@@ -21,4 +21,6 @@ public class RedisConstants {
     public static final String POST_PRAISE = "coding_post_praise";
     public static final String POST_PAGE_VIEW = "coding_post_page_view";
     public static final String POST_BLOG_VIEW = "coding_blog_view";
+    public static final String MESSAGE_BOARD = "coding_message_board";
+    public static final String MESSAGE_TAG = "coding_message_tag";
 }

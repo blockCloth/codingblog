@@ -34,9 +34,15 @@
         <hutool.version>5.7.16</hutool.version>
         <qrcode-plugin.version>3.0.0</qrcode-plugin.version>
         <aliyun-adk-oss-version>3.17.1</aliyun-adk-oss-version>
+        <sensitive-word.version>0.13.1</sensitive-word.version>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>com.github.houbb</groupId>
+            <artifactId>sensitive-word</artifactId>
+            <version>${sensitive-word.version}</version>
+        </dependency>
         <!-- 邮件发送的核心依赖 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

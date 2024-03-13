@@ -37,6 +37,11 @@ public class GlobeExceptionHandler {
         return ResultObject.failed(e.getStatus().getMsg());
     }
 
+    @ExceptionHandler(value = java.io.UncheckedIOException.class)
+    public void handleUncheckedIOException(java.io.UncheckedIOException e) throws java.io.UncheckedIOException {
+
+    }
+
     @ExceptionHandler(value = Exception.class)
     public void catchExceptionSendMsg(Exception e) {
         // 记录异常时间
@@ -44,7 +49,7 @@ public class GlobeExceptionHandler {
         ExceptionLogger.exceptionMessages.add(transformExceptionMsg(e));
 
         // 移除超过一小时的异常记录
-        ExceptionLogger.exceptions.removeIf(time -> time.isBefore(LocalDateTime.now().minusHours(1)));
+        ExceptionLogger.exceptions.removeIf(time -> time.isBefore(LocalDateTime.now().minusHours(3)));
         ExceptionLogger.exceptionMessages.removeIf(msg -> ExceptionLogger.exceptions.get(ExceptionLogger.exceptionMessages.indexOf(msg)).isBefore(LocalDateTime.now().minusHours(1)));
 
         // 检查最近一小时内的异常次数

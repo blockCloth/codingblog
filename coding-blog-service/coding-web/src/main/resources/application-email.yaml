@@ -12,9 +12,9 @@ spring:
     #编码格式
     default-encoding: utf-8
     #授权码
-    password:
+    password: cdvblsmhzrhpcjfi
     #邮箱地址
-    username:
+    username: 1808870333@qq.com
     # 端口号
     port: 465
     properties:
@@ -28,4 +28,4 @@ spring:
 
 alarm:
   # 接收报警的用户邮箱，多个人时，使用英文逗号分隔
-  user:
+  user: 1808870333@qq.com

@@ -2,6 +2,7 @@ package com.coding.blog.web.redis;
 
 import com.coding.blog.common.enumapi.RedisConstants;
 import com.coding.blog.common.util.RedisTemplateUtil;
+import com.coding.blog.service.entity.Message;
 import com.coding.blog.service.entity.Posts;
 import com.coding.blog.service.mapper.PostsMapper;
 import com.coding.blog.web.CodingBlogApplication;
@@ -9,11 +10,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.ZSetOperations;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -85,14 +84,25 @@ public class RedisTest {
 
     @Test
     public void testSet(){
-        redisTemplateUtil.sAdd("names","张三","李四","王五","赵六");
-        redisTemplateUtil.sAdd("test","haha");
-        log.info("判断集合中是否存在某些数据{}",redisTemplateUtil.sIsMember("names","王五"));
-        log.info("集合的元素数量为{}",redisTemplateUtil.sSize("names"));
-        log.info("将names中的元素移动到test中{}",redisTemplateUtil.sMove("names","test","张三"));
-        log.info("删除test中的haha元素{}",redisTemplateUtil.sRemove("test","haha"));
-        log.info("获取names集合{}",redisTemplateUtil.sMembers("names"));
-        log.info("获取test集合{}",redisTemplateUtil.sMembers("test"));
+        Set<Object> set = redisTemplateUtil.zRange(RedisConstants.MESSAGE_BOARD, 0, -1);
+        List<Message> list = set.stream()
+                .map(obj -> (Message) obj)
+                .sorted(Comparator.comparing(Message::getLocalDateTime,Comparator.reverseOrder()))
+                .collect(Collectors.toList());
+        System.out.println(list);
+        // Set<ZSetOperations.TypedTuple<Object>> set = redisTemplateUtil.zRangeWithScores(RedisConstants.MESSAGE_BOARD, -1, -1);
+        //
+        //     Double highestScore = set.iterator().next().getScore();
+        // System.out.println(highestScore.longValue());
+
+        // redisTemplateUtil.sAdd("names","张三","李四","王五","赵六");
+        // redisTemplateUtil.sAdd("test","haha");
+        // log.info("判断集合中是否存在某些数据{}",redisTemplateUtil.sIsMember("names","王五"));
+        // log.info("集合的元素数量为{}",redisTemplateUtil.sSize("names"));
+        // log.info("将names中的元素移动到test中{}",redisTemplateUtil.sMove("names","test","张三"));
+        // log.info("删除test中的haha元素{}",redisTemplateUtil.sRemove("test","haha"));
+        // log.info("获取names集合{}",redisTemplateUtil.sMembers("names"));
+        // log.info("获取test集合{}",redisTemplateUtil.sMembers("test"));
     }
 
     @Test

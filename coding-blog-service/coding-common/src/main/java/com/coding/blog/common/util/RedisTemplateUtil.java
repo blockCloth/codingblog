@@ -2,6 +2,7 @@ package com.coding.blog.common.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -259,5 +260,54 @@ public class RedisTemplateUtil {
      */
     public Long lRemove(String key,long count,Object value){
         return redisTemplate.opsForList().remove(key, count, value);
+    }
+
+    /**
+     * 向Sorted Set中添加元素
+     */
+    public Boolean zAdd(String key, Object value, double score){
+        return redisTemplate.opsForZSet().add(key, value, score);
+    }
+
+    /**
+     * 从Sorted Set中删除元素
+     */
+    public Long zRemove(String key, Object... values){
+        return redisTemplate.opsForZSet().remove(key, values);
+    }
+
+    /**
+     * 获取Sorted Set的所有元素
+     */
+    public Set<Object> zRange(String key, long start, long end){
+        return redisTemplate.opsForZSet().range(key, start, end);
+    }
+
+    /**
+     * 获取Sorted Set中元素的排名
+     */
+    public Long zRank(String key, Object value){
+        return redisTemplate.opsForZSet().rank(key, value);
+    }
+
+    /**
+     * 获取Sorted Set中元素的分数
+     */
+    public Double zScore(String key, Object value){
+        return redisTemplate.opsForZSet().score(key, value);
+    }
+
+    /**
+     * 增加Sorted Set中元素的分数
+     */
+    public Double zIncrBy(String key, Object value, double delta){
+        return redisTemplate.opsForZSet().incrementScore(key, value, delta);
+    }
+
+    /**
+     * 获取sorted Set中元素的最高分数
+     */
+    public Set<ZSetOperations.TypedTuple<Object>> zRangeWithScores(String key, long start, long end){
+        return redisTemplate.opsForZSet().rangeWithScores(key, start, end);
     }
 }
