@@ -11,13 +11,13 @@ import { gsapTransXScale } from "@/utils/transform";
 
 import {
   getMessageList,
-  likeMessage,
-  cancelLikeMessage,
+  // likeMessage,
+  // cancelLikeMessage,
   deleteMessage,
   getMessageTag,
 } from "@/api/message";
 
-import { addLike, cancelLike } from "@/api/like";
+// import { addLike, cancelLike } from "@/api/like";
 import svgIcon from "@/components/SvgIcon/index.vue";
 import {
   returnTime,
@@ -109,49 +109,49 @@ const pageGetMessageList = async () => {
   }
 };
 
-const like = async (item, index) => {
-  // 取消点赞
-  if (item.is_like) {
-    const res = await cancelLikeMessage(item.id);
-    if (res.code == 0) {
-      // 记录留言取消点赞
-      if (getUserInfo.value.id) {
-        await cancelLike({ for_id: item.id, type: 3, user_id: getUserInfo.value.id });
-      }
-      messageList.value[index].like_times--;
-      messageList.value[index].is_like = false;
-      ElNotification({
-        offset: 60,
-        title: "提示",
-        message: h("div", { style: "color: #7ec050; font-weight: 600;" }, "已取消点赞"),
-      });
-    }
-  }
-  // 点赞
-  else {
-    const res = await likeMessage(item.id);
-    if (res.code == 0) {
-      // 记录留言点赞
-      if (getUserInfo.value.id) {
-        await addLike({ for_id: item.id, type: 3, user_id: getUserInfo.value.id });
-      }
-      messageList.value[index].like_times++;
-      messageList.value[index].is_like = true;
-      ElNotification({
-        offset: 60,
-        title: "提示",
-        message: h("div", { style: "color: #7ec050; font-weight: 600;" }, "点赞成功"),
-      });
-    }
-  }
-};
+// const like = async (item, index) => {
+//   // 取消点赞
+//   if (item.is_like) {
+//     const res = await cancelLikeMessage(item.id);
+//     if (res.code == 0) {
+//       // 记录留言取消点赞
+//       if (getUserInfo.value.id) {
+//         await cancelLike({ for_id: item.id, type: 3, user_id: getUserInfo.value.id });
+//       }
+//       messageList.value[index].like_times--;
+//       messageList.value[index].is_like = false;
+//       ElNotification({
+//         offset: 60,
+//         title: "提示",
+//         message: h("div", { style: "color: #7ec050; font-weight: 600;" }, "已取消点赞"),
+//       });
+//     }
+//   }
+//   // 点赞
+//   else {
+//     const res = await likeMessage(item.id);
+//     if (res.code == 0) {
+//       // 记录留言点赞
+//       if (getUserInfo.value.id) {
+//         await addLike({ for_id: item.id, type: 3, user_id: getUserInfo.value.id });
+//       }
+//       messageList.value[index].like_times++;
+//       messageList.value[index].is_like = true;
+//       ElNotification({
+//         offset: 60,
+//         title: "提示",
+//         message: h("div", { style: "color: #7ec050; font-weight: 600;" }, "点赞成功"),
+//       });
+//     }
+//   }
+// };
 
-const comment = (item) => {
-  if (item) {
-    _setLocalItem("blog-message-item", item);
-  }
-  router.push({ path: "/message/detail" });
-};
+// const comment = (item) => {
+//   if (item) {
+//     _setLocalItem("blog-message-item", item);
+//   }
+//   router.push({ path: "/message/detail" });
+// };
 
 const handleEditMessage = (item) => {
   if (item) {

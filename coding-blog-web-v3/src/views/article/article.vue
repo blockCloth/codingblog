@@ -17,7 +17,7 @@ import {
 } from "@/api/article";
 import { getIsLikeByIdAndType } from "@/api/like";
 
-import Comment from "@/components/Comment/Comment.vue";
+// import Comment from "@/components/Comment/Comment.vue";
 import Tooltip from "@/components/ToolTip/tooltip.vue";
 import PageHeader from "@/components/Header/PageHeader.vue";
 import GsapCount from "@/components/GsapCount/index";
@@ -64,7 +64,6 @@ const toggleDrawer = () => {
 };
 
 const goToArticle = (article) => {
-  console.log(article);
   router.push({ path: "/article", query: { id: article.postsId } });
 };
 

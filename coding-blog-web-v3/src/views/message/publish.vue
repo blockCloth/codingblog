@@ -133,6 +133,7 @@ const leaveMessage = async () => {
       title: "错误提示",
       message: h("div", { style: "color: #f56c6c; font-weight: 600;" }, res.message),
     });
+    loading.value = false;
   }
 };
 

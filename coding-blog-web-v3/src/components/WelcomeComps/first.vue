@@ -30,6 +30,10 @@ const menuList = [
     label: "友链",
     path: "/link/list",
   },
+  {
+    label: "留言",
+    path: "/message/list",
+  },
 ];
 const initBg = () => {
   const canvas = document.getElementById("canvas");
