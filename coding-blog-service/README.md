@@ -30,6 +30,8 @@
 > [前台体验地址](https://blockcloth.cn/)
 >
 > [后台体验地址](https://blockcloth.cn/admin)
+>
+> [博客部署教程](https://blockcloth.cn/#/article?id=103)
 
 ## 项目介绍       
 

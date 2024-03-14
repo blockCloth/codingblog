@@ -54,6 +54,7 @@
 
 - GitHub 仓库地址：<https://github.com/blockCloth/codingblog/tree/master/coding-blog-web-v3>
 - Gitee 仓库地址：<https://gitee.com/blockcloth/codingblog/tree/master/coding-blog-web-v3>
+- 博客部署教程：<https://blockcloth.cn/#/article?id=103>
 
 ## 🚀 博客前台下载运行
 
@@ -121,7 +122,7 @@ npm run build
 
 博客文章会出一系列的部署教程
 
-教程地址：<http://mrzym.top/#/articleList?id=2&type=category&name=%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2>
+教程地址：<https://blockcloth.cn/#/article?id=103>
 
 ## 🥰感谢
 

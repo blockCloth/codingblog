@@ -29,6 +29,7 @@
 2. **后台地址**：[blockcloth/admin](https://blockcloth.cn/admin)**（用户名：guest  密码：123456）**
 3. **GitHub地址**：<https://github.com/blockCloth/codingblog>
 4. **Gitee地址**：<https://gitee.com/blockcloth/codingblog>
+5. **部署教程**：<https://blockcloth.cn/#/article?id=103>
 
 ## 二、项目展示
 

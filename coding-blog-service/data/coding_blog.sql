@@ -1,392 +1,549 @@
-/*
- Navicat Premium Data Transfer
+-- MySQL dump 10.13  Distrib 8.0.24, for Linux (x86_64)
+--
+-- Host: localhost    Database: coding_blog
+-- ------------------------------------------------------
+-- Server version	8.0.24
 
- Source Server         : mysql8.0
- Source Server Type    : MySQL
- Source Server Version : 80026
- Source Host           : localhost:3306
- Source Schema         : coding_blog
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
- Target Server Type    : MySQL
- Target Server Version : 80026
- File Encoding         : 65001
+--
+-- Table structure for table `admin_role_relation`
+--
 
- Date: 26/12/2023 20:29:15
-*/
-
-SET NAMES utf8mb4;
-SET FOREIGN_KEY_CHECKS = 0;
-
--- ----------------------------
--- Table structure for admin_role_relation
--- ----------------------------
 DROP TABLE IF EXISTS `admin_role_relation`;
-CREATE TABLE `admin_role_relation`  (
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `admin_role_relation` (
   `admin_role_relation_id` bigint NOT NULL AUTO_INCREMENT,
-  `users_id` bigint NULL DEFAULT NULL COMMENT '用户id',
-  `role_id` bigint NULL DEFAULT NULL COMMENT '角色id',
+  `users_id` bigint DEFAULT NULL COMMENT '用户id',
+  `role_id` bigint DEFAULT NULL COMMENT '角色id',
   PRIMARY KEY (`admin_role_relation_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 27 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '后台用户和角色关系表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='后台用户和角色关系表';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of admin_role_relation
--- ----------------------------
-INSERT INTO `admin_role_relation` VALUES (23, 16, 12);
-INSERT INTO `admin_role_relation` VALUES (26, 15, 11);
+--
+-- Dumping data for table `admin_role_relation`
+--
 
--- ----------------------------
--- Table structure for comments
--- ----------------------------
+LOCK TABLES `admin_role_relation` WRITE;
+/*!40000 ALTER TABLE `admin_role_relation` DISABLE KEYS */;
+INSERT INTO `admin_role_relation` VALUES (23,16,12),(26,15,11),(27,16,10),(31,17,12),(34,26,11),(35,27,11),(36,28,12);
+/*!40000 ALTER TABLE `admin_role_relation` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `comments`
+--
+
 DROP TABLE IF EXISTS `comments`;
-CREATE TABLE `comments`  (
-  `comment_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
-  `comment_post_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '对应文章ID',
-  `comment_author` tinytext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NULL COMMENT '评论者',
-  `comment_author_email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NULL DEFAULT NULL COMMENT '评论者邮箱',
-  `comment_author_url` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NULL DEFAULT NULL COMMENT '评论者网址',
-  `comment_author_ip` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NULL DEFAULT NULL COMMENT '评论者IP',
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `comments` (
+  `comment_id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `comment_post_id` bigint unsigned NOT NULL DEFAULT '0' COMMENT '对应文章ID',
+  `comment_author` tinytext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci COMMENT '评论者',
+  `comment_author_email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT '评论者邮箱',
+  `comment_author_url` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT '评论者网址',
+  `comment_author_ip` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT '评论者IP',
   `comment_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '评论时间',
-  `comment_content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NULL COMMENT '评论正文',
-  `comment_approved` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NULL DEFAULT NULL COMMENT '评论是否被批准',
-  `comment_agent` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NULL DEFAULT NULL COMMENT '评论者的USER AGENT',
-  `comment_type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NULL DEFAULT NULL COMMENT '评论类型(pingback/普通)',
-  `comment_parent` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '父评论ID',
-  `user_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '评论者用户ID（不一定存在）',
+  `comment_content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci COMMENT '评论正文',
+  `comment_approved` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT '评论是否被批准',
+  `comment_agent` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT '评论者的USER AGENT',
+  `comment_type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT '评论类型(pingback/普通)',
+  `comment_parent` bigint unsigned NOT NULL DEFAULT '0' COMMENT '父评论ID',
+  `user_id` bigint unsigned NOT NULL DEFAULT '0' COMMENT '评论者用户ID（不一定存在）',
   PRIMARY KEY (`comment_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_520_ci COMMENT = '评论表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci ROW_FORMAT=DYNAMIC COMMENT='评论表';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of comments
--- ----------------------------
+--
+-- Dumping data for table `comments`
+--
 
--- ----------------------------
--- Table structure for links
--- ----------------------------
+LOCK TABLES `comments` WRITE;
+/*!40000 ALTER TABLE `comments` DISABLE KEYS */;
+/*!40000 ALTER TABLE `comments` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `global_conf`
+--
+
+DROP TABLE IF EXISTS `global_conf`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `global_conf` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `key` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '配置key',
+  `value` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '配置value',
+  `comment` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '注释',
+  `deleted` tinyint NOT NULL DEFAULT '0' COMMENT '是否删除 0 未删除 1 已删除',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `idx_key` (`key`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='全局配置表';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `global_conf`
+--
+
+LOCK TABLES `global_conf` WRITE;
+/*!40000 ALTER TABLE `global_conf` DISABLE KEYS */;
+INSERT INTO `global_conf` VALUES (1,'view.site.starInfo','## 该文档仅「二哥的编程星球」VIP 用户可见\n\n二哥的编程星球内容包括：\n\n1. 付费文档：技术派、MYDB 等项目配套的 120+篇教程查看权限\n2. 面试指南：校招、社招的 40 万+字面试求职攻略\n3. 智能助手：无限期使用派聪明 AI 助手，已对接讯飞星火和 ChatGPT双通道，不用花 1 分钱\n4. 专属问答：向二哥 1v1 发起提问，内容不限于 offer 选择、学习路线、职业规划等\n5. 简历修改：提供简历修改服务，附赠星球 100+优质简历模板可供参考\n6. 学习环境：打造一个沉浸式的学习环境，有一种高考冲刺、大学考研的氛围\n\n![](https://cdn.tobebetterjavaer.com/paicoding/153ba04898384c0c6b03dfe6ce1cbe76.jpg)\n\n\n> 步骤①：微信扫描上方二维码，点击「加入知识星球」按钮\n> 步骤②：访问星球置顶帖球友必看：https://t.zsxq.com/11rEo9Pdu 获取项目配套文档的语雀访问地址和密码\n\n\n','星球介绍信息',0,'2023-09-07 11:28:03','2023-09-07 11:28:03');
+/*!40000 ALTER TABLE `global_conf` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `links`
+--
+
 DROP TABLE IF EXISTS `links`;
-CREATE TABLE `links`  (
-  `link_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
-  `link_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NULL DEFAULT NULL COMMENT '链接URL',
-  `link_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NULL DEFAULT NULL COMMENT '链接标题',
-  `link_image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NULL DEFAULT NULL COMMENT '链接图片',
-  `link_target` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NULL DEFAULT NULL COMMENT '链接打开方式',
-  `link_description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NULL DEFAULT NULL COMMENT '链接描述',
-  `link_visible` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NULL DEFAULT NULL COMMENT '是否可见（Y/N）',
-  `link_owner` bigint UNSIGNED NOT NULL DEFAULT 1 COMMENT '添加者用户ID',
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `links` (
+  `link_id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `link_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT '链接URL',
+  `link_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT '链接标题',
+  `link_image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT '链接图片',
+  `link_target` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT '链接打开方式',
+  `link_description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT '链接描述',
+  `link_visible` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT 'Y' COMMENT '是否可见（Y/N）',
+  `link_owner` bigint unsigned NOT NULL DEFAULT '1' COMMENT '添加者用户ID',
   PRIMARY KEY (`link_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_520_ci COMMENT = '链接信息表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci ROW_FORMAT=DYNAMIC COMMENT='链接信息表';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of links
--- ----------------------------
+--
+-- Dumping data for table `links`
+--
 
--- ----------------------------
--- Table structure for menu
--- ----------------------------
+LOCK TABLES `links` WRITE;
+/*!40000 ALTER TABLE `links` DISABLE KEYS */;
+INSERT INTO `links` VALUES (2,'https://www.javabetter.cn/','Java进阶之路','https://coding-blog-oss01.oss-cn-hangzhou.aliyuncs.com/codingblog/8da520d58eb45836a8acb3b541e5f1e8.jpg',NULL,'这是一份通俗易懂、风趣幽默的Java学习指南','Y',1),(3,'https://paicoding.com/','技术派','https://coding-blog-oss01.oss-cn-hangzhou.aliyuncs.com/codingblog/911da0ea23e9717f49928326e8fae3f6.jpg',NULL,'这是一个非常完美的社区系统','Y',1),(11,'http://mrzym.top/','张','https://blockcloth.cn/codingblog/05431d2e2d0e6bdf18a9c627978eec96.jpg',NULL,'小张的个人博客','Y',1);
+/*!40000 ALTER TABLE `links` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `menu`
+--
+
 DROP TABLE IF EXISTS `menu`;
-CREATE TABLE `menu`  (
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `menu` (
   `menu_id` bigint NOT NULL AUTO_INCREMENT,
-  `parent_id` bigint NULL DEFAULT NULL COMMENT '父级ID',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '菜单名称',
-  `level` int NULL DEFAULT NULL COMMENT '菜单级数',
-  `sort` int NULL DEFAULT NULL COMMENT '菜单排序',
-  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '前端名称',
-  `icon` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '前端图标',
-  `hidden` int NULL DEFAULT NULL COMMENT '前端隐藏',
+  `parent_id` bigint DEFAULT NULL COMMENT '父级ID',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '菜单名称',
+  `level` int DEFAULT NULL COMMENT '菜单级数',
+  `sort` int DEFAULT NULL COMMENT '菜单排序',
+  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '前端名称',
+  `icon` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '前端图标',
+  `hidden` int DEFAULT NULL COMMENT '前端隐藏',
   PRIMARY KEY (`menu_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 40 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '后台菜单表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='后台菜单表';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of menu
--- ----------------------------
-INSERT INTO `menu` VALUES (26, 0, '2023-12-08 15:46:56', '系统管理', 0, 0, 'system-management', 'el-icon-setting', 0);
-INSERT INTO `menu` VALUES (27, 26, '2023-12-08 15:48:31', '用户管理', 1, 0, 'users-management', 'el-icon-user', 0);
-INSERT INTO `menu` VALUES (28, 26, '2023-12-08 15:48:45', '角色管理', 1, 0, 'roles-management', 'iconfont-role-management', 0);
-INSERT INTO `menu` VALUES (31, 0, '2023-12-25 11:15:01', '内容管理', 0, 0, 'content-management', 'el-icon-setting', 0);
-INSERT INTO `menu` VALUES (32, 31, '2023-12-25 11:17:47', '创建文章', 1, 0, 'article-editing', 'el-icon-edit-outline', 0);
-INSERT INTO `menu` VALUES (33, 31, '2023-12-25 11:18:16', '编辑文章', 1, 0, 'article-modify', 'el-icon-edit-outline', 0);
-INSERT INTO `menu` VALUES (34, 31, '2023-12-25 11:19:09', '文章列表', 1, 0, 'article-management', 'iconpark-list-two', 0);
-INSERT INTO `menu` VALUES (35, 26, '2023-12-25 14:20:28', '菜单管理', 1, 0, 'menus-management', 'iconfont-menu-management', 0);
-INSERT INTO `menu` VALUES (36, 26, '2023-12-25 14:21:07', '资源管理', 1, 0, 'sources-management', 'iconfont-source-management', 0);
-INSERT INTO `menu` VALUES (37, 26, '2023-12-25 14:21:37', '资源分类管理', 1, 0, 'source-categories-management', 'el-icon-coin', 0);
-INSERT INTO `menu` VALUES (38, 26, '2023-12-25 14:25:34', '标签管理', 1, 0, 'tags-management', ' el-icon-price-tag', 0);
-INSERT INTO `menu` VALUES (39, 26, '2023-12-25 15:37:49', '站点配置', 1, 0, 'site-configuration', 'iconpark-config', 0);
+--
+-- Dumping data for table `menu`
+--
 
--- ----------------------------
--- Table structure for post_tag
--- ----------------------------
+LOCK TABLES `menu` WRITE;
+/*!40000 ALTER TABLE `menu` DISABLE KEYS */;
+INSERT INTO `menu` VALUES (25,0,'2024-02-28 16:38:46','首页',0,0,'home-management','el-icon-s-home',0),(26,0,'2023-12-08 15:46:56','系统管理',0,0,'system-management','el-icon-setting',0),(27,26,'2023-12-08 15:48:31','用户管理',1,0,'users-management','el-icon-user',0),(28,26,'2023-12-08 15:48:45','角色管理',1,0,'roles-management','iconfont-role-management',0),(31,0,'2023-12-25 11:15:01','内容管理',0,0,'content-management','el-icon-setting',0),(32,31,'2023-12-25 11:17:47','创建文章',1,0,'article-editing','el-icon-edit-outline',0),(33,31,'2023-12-25 11:18:16','编辑文章',1,0,'article-modify','el-icon-edit-outline',0),(34,31,'2023-12-25 11:19:09','文章列表',1,0,'article-management','iconpark-list-two',0),(35,26,'2023-12-25 14:20:28','菜单管理',1,0,'menus-management','iconfont-menu-management',0),(36,26,'2023-12-25 14:21:07','资源管理',1,0,'sources-management','iconfont-source-management',0),(37,26,'2023-12-25 14:21:37','资源分类管理',1,0,'source-categories-management','el-icon-coin',0),(38,26,'2023-12-25 14:25:34','标签管理',1,0,'tags-management','el-icon-price-tag',0),(39,26,'2023-12-25 15:37:49','站点配置',1,0,'site-configuration','iconpark-config',0),(40,26,'2024-01-17 15:44:49','专栏管理',1,0,'column-management','el-icon-s-grid',0),(45,26,'2024-02-21 10:25:43','友链管理',1,0,'links-management','el-icon-link',0),(46,26,'2024-02-28 10:46:29','背景管理',0,0,'background-management','el-icon-picture-outline',0),(51,25,'2024-02-28 17:06:27','主页',1,0,'home-main','el-icon-s-home',0),(52,26,'2024-03-12 11:24:01','留言管理',1,0,'message-board-management','el-icon-chat-dot-square',0);
+/*!40000 ALTER TABLE `menu` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `picture`
+--
+
+DROP TABLE IF EXISTS `picture`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `picture` (
+  `picture_id` bigint NOT NULL AUTO_INCREMENT COMMENT '背景图片id',
+  `picture_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '路由名称',
+  `picture_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '背景图片URL',
+  `is_visible` int DEFAULT '0' COMMENT '是否显示：0表示显示，1不显示',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`picture_id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `picture`
+--
+
+LOCK TABLES `picture` WRITE;
+/*!40000 ALTER TABLE `picture` DISABLE KEYS */;
+INSERT INTO `picture` VALUES (1,'Archives','https://coding-blog-oss01.oss-cn-hangzhou.aliyuncs.com/codingblog/536052e6befb497540359444b3fce7ff.jpg',0,'2024-02-28 12:10:32'),(4,'Category','https://coding-blog-oss01.oss-cn-hangzhou.aliyuncs.com/codingblog/5358883f63ab422453803f6f000bdf1e.jpg',0,'2024-02-28 12:18:29'),(5,'Tag','https://coding-blog-oss01.oss-cn-hangzhou.aliyuncs.com/codingblog/92248d8aa9be42067f1822933e14e3c9.jpg',0,'2024-02-28 12:32:35'),(6,'PhotoAlbum','https://coding-blog-oss01.oss-cn-hangzhou.aliyuncs.com/codingblog/f552d83487042308f515b48b05e60e3a.jpg',0,'2024-02-28 12:32:48'),(7,'Photos','https://coding-blog-oss01.oss-cn-hangzhou.aliyuncs.com/codingblog/5c16a68c1da66e0050351aa738ae8f19.jpg',0,'2024-02-28 12:32:56'),(8,'Talk','https://coding-blog-oss01.oss-cn-hangzhou.aliyuncs.com/codingblog/9838dd88fe15553cc56b18d34b50868d.jpg',0,'2024-02-28 12:33:03'),(9,'LinkList','https://coding-blog-oss01.oss-cn-hangzhou.aliyuncs.com/codingblog/3d96d5225d73b6031d0c95e5c3181891.jpg',0,'2024-02-28 12:33:13');
+/*!40000 ALTER TABLE `picture` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `post_tag`
+--
+
 DROP TABLE IF EXISTS `post_tag`;
-CREATE TABLE `post_tag`  (
-  `post_tag_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'post_tag_id',
-  `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NULL COMMENT '标签名称',
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `post_tag` (
+  `post_tag_id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT 'post_tag_id',
+  `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci COMMENT '标签名称',
   PRIMARY KEY (`post_tag_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 39 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_520_ci COMMENT = '标签表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci ROW_FORMAT=DYNAMIC COMMENT='标签表';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of post_tag
--- ----------------------------
-INSERT INTO `post_tag` VALUES (31, 'SpringBoot');
-INSERT INTO `post_tag` VALUES (32, 'Spring');
-INSERT INTO `post_tag` VALUES (33, 'SpringMVC');
-INSERT INTO `post_tag` VALUES (34, 'Redis');
-INSERT INTO `post_tag` VALUES (35, 'MySql');
-INSERT INTO `post_tag` VALUES (36, 'Java');
-INSERT INTO `post_tag` VALUES (37, 'Vue');
+--
+-- Dumping data for table `post_tag`
+--
 
--- ----------------------------
--- Table structure for post_tag_relation
--- ----------------------------
+LOCK TABLES `post_tag` WRITE;
+/*!40000 ALTER TABLE `post_tag` DISABLE KEYS */;
+INSERT INTO `post_tag` VALUES (31,'SpringBoot'),(32,'Spring'),(33,'SpringMVC'),(34,'Redis'),(35,'MySql'),(36,'Java'),(37,'Vue'),(41,'RabbitMQ'),(42,'NodeJs'),(43,'JavaSe');
+/*!40000 ALTER TABLE `post_tag` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `post_tag_relation`
+--
+
 DROP TABLE IF EXISTS `post_tag_relation`;
-CREATE TABLE `post_tag_relation`  (
-  `post_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '对应文章ID',
-  `post_tag_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '标签ID',
-  `term_order` int NOT NULL DEFAULT 0 COMMENT '排序',
-  PRIMARY KEY (`post_id`, `post_tag_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_520_ci COMMENT = '标签文章关系表' ROW_FORMAT = Dynamic;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `post_tag_relation` (
+  `post_id` bigint unsigned NOT NULL DEFAULT '0' COMMENT '对应文章ID',
+  `post_tag_id` bigint unsigned NOT NULL DEFAULT '0' COMMENT '标签ID',
+  `term_order` int NOT NULL DEFAULT '0' COMMENT '排序',
+  PRIMARY KEY (`post_id`,`post_tag_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci ROW_FORMAT=DYNAMIC COMMENT='标签文章关系表';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of post_tag_relation
--- ----------------------------
-INSERT INTO `post_tag_relation` VALUES (69, 35, 0);
-INSERT INTO `post_tag_relation` VALUES (70, 34, 0);
+--
+-- Dumping data for table `post_tag_relation`
+--
 
--- ----------------------------
--- Table structure for posts
--- ----------------------------
+LOCK TABLES `post_tag_relation` WRITE;
+/*!40000 ALTER TABLE `post_tag_relation` DISABLE KEYS */;
+INSERT INTO `post_tag_relation` VALUES (84,36,0),(96,37,0),(98,37,0),(99,35,0),(100,36,0),(101,36,0),(101,43,1),(102,36,1),(102,43,0);
+/*!40000 ALTER TABLE `post_tag_relation` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `posts`
+--
+
 DROP TABLE IF EXISTS `posts`;
-CREATE TABLE `posts`  (
-  `posts_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'posts_id',
-  `post_author` bigint UNSIGNED NULL DEFAULT 0 COMMENT '对应作者ID',
-  `post_date` datetime NULL DEFAULT NULL COMMENT '发布时间',
-  `post_content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NULL COMMENT '正文',
-  `post_title` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NULL COMMENT '标题',
-  `post_excerpt` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NULL COMMENT '摘录',
-  `post_status` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NULL DEFAULT NULL COMMENT '文章状态',
-  `comment_status` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NULL DEFAULT NULL COMMENT '评论状态',
-  `post_modified` datetime NULL DEFAULT NULL COMMENT '修改时间',
-  `menu_order` int NOT NULL DEFAULT 0 COMMENT '排序ID',
-  `post_type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NULL DEFAULT NULL COMMENT '文章类型（post/page等）',
-  `comment_count` bigint NULL DEFAULT 0 COMMENT '评论总数',
-  `attribute` json NULL COMMENT '属性',
-  `html_content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NULL COMMENT '正文html',
-  `page_view` bigint NULL DEFAULT NULL COMMENT '浏览量',
-  PRIMARY KEY (`posts_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 73 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_520_ci COMMENT = '文章' ROW_FORMAT = Dynamic;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `posts` (
+  `posts_id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT 'posts_id',
+  `post_author` bigint unsigned DEFAULT '0' COMMENT '对应作者ID',
+  `post_date` datetime DEFAULT NULL COMMENT '发布时间',
+  `post_content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci COMMENT '正文',
+  `post_title` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci COMMENT '标题',
+  `post_excerpt` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci COMMENT '摘录',
+  `post_status` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT '文章状态',
+  `comment_status` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT '评论状态',
+  `post_modified` datetime DEFAULT NULL COMMENT '修改时间',
+  `menu_order` int NOT NULL DEFAULT '0' COMMENT '排序ID',
+  `post_type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT '文章类型（post/page等）',
+  `comment_count` bigint DEFAULT '0' COMMENT '评论总数',
+  `attribute` json DEFAULT NULL COMMENT '属性',
+  `html_content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci COMMENT '正文html',
+  `page_view` bigint DEFAULT NULL COMMENT '浏览量',
+  PRIMARY KEY (`posts_id`) USING BTREE,
+  FULLTEXT KEY `post_title` (`post_title`,`post_content`)
+) ENGINE=InnoDB AUTO_INCREMENT=103 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci ROW_FORMAT=DYNAMIC COMMENT='文章';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of posts
--- ----------------------------
-INSERT INTO `posts` VALUES (69, 15, '2023-12-15 19:21:46', '如果你的面前有阴影，那是因为你的背后有阳光', 'Mysql测试文章', '当你不去旅行，不去冒险，不去谈一场恋爱，不过没试过的生活，每天只是挂着QQ,刷着微博，逛着淘宝，干着岁都能做的事情，那么你要青春有什么用。', 'PUBLISHED', NULL, '2023-12-15 19:21:46', 0, NULL, 0, NULL, '<p>如果你的面前有阴影，那是因为你的背后有阳光</p>', 0);
-INSERT INTO `posts` VALUES (70, 15, '2023-12-15 19:22:34', '抽出时间去学习，凡事从小做起，不怕单调和重复，长期的积累坚持，想不成功，也难', 'Redis测试文章', '人生就有许多这样的奇迹，看似比登天还难的事，有时轻而易举就可以做到，其中的差别就在于非凡的信念', 'PUBLISHED', NULL, '2023-12-15 19:22:34', 0, NULL, 0, NULL, '<p>抽出时间去学习，凡事从小做起，不怕单调和重复，长期的积累坚持，想不成功，也难</p>', 0);
-INSERT INTO `posts` VALUES (73, 15, '2023-12-26 20:18:42', '\n1. 一级 1\n2. 一级 2\n3. 一级 3', '测试标题', '一级 1 一级 2 一级 3', 'PUBLISHED', NULL, '2023-12-26 20:18:42', 0, NULL, 0, '{\"articleCoverUrl\": \"\"}', '<ol>\n<li>一级 1</li>\n<li>一级 2</li>\n<li>一级 3</li>\n</ol>\n', 0);
+--
+-- Dumping data for table `posts`
+--
 
--- ----------------------------
--- Table structure for resource
--- ----------------------------
+LOCK TABLES `posts` WRITE;
+/*!40000 ALTER TABLE `posts` DISABLE KEYS */;
+INSERT INTO `posts` VALUES (84,15,'2024-01-15 22:41:14','### 初始Java IO\n\n\n\nIO，即in和out，也就是输入输出，指应用程序和外部设备之间的数据传递，常见的外部设备包括文件、管道、网络连接。\n\n​	流（Stream），是一个抽象的概念，指一连串的数据（字符或字节），是以先进先出的方式发送信息的通道。\n\n- 先进先出：最先写入输出流的数据最先被输入流读取到。\n- 顺序存取：可以一个接一个地往流中写入一串字节，读出时也将按写入顺序读取一串字节，不能随机访问中间的数据。（RandomAccessFile除外）\n- 只读或只写：每个流只能是输入流或输出流的一种，不能同时具备两个功能，输入流只能进行读操作，对输出流只能进行写操作。在一个数据传输通道中，如果既要写入数据，又要读取数据，则要分别提供两个流。\n\n### 按传输方式划分\n\n​	IO可以通过字节和字符的两种方式来划分，虽然IO类有很多，但是核心的就是四个抽象类：`InputStream、OutputStream、Reader、Writer`。前两个对应着字节、后两个对应字符\n\n字节流和字符流的区别：\n\n- 字节流一般用来处理图像、视频、音频等类型的文件。字符流一般用于处理存文本类型的文件，如TXT文件等，但是不能处理图形视频等非文本文件。即：字符流能处理的字节流也能处理，字符流处理不了的，字节流还能处理\n- 字节流本身没有缓冲区，缓冲字节流相对于字节流，效率提升非常高。而字符流本身就带有缓冲区，缓冲字符流相对于字符流效率提升就不是那么大了。\n\n### 按操作对象划分\n\n​	IO就是根据（Input/Output）进行划分的：\n\n- **Input 输入**：将外部的数据读入到内存中，比如把文件从硬盘读取到内存，从网络读取到内存等等\n- **Output 输出**：将内存中的数据写入到外部中，比如把数据从内存中写入到文件，把数据从内存输出到网络等等\n\n所有的程序，在执行的时候，都是在内存上进行的，一旦关机，内存中的数据就没了，那如果想要持久化，就需要把内存中的数据输出到外部，比如说文件。\n\n文件操作算是 IO 中最典型的操作了，也是最频繁的操作。IO 就可以分类为：文件、数组、管道、基本数据类型、缓冲、打印、对象序列化/反序列化，以及转换等。\n\n#### 1、文件\n\n文件流也就是直接操作文件的流，可以细分为字节流（FileInputStream 和 FileInputStream ）和字符流（FileReader 和 FileWriter）。\n\n- FileInputStream \n\n  ```java\n   // 声明一个 int 类型的变量 b，用于存储读取到的字节\n  int b;\n  // 创建一个 FileInputStream 对象，用于读取文件 fis.txt 中的数据\n  try (FileInputStream fis1 = new FileInputStream(\"file/fis.txt\");) {\n      // 循环读取文件中的数据\n      while ((b = fis1.read()) != -1) {\n          // 将读取到的字节转换为对应的 ASCII 字符，并输出到控制台\n          System.out.print((char) b);\n      }\n  } catch (FileNotFoundException e) {\n      throw new RuntimeException(e);\n  } catch (IOException e) {\n      throw new RuntimeException(e);\n  }\n  \n  ```\n\n  \n\n- FileInputStream \n\n  ```java\n   try (FileOutputStream fileOutputStream = new FileOutputStream(\"file/fos.txt\")) {\n       // fileOutputStream.write(\"江西工程\".getBytes());\n       // 测试写入截断\n       // fileOutputStream.write(120);\n       // fileOutputStream.write(\'x\');\n       // fileOutputStream.write(0x78);\n       //写入指定长度字符\n       byte[] bytes = \"abcdefg\".getBytes();\n       fileOutputStream.write(bytes,2,3);\n   } catch (FileNotFoundException e) {\n       throw new RuntimeException(e);\n   } catch (IOException e) {\n       throw new RuntimeException(e);\n   }\n  ```\n\n  \n\n- FileReader \n\n  ```java\n  int b = 0;\n  //创建数据进行读取\n  char[] chars = new char[1024];\n  try(FileReader reader = new FileReader(\"file/reader.txt\")) {\n      while ((b = reader.read(chars,0,chars.length)) != -1){\n          System.out.print(new String(chars,0,b));\n      }\n  }\n  ```\n\n  \n\n- FileWriter\n\n  ```java\n  FileWriter fw = null;\n  try {\n      fw = new FileWriter(\"file/writer.txt\",true);\n      char[] cbuf = {\'A\',\'B\',\'B\',\'C\',\'\\n\'};\n      fw.write(cbuf);\n      //写入字符串\n      String str = \"这是一个测试输出流写入字符串的方法\";\n      fw.write(str);\n      fw.flush();\n  } catch (IOException e) {\n      throw new RuntimeException(e);\n  }\n  ```\n\n#### 2、缓冲\n\n​		CPU 很快，它比内存快 100 倍，比磁盘快百万倍。那也就意味着，程序和内存交互会很快，和硬盘交互相对就很慢，这样就会导致性能问题。\n\n​		为了减少程序和硬盘的交互，提升程序的效率，就引入了缓冲流，也就是类名前缀带有 Buffer 的那些，比如说 BufferedInputStream、BufferedOutputStream、BufferedReader、BufferedWriter。\n\n![img](https://coding-blog-oss01.oss-cn-hangzhou.aliyuncs.com/codingblog/9e343c4ae86b07b308a29c54490cdce8.png)\n\n​		缓冲流在内存中设置了一个缓冲区，只有缓冲区存储了足够多的带操作的数据后，才会和内存或者硬盘进行交互。简单来说，就是一次多读/写点，少读/写几次，这样程序的性能就会提高。\n\n- BufferedInputStream\n\n  ```java\n  //创建缓存文件输入类\n  BufferedInputStream bufferedInputStream =\n                  new BufferedInputStream(new FileInputStream(\"file/fis.txt\")); \n  \n  //建立缓存区\n  byte[] buffer = new byte[1024];\n  int len;\n  \n  while ((len = bufferedInputStream.read(buffer)) != -1){\n      System.out.println(new String(buffer,0,len));\n  }\n  bufferedInputStream.close();\n  ```\n\n  \n\n- BufferedOutputStream\n\n  ```java\n   BufferedOutputStream bos = new BufferedOutputStream(\n                  new FileOutputStream(\"file/fos.txt\",true));\n  \n  byte[] buffer = new byte[1024];\n  \n  String data = \"\\n你的代码中，你是一次读取一个字节，然后将这个字节转换为字符串。\\n\" +\n      \"这可能会导致乱码，因为一个字符可能由多个字节组成，特别是在处理非英文字符时。\\n\" +\n      \"如果一个字符被拆分为两次读取，那么就会出现乱码。 \\n\";\n  \n  buffer = data.getBytes();\n  \n  bos.write(buffer,0, buffer.length);\n  \n  bos.flush();\n  bos.close();\n  ```\n\n  \n\n- BufferedReader、BufferedWriter\n\n  ```java\n   // 创建hash表储存键值对\n  HashMap<String,String> hashMap = new HashMap<>();\n  \n  try (FileReader fr = new FileReader(\"file/rwbuffer.txt\");\n       FileWriter fw = new FileWriter(\"file/test.txt\");\n       BufferedReader br = new BufferedReader(fr);\n       BufferedWriter bw = new BufferedWriter(fw)) {\n  \n      String line = null;\n      while ((line = br.readLine()) != null) {\n          if (line == null){\n              continue;\n          }\n          String[] split = line.split(\"\\\\.\");\n          hashMap.put(split[0],split[1]);\n      }\n  \n      br.close();\n  \n      hashMap.forEach((key,value) -> {\n          System.out.println(key + \".\" + value);\n  \n          try {\n              bw.write(key + \".\" + value + \"\\n\");\n          } catch (IOException e) {\n              throw new RuntimeException(e);\n          }\n      });\n  \n      bw.flush();\n      bw.close();\n  } catch (FileNotFoundException e) {\n      throw new RuntimeException(e);\n  } catch (IOException e) {\n      throw new RuntimeException(e);\n  }\n  ```\n\n  ','IO分类','IO常见类、已经常见操作信息','PUBLISHED','','2024-02-29 14:43:05',0,NULL,0,'{\"isBold\": false, \"textColor\": \"green\", \"rightButton\": {\"show\": false, \"linkTo\": \"\", \"bgColor\": \"\", \"linkType\": \"0\", \"textContent\": \"查看更多\"}, \"articleCoverUrl\": \"https://coding-blog-oss01.oss-cn-hangzhou.aliyuncs.com/codingblog/911da0ea23e9717f49928326e8fae3f6.jpg\"}','<h3><a id=\"Java_IO_0\"></a>初始Java IO</h3>\n<p>IO，即in和out，也就是输入输出，指应用程序和外部设备之间的数据传递，常见的外部设备包括文件、管道、网络连接。</p>\n<p>​	流（Stream），是一个抽象的概念，指一连串的数据（字符或字节），是以先进先出的方式发送信息的通道。</p>\n<ul>\n<li>先进先出：最先写入输出流的数据最先被输入流读取到。</li>\n<li>顺序存取：可以一个接一个地往流中写入一串字节，读出时也将按写入顺序读取一串字节，不能随机访问中间的数据。（RandomAccessFile除外）</li>\n<li>只读或只写：每个流只能是输入流或输出流的一种，不能同时具备两个功能，输入流只能进行读操作，对输出流只能进行写操作。在一个数据传输通道中，如果既要写入数据，又要读取数据，则要分别提供两个流。</li>\n</ul>\n<h3><a id=\"_12\"></a>按传输方式划分</h3>\n<p>​	IO可以通过字节和字符的两种方式来划分，虽然IO类有很多，但是核心的就是四个抽象类：<code>InputStream、OutputStream、Reader、Writer</code>。前两个对应着字节、后两个对应字符</p>\n<p>字节流和字符流的区别：</p>\n<ul>\n<li>字节流一般用来处理图像、视频、音频等类型的文件。字符流一般用于处理存文本类型的文件，如TXT文件等，但是不能处理图形视频等非文本文件。即：字符流能处理的字节流也能处理，字符流处理不了的，字节流还能处理</li>\n<li>字节流本身没有缓冲区，缓冲字节流相对于字节流，效率提升非常高。而字符流本身就带有缓冲区，缓冲字符流相对于字符流效率提升就不是那么大了。</li>\n</ul>\n<h3><a id=\"_21\"></a>按操作对象划分</h3>\n<p>​	IO就是根据（Input/Output）进行划分的：</p>\n<ul>\n<li><strong>Input 输入</strong>：将外部的数据读入到内存中，比如把文件从硬盘读取到内存，从网络读取到内存等等</li>\n<li><strong>Output 输出</strong>：将内存中的数据写入到外部中，比如把数据从内存中写入到文件，把数据从内存输出到网络等等</li>\n</ul>\n<p>所有的程序，在执行的时候，都是在内存上进行的，一旦关机，内存中的数据就没了，那如果想要持久化，就需要把内存中的数据输出到外部，比如说文件。</p>\n<p>文件操作算是 IO 中最典型的操作了，也是最频繁的操作。IO 就可以分类为：文件、数组、管道、基本数据类型、缓冲、打印、对象序列化/反序列化，以及转换等。</p>\n<h4><a id=\"1_32\"></a>1、文件</h4>\n<p>文件流也就是直接操作文件的流，可以细分为字节流（FileInputStream 和 FileInputStream ）和字符流（FileReader 和 FileWriter）。</p>\n<ul>\n<li>\n<p>FileInputStream</p>\n<pre><div class=\"hljs\"><code class=\"lang-java\"> <span class=\"hljs-comment\">// 声明一个 int 类型的变量 b，用于存储读取到的字节</span>\n<span class=\"hljs-type\">int</span> b;\n<span class=\"hljs-comment\">// 创建一个 FileInputStream 对象，用于读取文件 fis.txt 中的数据</span>\n<span class=\"hljs-keyword\">try</span> (<span class=\"hljs-type\">FileInputStream</span> <span class=\"hljs-variable\">fis1</span> <span class=\"hljs-operator\">=</span> <span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">FileInputStream</span>(<span class=\"hljs-string\">&quot;file/fis.txt&quot;</span>);) {\n    <span class=\"hljs-comment\">// 循环读取文件中的数据</span>\n    <span class=\"hljs-keyword\">while</span> ((b = fis1.read()) != -<span class=\"hljs-number\">1</span>) {\n        <span class=\"hljs-comment\">// 将读取到的字节转换为对应的 ASCII 字符，并输出到控制台</span>\n        System.out.print((<span class=\"hljs-type\">char</span>) b);\n    }\n} <span class=\"hljs-keyword\">catch</span> (FileNotFoundException e) {\n    <span class=\"hljs-keyword\">throw</span> <span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">RuntimeException</span>(e);\n} <span class=\"hljs-keyword\">catch</span> (IOException e) {\n    <span class=\"hljs-keyword\">throw</span> <span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">RuntimeException</span>(e);\n}\n\n</code></div></pre>\n</li>\n<li>\n<p>FileInputStream</p>\n<pre><div class=\"hljs\"><code class=\"lang-java\"> <span class=\"hljs-keyword\">try</span> (<span class=\"hljs-type\">FileOutputStream</span> <span class=\"hljs-variable\">fileOutputStream</span> <span class=\"hljs-operator\">=</span> <span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">FileOutputStream</span>(<span class=\"hljs-string\">&quot;file/fos.txt&quot;</span>)) {\n     <span class=\"hljs-comment\">// fileOutputStream.write(&quot;江西工程&quot;.getBytes());</span>\n     <span class=\"hljs-comment\">// 测试写入截断</span>\n     <span class=\"hljs-comment\">// fileOutputStream.write(120);</span>\n     <span class=\"hljs-comment\">// fileOutputStream.write(&#x27;x&#x27;);</span>\n     <span class=\"hljs-comment\">// fileOutputStream.write(0x78);</span>\n     <span class=\"hljs-comment\">//写入指定长度字符</span>\n     <span class=\"hljs-type\">byte</span>[] bytes = <span class=\"hljs-string\">&quot;abcdefg&quot;</span>.getBytes();\n     fileOutputStream.write(bytes,<span class=\"hljs-number\">2</span>,<span class=\"hljs-number\">3</span>);\n } <span class=\"hljs-keyword\">catch</span> (FileNotFoundException e) {\n     <span class=\"hljs-keyword\">throw</span> <span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">RuntimeException</span>(e);\n } <span class=\"hljs-keyword\">catch</span> (IOException e) {\n     <span class=\"hljs-keyword\">throw</span> <span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">RuntimeException</span>(e);\n }\n</code></div></pre>\n</li>\n<li>\n<p>FileReader</p>\n<pre><div class=\"hljs\"><code class=\"lang-java\"><span class=\"hljs-type\">int</span> <span class=\"hljs-variable\">b</span> <span class=\"hljs-operator\">=</span> <span class=\"hljs-number\">0</span>;\n<span class=\"hljs-comment\">//创建数据进行读取</span>\n<span class=\"hljs-type\">char</span>[] chars = <span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">char</span>[<span class=\"hljs-number\">1024</span>];\n<span class=\"hljs-keyword\">try</span>(<span class=\"hljs-type\">FileReader</span> <span class=\"hljs-variable\">reader</span> <span class=\"hljs-operator\">=</span> <span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">FileReader</span>(<span class=\"hljs-string\">&quot;file/reader.txt&quot;</span>)) {\n    <span class=\"hljs-keyword\">while</span> ((b = reader.read(chars,<span class=\"hljs-number\">0</span>,chars.length)) != -<span class=\"hljs-number\">1</span>){\n        System.out.print(<span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">String</span>(chars,<span class=\"hljs-number\">0</span>,b));\n    }\n}\n</code></div></pre>\n</li>\n<li>\n<p>FileWriter</p>\n<pre><div class=\"hljs\"><code class=\"lang-java\"><span class=\"hljs-type\">FileWriter</span> <span class=\"hljs-variable\">fw</span> <span class=\"hljs-operator\">=</span> <span class=\"hljs-literal\">null</span>;\n<span class=\"hljs-keyword\">try</span> {\n    fw = <span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">FileWriter</span>(<span class=\"hljs-string\">&quot;file/writer.txt&quot;</span>,<span class=\"hljs-literal\">true</span>);\n    <span class=\"hljs-type\">char</span>[] cbuf = {<span class=\"hljs-string\">&#x27;A&#x27;</span>,<span class=\"hljs-string\">&#x27;B&#x27;</span>,<span class=\"hljs-string\">&#x27;B&#x27;</span>,<span class=\"hljs-string\">&#x27;C&#x27;</span>,<span class=\"hljs-string\">&#x27;\\n&#x27;</span>};\n    fw.write(cbuf);\n    <span class=\"hljs-comment\">//写入字符串</span>\n    <span class=\"hljs-type\">String</span> <span class=\"hljs-variable\">str</span> <span class=\"hljs-operator\">=</span> <span class=\"hljs-string\">&quot;这是一个测试输出流写入字符串的方法&quot;</span>;\n    fw.write(str);\n    fw.flush();\n} <span class=\"hljs-keyword\">catch</span> (IOException e) {\n    <span class=\"hljs-keyword\">throw</span> <span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">RuntimeException</span>(e);\n}\n</code></div></pre>\n</li>\n</ul>\n<h4><a id=\"2_111\"></a>2、缓冲</h4>\n<p>​		CPU 很快，它比内存快 100 倍，比磁盘快百万倍。那也就意味着，程序和内存交互会很快，和硬盘交互相对就很慢，这样就会导致性能问题。</p>\n<p>​		为了减少程序和硬盘的交互，提升程序的效率，就引入了缓冲流，也就是类名前缀带有 Buffer 的那些，比如说 BufferedInputStream、BufferedOutputStream、BufferedReader、BufferedWriter。</p>\n<p><img src=\"https://cdn.tobebetterjavaer.com/tobebetterjavaer/images/io/shangtou-04.png\" alt=\"img\" /></p>\n<p>​		缓冲流在内存中设置了一个缓冲区，只有缓冲区存储了足够多的带操作的数据后，才会和内存或者硬盘进行交互。简单来说，就是一次多读/写点，少读/写几次，这样程序的性能就会提高。</p>\n<ul>\n<li>\n<p>BufferedInputStream</p>\n<pre><div class=\"hljs\"><code class=\"lang-java\"><span class=\"hljs-comment\">//创建缓存文件输入类</span>\n<span class=\"hljs-type\">BufferedInputStream</span> <span class=\"hljs-variable\">bufferedInputStream</span> <span class=\"hljs-operator\">=</span>\n                <span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">BufferedInputStream</span>(<span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">FileInputStream</span>(<span class=\"hljs-string\">&quot;file/fis.txt&quot;</span>)); \n\n<span class=\"hljs-comment\">//建立缓存区</span>\n<span class=\"hljs-type\">byte</span>[] buffer = <span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">byte</span>[<span class=\"hljs-number\">1024</span>];\n<span class=\"hljs-type\">int</span> len;\n\n<span class=\"hljs-keyword\">while</span> ((len = bufferedInputStream.read(buffer)) != -<span class=\"hljs-number\">1</span>){\n    System.out.println(<span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">String</span>(buffer,<span class=\"hljs-number\">0</span>,len));\n}\nbufferedInputStream.close();\n</code></div></pre>\n</li>\n<li>\n<p>BufferedOutputStream</p>\n<pre><div class=\"hljs\"><code class=\"lang-java\"> <span class=\"hljs-type\">BufferedOutputStream</span> <span class=\"hljs-variable\">bos</span> <span class=\"hljs-operator\">=</span> <span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">BufferedOutputStream</span>(\n                <span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">FileOutputStream</span>(<span class=\"hljs-string\">&quot;file/fos.txt&quot;</span>,<span class=\"hljs-literal\">true</span>));\n\n<span class=\"hljs-type\">byte</span>[] buffer = <span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">byte</span>[<span class=\"hljs-number\">1024</span>];\n\n<span class=\"hljs-type\">String</span> <span class=\"hljs-variable\">data</span> <span class=\"hljs-operator\">=</span> <span class=\"hljs-string\">&quot;\\n你的代码中，你是一次读取一个字节，然后将这个字节转换为字符串。\\n&quot;</span> +\n    <span class=\"hljs-string\">&quot;这可能会导致乱码，因为一个字符可能由多个字节组成，特别是在处理非英文字符时。\\n&quot;</span> +\n    <span class=\"hljs-string\">&quot;如果一个字符被拆分为两次读取，那么就会出现乱码。 \\n&quot;</span>;\n\nbuffer = data.getBytes();\n\nbos.write(buffer,<span class=\"hljs-number\">0</span>, buffer.length);\n\nbos.flush();\nbos.close();\n</code></div></pre>\n</li>\n<li>\n<p>BufferedReader、BufferedWriter</p>\n<pre><div class=\"hljs\"><code class=\"lang-java\"> <span class=\"hljs-comment\">// 创建hash表储存键值对</span>\nHashMap&lt;String,String&gt; hashMap = <span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">HashMap</span>&lt;&gt;();\n\n<span class=\"hljs-keyword\">try</span> (<span class=\"hljs-type\">FileReader</span> <span class=\"hljs-variable\">fr</span> <span class=\"hljs-operator\">=</span> <span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">FileReader</span>(<span class=\"hljs-string\">&quot;file/rwbuffer.txt&quot;</span>);\n     <span class=\"hljs-type\">FileWriter</span> <span class=\"hljs-variable\">fw</span> <span class=\"hljs-operator\">=</span> <span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">FileWriter</span>(<span class=\"hljs-string\">&quot;file/test.txt&quot;</span>);\n     <span class=\"hljs-type\">BufferedReader</span> <span class=\"hljs-variable\">br</span> <span class=\"hljs-operator\">=</span> <span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">BufferedReader</span>(fr);\n     <span class=\"hljs-type\">BufferedWriter</span> <span class=\"hljs-variable\">bw</span> <span class=\"hljs-operator\">=</span> <span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">BufferedWriter</span>(fw)) {\n\n    <span class=\"hljs-type\">String</span> <span class=\"hljs-variable\">line</span> <span class=\"hljs-operator\">=</span> <span class=\"hljs-literal\">null</span>;\n    <span class=\"hljs-keyword\">while</span> ((line = br.readLine()) != <span class=\"hljs-literal\">null</span>) {\n        <span class=\"hljs-keyword\">if</span> (line == <span class=\"hljs-literal\">null</span>){\n            <span class=\"hljs-keyword\">continue</span>;\n        }\n        String[] split = line.split(<span class=\"hljs-string\">&quot;\\\\.&quot;</span>);\n        hashMap.put(split[<span class=\"hljs-number\">0</span>],split[<span class=\"hljs-number\">1</span>]);\n    }\n\n    br.close();\n\n    hashMap.forEach((key,value) -&gt; {\n        System.out.println(key + <span class=\"hljs-string\">&quot;.&quot;</span> + value);\n\n        <span class=\"hljs-keyword\">try</span> {\n            bw.write(key + <span class=\"hljs-string\">&quot;.&quot;</span> + value + <span class=\"hljs-string\">&quot;\\n&quot;</span>);\n        } <span class=\"hljs-keyword\">catch</span> (IOException e) {\n            <span class=\"hljs-keyword\">throw</span> <span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">RuntimeException</span>(e);\n        }\n    });\n\n    bw.flush();\n    bw.close();\n} <span class=\"hljs-keyword\">catch</span> (FileNotFoundException e) {\n    <span class=\"hljs-keyword\">throw</span> <span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">RuntimeException</span>(e);\n} <span class=\"hljs-keyword\">catch</span> (IOException e) {\n    <span class=\"hljs-keyword\">throw</span> <span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">RuntimeException</span>(e);\n}\n</code></div></pre>\n</li>\n</ul>\n',0),(96,15,'2024-02-16 14:43:19','## 初识VUE\n\n### 初识Vue\n\n1. 若想要让Vue工作，就必须创建一个Vue实例，且要传入一个配置对象\n2. 可以通过ID来获取容器，容器里的代码被称为【Vue模板】\n3. Vue实例和容器是一 一对应的\n4. {{xxx}}中的xxx要写JS表达式，且xxx可以自动读取到data中的所有属性\n\n```vue\n<div id=\"demo\">\n    <h1>Hello，{{name}}，{{address}}</h1>\n</div>\n\n<script type=\"text/javascript\" >\n    Vue.config.productionTip = false //阻止 vue 在启动时生成生产提示。\n\n    //创建Vue实例\n    new Vue({\n        el:\'#demo\', //el用于指定当前Vue实例为哪个容器服务，值通常为css选择器字符串。\n        data:{ //data中用于存储数据，数据供el所指定的容器去使用，值我们暂时先写成一个对象。\n            name:\'atguigu\',\n            address:\'北京\'\n        }\n    })\n\n</script>\n```\n\n### Vue模板语法\n\n1. 插值语法\n   - 功能：用于解析标签体内容\n   - 写法：{{xxx}}，xxx是JS表达式，且可以直接读取到data中的所有属性\n2. 执行写法\n   - 功能：用于解析标签（包括：标签属性、标签体内容、绑定事件.....）\n   - v-bind，绑定配置对象中的属性数据绑定\n\n```vue\n<div id=\"root\">\n    <h1>插值语法</h1>\n    <h3>你好，{{name}}</h3>\n    <hr/>\n    <h1>指令语法</h1>\n    <a v-bind:href=\"school.url.toUpperCase()\" x=\"hello\">点我去{{school.name}}学习1</a>\n    <a :href=\"school.url\" /* : === v-bind*/>点我去{{school.name}}学习2</a>\n</div>\n\n<script type=\"text/javascript\">\n    Vue.config.productionTip = false //阻止 vue 在启动时生成生产提示。\n\n    new Vue({\n        el:\'#root\',\n        data:{\n            name:\'jack\',\n            school:{\n                name:\'尚硅谷\',\n                url:\'http://www.atguigu.com\',\n            }\n        }\n    })\n</script>\n```\n\n### 数据绑定\n\nVue中有两种数据绑定的方式：\n\n1. 单向绑定（v-bind）：数据只能从data流向页面\n2. 双向绑定（v-model）：数据不仅能从data流向页面，还可以从页面流向data\n   1. 双向绑定一般都应用在表单类元素上（如：input、select等）\n   2. v-model:value 可以简写为v-model，因为v-model 默认收集的就是value值\n\n```vue\n<div id=\"root\">\n    <!-- 普通写法 -->\n    <!-- 单向数据绑定：<input type=\"text\" v-bind:value=\"name\"><br/>\n    双向数据绑定：<input type=\"text\" v-model:value=\"name\"><br/> -->\n\n    <!-- 简写 -->\n    单向数据绑定：<input type=\"text\" :value=\"name\"><br/>\n    双向数据绑定：<input type=\"text\" v-model=\"name\"><br/>\n\n    <!-- 如下代码是错误的，因为v-model只能应用在表单类元素（输入类元素）上 -->\n    <!-- <h2 v-model:x=\"name\">你好啊</h2> -->\n</div>\n\n<script type=\"text/javascript\">\n    Vue.config.productionTip = false //阻止 vue 在启动时生成生产提示。\n\n    new Vue({\n        el:\'#root\',\n        data:{\n            name:\'尚硅谷\'\n        }\n    })\n</script>\n```\n\n### Data与el的2种写法\n\nhttps://images.pexels.com/photos/1032650/pexels-photo-1032650.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1\n\n1. el有2种写法\n   1. new Vue时候配置el属性。\n   2. 先创建Vue实例，随后再通过vm.$mount(\'#root\')指定el的值。\n2. data有2种写法\n   1. 对象式\n   2. 函数式\n   3. 如何选择：目前哪种写法都可以，以后学习到组件时，data必须使用函数式，否则会报错。\n3. 一个重要的原则：\n   1. 由Vue管理的函数，一定不要写箭头函数，一旦写了箭头函数，this就不再是Vue实例了。\n\n```vue\n<script type=\"text/javascript\">\n    Vue.config.productionTip = false //阻止 vue 在启动时生成生产提示。\n\n    //el的两种写法\n    /* const v = new Vue({\n			//el:\'#root\', //第一种写法\n			data:{\n				name:\'尚硅谷\'\n			}\n		})\n		console.log(v)\n		v.$mount(\'#root\') //第二种写法 */\n\n    //data的两种写法\n    new Vue({\n        el:\'#root\',\n        //data的第一种写法：对象式\n        /* data:{\n				name:\'尚硅谷\'\n			} */\n\n        //data的第二种写法：函数式\n        data(){\n            console.log(\'@@@\',this) //此处的this是Vue实例对象\n            return{\n                name:\'尚硅谷\'\n            }\n        }\n    })\n</script>\n```\n\n','初识VUE','初识VUE 初识Vue 若想要让Vue工作，就必须创建一个Vue实例，且要传入一个配置对象 可以通过ID来获取容器，容器里的代码被称为【Vue模板】 Vue实例和容器是一 一对应的 {{xxx}...','PUBLISHED','','2024-02-29 14:43:44',0,NULL,0,'{\"isBold\": false, \"textColor\": \"green\", \"rightButton\": {\"show\": false, \"linkTo\": \"\", \"bgColor\": \"\", \"linkType\": \"0\", \"textContent\": \"查看更多\"}, \"articleCoverUrl\": \"https://coding-blog-oss01.oss-cn-hangzhou.aliyuncs.com/codingblog/8da520d58eb45836a8acb3b541e5f1e8.jpg\"}','<h2><a id=\"VUE_0\"></a>初识VUE</h2>\n<h3><a id=\"Vue_2\"></a>初识Vue</h3>\n<ol>\n<li>若想要让Vue工作，就必须创建一个Vue实例，且要传入一个配置对象</li>\n<li>可以通过ID来获取容器，容器里的代码被称为【Vue模板】</li>\n<li>Vue实例和容器是一 一对应的</li>\n<li>{{xxx}}中的xxx要写JS表达式，且xxx可以自动读取到data中的所有属性</li>\n</ol>\n<pre><code class=\"lang-vue\">&lt;div id=&quot;demo&quot;&gt;\n    &lt;h1&gt;Hello，{{name}}，{{address}}&lt;/h1&gt;\n&lt;/div&gt;\n\n&lt;script type=&quot;text/javascript&quot; &gt;\n    Vue.config.productionTip = false //阻止 vue 在启动时生成生产提示。\n\n    //创建Vue实例\n    new Vue({\n        el:\'#demo\', //el用于指定当前Vue实例为哪个容器服务，值通常为css选择器字符串。\n        data:{ //data中用于存储数据，数据供el所指定的容器去使用，值我们暂时先写成一个对象。\n            name:\'atguigu\',\n            address:\'北京\'\n        }\n    })\n\n&lt;/script&gt;\n</code></pre>\n<h3><a id=\"Vue_29\"></a>Vue模板语法</h3>\n<ol>\n<li>插值语法\n<ul>\n<li>功能：用于解析标签体内容</li>\n<li>写法：{{xxx}}，xxx是JS表达式，且可以直接读取到data中的所有属性</li>\n</ul>\n</li>\n<li>执行写法\n<ul>\n<li>功能：用于解析标签（包括：标签属性、标签体内容、绑定事件…）</li>\n<li>v-bind，绑定配置对象中的属性数据绑定</li>\n</ul>\n</li>\n</ol>\n<pre><code class=\"lang-vue\">&lt;div id=&quot;root&quot;&gt;\n    &lt;h1&gt;插值语法&lt;/h1&gt;\n    &lt;h3&gt;你好，{{name}}&lt;/h3&gt;\n    &lt;hr/&gt;\n    &lt;h1&gt;指令语法&lt;/h1&gt;\n    &lt;a v-bind:href=&quot;school.url.toUpperCase()&quot; x=&quot;hello&quot;&gt;点我去{{school.name}}学习1&lt;/a&gt;\n    &lt;a :href=&quot;school.url&quot; /* : === v-bind*/&gt;点我去{{school.name}}学习2&lt;/a&gt;\n&lt;/div&gt;\n\n&lt;script type=&quot;text/javascript&quot;&gt;\n    Vue.config.productionTip = false //阻止 vue 在启动时生成生产提示。\n\n    new Vue({\n        el:\'#root\',\n        data:{\n            name:\'jack\',\n            school:{\n                name:\'尚硅谷\',\n                url:\'http://www.atguigu.com\',\n            }\n        }\n    })\n&lt;/script&gt;\n</code></pre>\n<h3><a id=\"_64\"></a>数据绑定</h3>\n<p>Vue中有两种数据绑定的方式：</p>\n<ol>\n<li>单向绑定（v-bind）：数据只能从data流向页面</li>\n<li>双向绑定（v-model）：数据不仅能从data流向页面，还可以从页面流向data\n<ol>\n<li>双向绑定一般都应用在表单类元素上（如：input、select等）</li>\n<li>v-model:value 可以简写为v-model，因为v-model 默认收集的就是value值</li>\n</ol>\n</li>\n</ol>\n<pre><code class=\"lang-vue\">&lt;div id=&quot;root&quot;&gt;\n    &lt;!-- 普通写法 --&gt;\n    &lt;!-- 单向数据绑定：&lt;input type=&quot;text&quot; v-bind:value=&quot;name&quot;&gt;&lt;br/&gt;\n    双向数据绑定：&lt;input type=&quot;text&quot; v-model:value=&quot;name&quot;&gt;&lt;br/&gt; --&gt;\n\n    &lt;!-- 简写 --&gt;\n    单向数据绑定：&lt;input type=&quot;text&quot; :value=&quot;name&quot;&gt;&lt;br/&gt;\n    双向数据绑定：&lt;input type=&quot;text&quot; v-model=&quot;name&quot;&gt;&lt;br/&gt;\n\n    &lt;!-- 如下代码是错误的，因为v-model只能应用在表单类元素（输入类元素）上 --&gt;\n    &lt;!-- &lt;h2 v-model:x=&quot;name&quot;&gt;你好啊&lt;/h2&gt; --&gt;\n&lt;/div&gt;\n\n&lt;script type=&quot;text/javascript&quot;&gt;\n    Vue.config.productionTip = false //阻止 vue 在启动时生成生产提示。\n\n    new Vue({\n        el:\'#root\',\n        data:{\n            name:\'尚硅谷\'\n        }\n    })\n&lt;/script&gt;\n</code></pre>\n<h3><a id=\"Datael2_99\"></a>Data与el的2种写法</h3>\n<p>https://images.pexels.com/photos/1032650/pexels-photo-1032650.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1260&amp;h=750&amp;dpr=1</p>\n<ol>\n<li>el有2种写法\n<ol>\n<li>new Vue时候配置el属性。</li>\n<li>先创建Vue实例，随后再通过vm.$mount(’#root’)指定el的值。</li>\n</ol>\n</li>\n<li>data有2种写法\n<ol>\n<li>对象式</li>\n<li>函数式</li>\n<li>如何选择：目前哪种写法都可以，以后学习到组件时，data必须使用函数式，否则会报错。</li>\n</ol>\n</li>\n<li>一个重要的原则：\n<ol>\n<li>由Vue管理的函数，一定不要写箭头函数，一旦写了箭头函数，this就不再是Vue实例了。</li>\n</ol>\n</li>\n</ol>\n<pre><code class=\"lang-vue\">&lt;script type=&quot;text/javascript&quot;&gt;\n    Vue.config.productionTip = false //阻止 vue 在启动时生成生产提示。\n\n    //el的两种写法\n    /* const v = new Vue({\n			//el:\'#root\', //第一种写法\n			data:{\n				name:\'尚硅谷\'\n			}\n		})\n		console.log(v)\n		v.$mount(\'#root\') //第二种写法 */\n\n    //data的两种写法\n    new Vue({\n        el:\'#root\',\n        //data的第一种写法：对象式\n        /* data:{\n				name:\'尚硅谷\'\n			} */\n\n        //data的第二种写法：函数式\n        data(){\n            console.log(\'@@@\',this) //此处的this是Vue实例对象\n            return{\n                name:\'尚硅谷\'\n            }\n        }\n    })\n&lt;/script&gt;\n</code></pre>\n',0),(98,15,'2024-02-22 16:52:29','# 后台管理系统实现轮播图管理\r\n\r\n### 1、添加轮播图（图片上传）\r\n\r\n​	通过 ElementUI-dialog ，以及upload上传器。配置 `action`路径（即后台访问路径）。在后台编写文件上传的方法\r\n\r\n- 在yml文件中配置上传路径\r\n\r\n  ```yml\r\n  image:\r\n    abs-tmp-path: /tmp/storage/\r\n    web-img-path: /forum/image/\r\n    tmp-upload-path: /tmp/forum/\r\n    cdn-host:\r\n    \r\n  spring:\r\n  	web:\r\n          resources:\r\n            # 支持本地图片上传之后的链接，其中 file:///d的用于win系统，后面的file: 适用于mac/linux系统\r\n            static-locations:\r\n              - classpath:/static/\r\n              - file:///d:${image.abs-tmp-path}\r\n              - file:${image.abs-tmp-path}\r\n  ```\r\n\r\n  \r\n\r\n- 在Controller中接受参数\r\n\r\n  ```java\r\n  	/**\r\n       * 图片上传\r\n       *\r\n       * @return\r\n       */\r\n      @RequestMapping(path = \"upload\")\r\n      public ResVo upload(HttpServletRequest request) {\r\n          Carousel carousel = new Carousel();\r\n          try {\r\n              String imagePath = imageService.saveImg(request);\r\n              carousel.setValue(imagePath);\r\n              carouselService.save(carousel);\r\n          } catch (Exception e) {\r\n              log.error(\"save upload file error!\", e);\r\n              return ResVo.error(\"文件上传失败！\");\r\n          }\r\n          return ResVo.success(carousel);\r\n      }\r\n  ```\r\n\r\n  \r\n\r\n- 在Service实现方法\r\n\r\n  ```java\r\n   @Override\r\n      public String saveImg(HttpServletRequest request) {\r\n          MultipartFile file = null;\r\n          if (request instanceof MultipartHttpServletRequest) {\r\n              file = ((MultipartHttpServletRequest) request).getFile(\"image\");\r\n          }\r\n          if (file == null) {\r\n              throw new RuntimeException(\"缺少需要上传的图片\");\r\n          }\r\n  \r\n          // 目前只支持 jpg, png, webp 等静态图片格式\r\n          String fileType = validateStaticImg(file.getContentType());\r\n          if (fileType == null) {\r\n              throw new RuntimeException(\"图片只支持png,jpg,gif\");\r\n          }\r\n  \r\n          try {\r\n              return imageUploader.upload(file.getInputStream(), fileType);\r\n          } catch (IOException e) {\r\n              log.error(\"Parse img from httpRequest to BufferedImage error! e:\", e);\r\n              throw new RuntimeException(\"文件上传失败\");\r\n          }\r\n      }\r\n  ```\r\n\r\n  \r\n\r\n- 定义Upoload接口\r\n\r\n  ```java\r\n  @Override\r\n  public String upload(InputStream input, String fileType) {\r\n      try {\r\n          if (fileType == null) {\r\n              // 根据魔数判断文件类型\r\n              byte[] bytes = StreamUtils.copyToByteArray(input);\r\n              input = new ByteArrayInputStream(bytes);\r\n              fileType = getFileType((ByteArrayInputStream) input, fileType);\r\n          }\r\n  \r\n          String path = imageProperties.getAbsTmpPath() + imageProperties.getWebImgPath();\r\n          String fileName = genTmpFileName();\r\n  \r\n          FileWriteUtil.FileInfo file = FileWriteUtil.saveFileByStream(input, path, fileName, fileType);\r\n  \r\n          return imageProperties.buildImgUrl(imageProperties.getWebImgPath() + file.getFilename() + \".\" + file.getFileType());\r\n      } catch (Exception e) {\r\n          log.error(\"Parse img from httpRequest to BufferedImage error! e:\", e);\r\n          throw new RuntimeException();\r\n      }\r\n  }\r\n  ```\r\n\r\n### 2、删除轮播图\r\n\r\n- 先提示用户是否需要删除，获取 table 中 `scope.row`中的`id`属性\r\n\r\n  ```vue\r\n  		deleteCarousel(id) {\r\n              this.$confirm(\'此操作将永久删除该文件, 是否继续?\', \'提示\', {\r\n                  confirmButtonText: \'确定\',\r\n                  cancelButtonText: \'取消\',\r\n                  type: \'warning\'\r\n              }).then(() => {\r\n                  deleteById(id).then(response => {\r\n                      this.$message({\r\n                          type: \'success\',\r\n                          message: response.message\r\n                      });\r\n                      this.getAllCarousel()\r\n                  }).catch(error => {\r\n                      console.log(error)\r\n                  })\r\n  \r\n              }).catch(() => {\r\n                  this.$message({\r\n                      type: \'info\',\r\n                      message: \'已取消删除\'\r\n                  });\r\n              });\r\n          }\r\n  ```\r\n\r\n### 3、修改轮播图\r\n\r\n- 修改 upload 组件的 action 地址，复用添加图片的 dialog 框\r\n\r\n```vue\r\nuploadImage() {\r\n    this.uploadUrl = process.env.VUE_APP_BASE_API + \'/admin/carousel/upload\'\r\n    this.dialogVisible = true\r\n},\r\neditCarousel(id){\r\n    this.uploadUrl = process.env.VUE_APP_BASE_API + `/admin/carousel/update/${id}`\r\n    this.dialogVisible = true\r\n    this.getAllCarousel()\r\n}\r\n```\r\n\r\n','后台管理系统实现轮播图管理','后台管理系统实现轮播图管理','PUBLISHED',NULL,'2024-02-22 16:52:29',0,NULL,0,'{\"isBold\": false, \"textColor\": \"green\", \"rightButton\": {\"show\": false, \"linkTo\": \"\", \"bgColor\": \"\", \"linkType\": \"0\", \"textContent\": \"查看更多\"}, \"articleCoverUrl\": \"https://coding-blog-oss01.oss-cn-hangzhou.aliyuncs.com/codingblog/05431d2e2d0e6bdf18a9c627978eec96.jpg\"}','<h1><a id=\"_0\"></a>后台管理系统实现轮播图管理</h1>\n<h3><a id=\"1_2\"></a>1、添加轮播图（图片上传）</h3>\n<p>​	通过 ElementUI-dialog ，以及upload上传器。配置 <code>action</code>路径（即后台访问路径）。在后台编写文件上传的方法</p>\n<ul>\n<li>\n<p>在yml文件中配置上传路径</p>\n<pre><div class=\"hljs\"><code class=\"lang-yml\"><span class=\"hljs-attr\">image:</span>\n  <span class=\"hljs-attr\">abs-tmp-path:</span> <span class=\"hljs-string\">/tmp/storage/</span>\n  <span class=\"hljs-attr\">web-img-path:</span> <span class=\"hljs-string\">/forum/image/</span>\n  <span class=\"hljs-attr\">tmp-upload-path:</span> <span class=\"hljs-string\">/tmp/forum/</span>\n  <span class=\"hljs-attr\">cdn-host:</span>\n  \n<span class=\"hljs-attr\">spring:</span>\n	<span class=\"hljs-attr\">web:</span>\n        <span class=\"hljs-attr\">resources:</span>\n          <span class=\"hljs-comment\"># 支持本地图片上传之后的链接，其中 file:///d的用于win系统，后面的file: 适用于mac/linux系统</span>\n          <span class=\"hljs-attr\">static-locations:</span>\n            <span class=\"hljs-bullet\">-</span> <span class=\"hljs-string\">classpath:/static/</span>\n            <span class=\"hljs-bullet\">-</span> <span class=\"hljs-string\">file:///d:${image.abs-tmp-path}</span>\n            <span class=\"hljs-bullet\">-</span> <span class=\"hljs-string\">file:${image.abs-tmp-path}</span>\n</code></div></pre>\n</li>\n<li>\n<p>在Controller中接受参数</p>\n<pre><div class=\"hljs\"><code class=\"lang-java\">	<span class=\"hljs-comment\">/**\n     * 图片上传\n     *\n     * <span class=\"hljs-doctag\">@return</span>\n     */</span>\n    <span class=\"hljs-meta\">@RequestMapping(path = &quot;upload&quot;)</span>\n    <span class=\"hljs-keyword\">public</span> ResVo <span class=\"hljs-title function_\">upload</span><span class=\"hljs-params\">(HttpServletRequest request)</span> {\n        <span class=\"hljs-type\">Carousel</span> <span class=\"hljs-variable\">carousel</span> <span class=\"hljs-operator\">=</span> <span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">Carousel</span>();\n        <span class=\"hljs-keyword\">try</span> {\n            <span class=\"hljs-type\">String</span> <span class=\"hljs-variable\">imagePath</span> <span class=\"hljs-operator\">=</span> imageService.saveImg(request);\n            carousel.setValue(imagePath);\n            carouselService.save(carousel);\n        } <span class=\"hljs-keyword\">catch</span> (Exception e) {\n            log.error(<span class=\"hljs-string\">&quot;save upload file error!&quot;</span>, e);\n            <span class=\"hljs-keyword\">return</span> ResVo.error(<span class=\"hljs-string\">&quot;文件上传失败！&quot;</span>);\n        }\n        <span class=\"hljs-keyword\">return</span> ResVo.success(carousel);\n    }\n</code></div></pre>\n</li>\n<li>\n<p>在Service实现方法</p>\n<pre><div class=\"hljs\"><code class=\"lang-java\"> <span class=\"hljs-meta\">@Override</span>\n    <span class=\"hljs-keyword\">public</span> String <span class=\"hljs-title function_\">saveImg</span><span class=\"hljs-params\">(HttpServletRequest request)</span> {\n        <span class=\"hljs-type\">MultipartFile</span> <span class=\"hljs-variable\">file</span> <span class=\"hljs-operator\">=</span> <span class=\"hljs-literal\">null</span>;\n        <span class=\"hljs-keyword\">if</span> (request <span class=\"hljs-keyword\">instanceof</span> MultipartHttpServletRequest) {\n            file = ((MultipartHttpServletRequest) request).getFile(<span class=\"hljs-string\">&quot;image&quot;</span>);\n        }\n        <span class=\"hljs-keyword\">if</span> (file == <span class=\"hljs-literal\">null</span>) {\n            <span class=\"hljs-keyword\">throw</span> <span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">RuntimeException</span>(<span class=\"hljs-string\">&quot;缺少需要上传的图片&quot;</span>);\n        }\n\n        <span class=\"hljs-comment\">// 目前只支持 jpg, png, webp 等静态图片格式</span>\n        <span class=\"hljs-type\">String</span> <span class=\"hljs-variable\">fileType</span> <span class=\"hljs-operator\">=</span> validateStaticImg(file.getContentType());\n        <span class=\"hljs-keyword\">if</span> (fileType == <span class=\"hljs-literal\">null</span>) {\n            <span class=\"hljs-keyword\">throw</span> <span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">RuntimeException</span>(<span class=\"hljs-string\">&quot;图片只支持png,jpg,gif&quot;</span>);\n        }\n\n        <span class=\"hljs-keyword\">try</span> {\n            <span class=\"hljs-keyword\">return</span> imageUploader.upload(file.getInputStream(), fileType);\n        } <span class=\"hljs-keyword\">catch</span> (IOException e) {\n            log.error(<span class=\"hljs-string\">&quot;Parse img from httpRequest to BufferedImage error! e:&quot;</span>, e);\n            <span class=\"hljs-keyword\">throw</span> <span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">RuntimeException</span>(<span class=\"hljs-string\">&quot;文件上传失败&quot;</span>);\n        }\n    }\n</code></div></pre>\n</li>\n<li>\n<p>定义Upoload接口</p>\n<pre><div class=\"hljs\"><code class=\"lang-java\"><span class=\"hljs-meta\">@Override</span>\n<span class=\"hljs-keyword\">public</span> String <span class=\"hljs-title function_\">upload</span><span class=\"hljs-params\">(InputStream input, String fileType)</span> {\n    <span class=\"hljs-keyword\">try</span> {\n        <span class=\"hljs-keyword\">if</span> (fileType == <span class=\"hljs-literal\">null</span>) {\n            <span class=\"hljs-comment\">// 根据魔数判断文件类型</span>\n            <span class=\"hljs-type\">byte</span>[] bytes = StreamUtils.copyToByteArray(input);\n            input = <span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">ByteArrayInputStream</span>(bytes);\n            fileType = getFileType((ByteArrayInputStream) input, fileType);\n        }\n\n        <span class=\"hljs-type\">String</span> <span class=\"hljs-variable\">path</span> <span class=\"hljs-operator\">=</span> imageProperties.getAbsTmpPath() + imageProperties.getWebImgPath();\n        <span class=\"hljs-type\">String</span> <span class=\"hljs-variable\">fileName</span> <span class=\"hljs-operator\">=</span> genTmpFileName();\n\n        FileWriteUtil.<span class=\"hljs-type\">FileInfo</span> <span class=\"hljs-variable\">file</span> <span class=\"hljs-operator\">=</span> FileWriteUtil.saveFileByStream(input, path, fileName, fileType);\n\n        <span class=\"hljs-keyword\">return</span> imageProperties.buildImgUrl(imageProperties.getWebImgPath() + file.getFilename() + <span class=\"hljs-string\">&quot;.&quot;</span> + file.getFileType());\n    } <span class=\"hljs-keyword\">catch</span> (Exception e) {\n        log.error(<span class=\"hljs-string\">&quot;Parse img from httpRequest to BufferedImage error! e:&quot;</span>, e);\n        <span class=\"hljs-keyword\">throw</span> <span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">RuntimeException</span>();\n    }\n}\n</code></div></pre>\n</li>\n</ul>\n<h3><a id=\"2_108\"></a>2、删除轮播图</h3>\n<ul>\n<li>\n<p>先提示用户是否需要删除，获取 table 中 <code>scope.row</code>中的<code>id</code>属性</p>\n<pre><code class=\"lang-vue\">		deleteCarousel(id) {\n            this.$confirm(\'此操作将永久删除该文件, 是否继续?\', \'提示\', {\n                confirmButtonText: \'确定\',\n                cancelButtonText: \'取消\',\n                type: \'warning\'\n            }).then(() =&gt; {\n                deleteById(id).then(response =&gt; {\n                    this.$message({\n                        type: \'success\',\n                        message: response.message\n                    });\n                    this.getAllCarousel()\n                }).catch(error =&gt; {\n                    console.log(error)\n                })\n\n            }).catch(() =&gt; {\n                this.$message({\n                    type: \'info\',\n                    message: \'已取消删除\'\n                });\n            });\n        }\n</code></pre>\n</li>\n</ul>\n<h3><a id=\"3_138\"></a>3、修改轮播图</h3>\n<ul>\n<li>修改 upload 组件的 action 地址，复用添加图片的 dialog 框</li>\n</ul>\n<pre><code class=\"lang-vue\">uploadImage() {\n    this.uploadUrl = process.env.VUE_APP_BASE_API + \'/admin/carousel/upload\'\n    this.dialogVisible = true\n},\neditCarousel(id){\n    this.uploadUrl = process.env.VUE_APP_BASE_API + `/admin/carousel/update/${id}`\n    this.dialogVisible = true\n    this.getAllCarousel()\n}\n</code></pre>\n',0),(99,15,'2024-02-29 17:06:16','MySQL如何实现全文搜索\r\n\r\n### 1、如何进行全文搜索\r\n\r\n​	在MySQL中实现全文搜索功能，可以使用MySQL提供的全文搜索索引（Full-Text-Index）进行操作。\r\n\r\n​	首先，需要在存储博客内容的表中创建一个全文搜索索引，假设一张名为posts的表，其中把汗了title和content的字段，你可以在这两个字段上面创建全文搜索索引；`ALTER TABLE posts ADD FULLTEXT(post_title);ALTER TABLE posts ADD FULLTEXT(post_content);`\r\n\r\n​	其次，在创建完全文搜索索引之后，你就可以使用 MATCH() 和 AGAINST() 函数进行全文搜索 `SELECT * FROM posts WHERE MATCH(title, content) AGAINST(\'关键词\' IN BOOLEAN MODE) ORDER BY MATCH(title, content) AGAINST(\'关键词\' IN BOOLEAN MODE) DESC;`\r\n\r\n### 2、MATCH() 和 AGAINST() 的用法\r\n\r\n​	在MySQL中，MATCH() 和 AGAINST() 是用于执行全文搜索的函数，它接受一个搜索表达式和一个搜索字符串，并返回相关性得分。\r\n\r\n函数的基本语法如下`MATCG(columns) AGAINST(search_string [search_modifier])`\r\n\r\n- columns 是一个或者多个列，用于指定要进行全文搜索的字段\r\n- search_string 是要搜索的关键词或者短语\r\n- search_modifier 是可选的搜索修饰符，用于指定搜索模式和行为。常见的修饰符有：\r\n  - IN NATURAL LANGUAGE MODE: 使用自然语言模式进行搜索，并根据相关性对结果进行排序\r\n  - IN BOOLEAN MODE：使用布尔模式进行搜索，可以使用`+、-`等前缀来指定关键词的要求或者排除\r\n  - WITH QUERY EXPANSION：在自然语言模式下，扩展搜索查询以包括相关的词汇\r\n\r\n​	我给出一个示例来解释这两个函数的主要用法：\r\n\r\n​	`SELECT * FROM posts WHERE MATCH(post_title, post_content) AGAINST(\'java\' IN BOOLEAN MODE) ORDER BY MATCH(post_title, post_content) AGAINST(\'io\' IN BOOLEAN MODE) DESC;`\r\n\r\n- `SELECT *`: 这部分指定了查询的结果集。在这里，使用通配符 \"*\" 表示选择所有的列。你也可以指定具体的列名，例如 `SELECT column1, column2`\r\n- `FROM posts`: 这部分指定了要从哪个表进行查询。在这里，我们使用名为 \"posts\" 的表。\r\n- `WHERE MATCH(post_title, post_content) AGAINST(\'java\' IN BOOLEAN MODE)`: 这是查询的条件部分。它使用 `MATCH() AGAINST()` 函数来进行全文搜索。`post_title` 和 `post_content` 是要进行搜索的字段，并在这两个字段上创建了全文搜索索引。\r\n  - `MATCH(post_title, post_content)` 指定了要在哪些字段上执行全文搜索。\r\n  - `AGAINST(\'java\' IN BOOLEAN MODE)` 指定了要搜索的关键词为 \"java\"，并使用布尔模式进行搜索。\r\n- `ORDER BY MATCH(post_title, post_content) AGAINST(\'io\' IN BOOLEAN MODE) DESC`: 这部分用于指定结果的排序方式。它基于关键词 \"io\" 的相关性得分进行降序排序。\r\n  - `MATCH(post_title, post_content) AGAINST(\'io\' IN BOOLEAN MODE)` 用于获取与关键词 \"io\" 的相关性得分。\r\n  - `DESC` 表示按相关性得分降序排序。你也可以使用 `ASC` 来进行升序排序。\r\n\r\n### 3、解决全文搜索只能搜索4字符及其以上\r\n\r\n​		在某些情况下，全局搜索可能无法搜索两个字符的原因是因为 MySQL 的全文搜索引擎默认情况下不支持搜索短词或短字符。这是由于全文搜索引擎的设计原则和性能考虑。\r\n\r\n​	MySQL 的全文搜索引擎使用了一个称为 \"**全文搜索索引**\"（Full-Text Index）的特殊索引来加速搜索。然而，为了提高性能和减少索引大小，MySQL 默认情况下会忽略或过滤掉较短的词语或字符。\r\n\r\n​	默认情况下，MySQL 全文搜索引擎的最小搜索词长度是由参数 `ft_min_word_len` 控制的，通常设置为 3。这意味着，如果一个词或字符的长度小于该参数的值，它将被视为停用词而不会被索引和搜索。\r\n\r\n​	如果你希望能够搜索两个字符或更短的词语，你可以尝试调整 `ft_min_word_len` 参数的值。请注意，修改该参数需要编辑 MySQL 的配置文件（例如 my.cnf 或 my.ini）并重启 MySQL 服务才能生效。\r\n\r\n```sql\r\nft_min_word_len = 1\r\nft_max_word_len = 84\r\ninnodb_ft_enable_stopword = OFF\r\n```\r\n​	当你完成这些配置任然没有生效的话，你需要在SQL中执行此命令`SHOW GLOBAL VARIABLES LIKE \'%ft_m%\'`，从而查询出你的设置是否生效.\r\n\r\n```\r\nft_max_word_len 84\r\nft_min_word_len	1\r\ninnodb_ft_max_token_size	84\r\ninnodb_ft_min_token_size	1  \r\n```\r\n\r\n**注：有些时候配置未生效是因为 innodb_ft_min_token_size 没有设置，因为这参数是 InnoDB 存储引擎特有的。你需要根据自己的数据库进行选择**','mysql如何进行全文搜索','MySQL如何实现全文搜索 ','PUBLISHED',NULL,'2024-02-29 17:06:16',0,NULL,0,'{\"isBold\": false, \"textColor\": \"green\", \"rightButton\": {\"show\": false, \"linkTo\": \"\", \"bgColor\": \"\", \"linkType\": \"0\", \"textContent\": \"查看更多\"}, \"articleCoverUrl\": \"https://coding-blog-oss01.oss-cn-hangzhou.aliyuncs.com/codingblog/b8cf8a2803c54a46c573c30e9d08a13e.jpg\"}','<p>MySQL如何实现全文搜索</p>\n<h3><a id=\"1_2\"></a>1、如何进行全文搜索</h3>\n<p>​	在MySQL中实现全文搜索功能，可以使用MySQL提供的全文搜索索引（Full-Text-Index）进行操作。</p>\n<p>​	首先，需要在存储博客内容的表中创建一个全文搜索索引，假设一张名为posts的表，其中把汗了title和content的字段，你可以在这两个字段上面创建全文搜索索引；<code>ALTER TABLE posts ADD FULLTEXT(post_title);ALTER TABLE posts ADD FULLTEXT(post_content);</code></p>\n<p>​	其次，在创建完全文搜索索引之后，你就可以使用 MATCH() 和 AGAINST() 函数进行全文搜索 <code>SELECT * FROM posts WHERE MATCH(title, content) AGAINST(\'关键词\' IN BOOLEAN MODE) ORDER BY MATCH(title, content) AGAINST(\'关键词\' IN BOOLEAN MODE) DESC;</code></p>\n<h3><a id=\"2MATCH__AGAINST__10\"></a>2、MATCH() 和 AGAINST() 的用法</h3>\n<p>​	在MySQL中，MATCH() 和 AGAINST() 是用于执行全文搜索的函数，它接受一个搜索表达式和一个搜索字符串，并返回相关性得分。</p>\n<p>函数的基本语法如下<code>MATCG(columns) AGAINST(search_string [search_modifier])</code></p>\n<ul>\n<li>columns 是一个或者多个列，用于指定要进行全文搜索的字段</li>\n<li>search_string 是要搜索的关键词或者短语</li>\n<li>search_modifier 是可选的搜索修饰符，用于指定搜索模式和行为。常见的修饰符有：\n<ul>\n<li>IN NATURAL LANGUAGE MODE: 使用自然语言模式进行搜索，并根据相关性对结果进行排序</li>\n<li>IN BOOLEAN MODE：使用布尔模式进行搜索，可以使用<code>+、-</code>等前缀来指定关键词的要求或者排除</li>\n<li>WITH QUERY EXPANSION：在自然语言模式下，扩展搜索查询以包括相关的词汇</li>\n</ul>\n</li>\n</ul>\n<p>​	我给出一个示例来解释这两个函数的主要用法：</p>\n<p>​	<code>SELECT * FROM posts WHERE MATCH(post_title, post_content) AGAINST(\'java\' IN BOOLEAN MODE) ORDER BY MATCH(post_title, post_content) AGAINST(\'io\' IN BOOLEAN MODE) DESC;</code></p>\n<ul>\n<li><code>SELECT *</code>: 这部分指定了查询的结果集。在这里，使用通配符 “*” 表示选择所有的列。你也可以指定具体的列名，例如 <code>SELECT column1, column2</code></li>\n<li><code>FROM posts</code>: 这部分指定了要从哪个表进行查询。在这里，我们使用名为 “posts” 的表。</li>\n<li><code>WHERE MATCH(post_title, post_content) AGAINST(\'java\' IN BOOLEAN MODE)</code>: 这是查询的条件部分。它使用 <code>MATCH() AGAINST()</code> 函数来进行全文搜索。<code>post_title</code> 和 <code>post_content</code> 是要进行搜索的字段，并在这两个字段上创建了全文搜索索引。\n<ul>\n<li><code>MATCH(post_title, post_content)</code> 指定了要在哪些字段上执行全文搜索。</li>\n<li><code>AGAINST(\'java\' IN BOOLEAN MODE)</code> 指定了要搜索的关键词为 “java”，并使用布尔模式进行搜索。</li>\n</ul>\n</li>\n<li><code>ORDER BY MATCH(post_title, post_content) AGAINST(\'io\' IN BOOLEAN MODE) DESC</code>: 这部分用于指定结果的排序方式。它基于关键词 “io” 的相关性得分进行降序排序。\n<ul>\n<li><code>MATCH(post_title, post_content) AGAINST(\'io\' IN BOOLEAN MODE)</code> 用于获取与关键词 “io” 的相关性得分。</li>\n<li><code>DESC</code> 表示按相关性得分降序排序。你也可以使用 <code>ASC</code> 来进行升序排序。</li>\n</ul>\n</li>\n</ul>\n<h3><a id=\"34_36\"></a>3、解决全文搜索只能搜索4字符及其以上</h3>\n<p>​		在某些情况下，全局搜索可能无法搜索两个字符的原因是因为 MySQL 的全文搜索引擎默认情况下不支持搜索短词或短字符。这是由于全文搜索引擎的设计原则和性能考虑。</p>\n<p>​	MySQL 的全文搜索引擎使用了一个称为 “<strong>全文搜索索引</strong>”（Full-Text Index）的特殊索引来加速搜索。然而，为了提高性能和减少索引大小，MySQL 默认情况下会忽略或过滤掉较短的词语或字符。</p>\n<p>​	默认情况下，MySQL 全文搜索引擎的最小搜索词长度是由参数 <code>ft_min_word_len</code> 控制的，通常设置为 3。这意味着，如果一个词或字符的长度小于该参数的值，它将被视为停用词而不会被索引和搜索。</p>\n<p>​	如果你希望能够搜索两个字符或更短的词语，你可以尝试调整 <code>ft_min_word_len</code> 参数的值。请注意，修改该参数需要编辑 MySQL 的配置文件（例如 my.cnf 或 my.ini）并重启 MySQL 服务才能生效。</p>\n<pre><div class=\"hljs\"><code class=\"lang-sql\">ft_min_word_len <span class=\"hljs-operator\">=</span> <span class=\"hljs-number\">1</span>\nft_max_word_len <span class=\"hljs-operator\">=</span> <span class=\"hljs-number\">84</span>\ninnodb_ft_enable_stopword <span class=\"hljs-operator\">=</span> OFF\n</code></div></pre>\n<p>​	当你完成这些配置任然没有生效的话，你需要在SQL中执行此命令<code>SHOW GLOBAL VARIABLES LIKE \'%ft_m%\'</code>，从而查询出你的设置是否生效.</p>\n<pre><code class=\"lang-\">ft_max_word_len 84\nft_min_word_len	1\ninnodb_ft_max_token_size	84\ninnodb_ft_min_token_size	1  \n</code></pre>\n<p><strong>注：有些时候配置未生效是因为 innodb_ft_min_token_size 没有设置，因为这参数是 InnoDB 存储引擎特有的。你需要根据自己的数据库进行选择</strong></p>\n',0),(100,15,'2024-03-05 21:11:53','基本数据类型中，除了Float 和 Double之外，其它留个包装类中（Integer，Long，Character，Boolean，Short，Byte）都有自己的常量缓存池\n\n- Byte：-127~128 包含整个char\n- Integer：-127~128\n- Long：-127~128\n- Boolean：true / false\n- Short：-127~128\n- Character：\\u0000 - \\u007F\n\n​		在Integer 中，它的内部中内置了256个Integer类型的缓存数据，当它的使用数据在 -127~128 之中时，会直接返回常量池中的数据引用。而不是去重新创建一个引用对象，但是当超出这个范围是会创建一个新的对象引用。当使用 `Integer.valueOf()` 方法时，如果对应的整数值没有在内部的整数缓存池中找到，则会创建一个新的 `Integer` 对象。\n\n```java\npublic static Integer valueOf(int i) {\n    //先判断value范围是否在cache中\n    if (i >= IntegerCache.low && i <= IntegerCache.high)\n        //返回常量值\n        return IntegerCache.cache[i + (-IntegerCache.low)];\n    //当缓存中不存在时则创建一个新值\n    return new Integer(i);\n}\n```\n\n```java\nprivate static class IntegerCache {\n    static final int low = -128; //初始化最低值\n    static final int high;\n    static final Integer cache[];\n\n    static {\n        // high value may be configured by property\n        int h = 127; //设置默认最高值\n        String integerCacheHighPropValue =\n            sun.misc.VM.getSavedProperty(\"java.lang.Integer.IntegerCache.high\"); //从配置中查看是否手动设置值\n        if (integerCacheHighPropValue != null) {\n            try {\n                //将这个值转成int类型，最大值为Integer.MAX_VALUE - 129\n                int i = parseInt(integerCacheHighPropValue); \n                i = Math.max(i, 127); //比较最大值\n                // Maximum array size is Integer.MAX_VALUE  避免h超出最大值Integer.MAX_VALUE - 129\n                h = Math.min(i, Integer.MAX_VALUE - (-low) -1);\n            } catch( NumberFormatException nfe) {\n                // If the property cannot be parsed into an int, ignore it.\n            }\n        }\n        high = h;\n\n        cache = new Integer[(high - low) + 1]; //构建cache容量\n        int j = low;\n        for(int k = 0; k < cache.length; k++)\n            cache[k] = new Integer(j++);\n\n        // range [-128, 127] must be interned (JLS7 5.1.7)\n        assert IntegerCache.high >= 127;\n    }\n\n    private IntegerCache() {}\n}\n```\n\n','Java基本数据类型缓存池解析（IntegerCache）','Java基本类型缓存次解析（Integer篇），讲解了ValueOf() 方法','PUBLISHED','','2024-03-05 21:12:57',0,NULL,0,'{\"isBold\": false, \"textColor\": \"green\", \"rightButton\": {\"show\": false, \"linkTo\": \"\", \"bgColor\": \"\", \"linkType\": \"0\", \"textContent\": \"查看更多\"}, \"articleCoverUrl\": \"https://coding-blog-oss01.oss-cn-hangzhou.aliyuncs.com/codingblog/911da0ea23e9717f49928326e8fae3f6.jpg\"}','<p>基本数据类型中，除了Float 和 Double之外，其它留个包装类中（Integer，Long，Character，Boolean，Short，Byte）都有自己的常量缓存池</p>\n<ul>\n<li>Byte：-127~128 包含整个char</li>\n<li>Integer：-127~128</li>\n<li>Long：-127~128</li>\n<li>Boolean：true / false</li>\n<li>Short：-127~128</li>\n<li>Character：\\u0000 - \\u007F</li>\n</ul>\n<p>​		在Integer 中，它的内部中内置了256个Integer类型的缓存数据，当它的使用数据在 -127~128 之中时，会直接返回常量池中的数据引用。而不是去重新创建一个引用对象，但是当超出这个范围是会创建一个新的对象引用。当使用 <code>Integer.valueOf()</code> 方法时，如果对应的整数值没有在内部的整数缓存池中找到，则会创建一个新的 <code>Integer</code> 对象。</p>\n<pre><div class=\"hljs\"><code class=\"lang-java\"><span class=\"hljs-keyword\">public</span> <span class=\"hljs-keyword\">static</span> Integer <span class=\"hljs-title function_\">valueOf</span><span class=\"hljs-params\">(<span class=\"hljs-type\">int</span> i)</span> {\n    <span class=\"hljs-comment\">//先判断value范围是否在cache中</span>\n    <span class=\"hljs-keyword\">if</span> (i &gt;= IntegerCache.low &amp;&amp; i &lt;= IntegerCache.high)\n        <span class=\"hljs-comment\">//返回常量值</span>\n        <span class=\"hljs-keyword\">return</span> IntegerCache.cache[i + (-IntegerCache.low)];\n    <span class=\"hljs-comment\">//当缓存中不存在时则创建一个新值</span>\n    <span class=\"hljs-keyword\">return</span> <span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">Integer</span>(i);\n}\n</code></div></pre>\n<pre><div class=\"hljs\"><code class=\"lang-java\"><span class=\"hljs-keyword\">private</span> <span class=\"hljs-keyword\">static</span> <span class=\"hljs-keyword\">class</span> <span class=\"hljs-title class_\">IntegerCache</span> {\n    <span class=\"hljs-keyword\">static</span> <span class=\"hljs-keyword\">final</span> <span class=\"hljs-type\">int</span> <span class=\"hljs-variable\">low</span> <span class=\"hljs-operator\">=</span> -<span class=\"hljs-number\">128</span>; <span class=\"hljs-comment\">//初始化最低值</span>\n    <span class=\"hljs-keyword\">static</span> <span class=\"hljs-keyword\">final</span> <span class=\"hljs-type\">int</span> high;\n    <span class=\"hljs-keyword\">static</span> <span class=\"hljs-keyword\">final</span> Integer cache[];\n\n    <span class=\"hljs-keyword\">static</span> {\n        <span class=\"hljs-comment\">// high value may be configured by property</span>\n        <span class=\"hljs-type\">int</span> <span class=\"hljs-variable\">h</span> <span class=\"hljs-operator\">=</span> <span class=\"hljs-number\">127</span>; <span class=\"hljs-comment\">//设置默认最高值</span>\n        <span class=\"hljs-type\">String</span> <span class=\"hljs-variable\">integerCacheHighPropValue</span> <span class=\"hljs-operator\">=</span>\n            sun.misc.VM.getSavedProperty(<span class=\"hljs-string\">&quot;java.lang.Integer.IntegerCache.high&quot;</span>); <span class=\"hljs-comment\">//从配置中查看是否手动设置值</span>\n        <span class=\"hljs-keyword\">if</span> (integerCacheHighPropValue != <span class=\"hljs-literal\">null</span>) {\n            <span class=\"hljs-keyword\">try</span> {\n                <span class=\"hljs-comment\">//将这个值转成int类型，最大值为Integer.MAX_VALUE - 129</span>\n                <span class=\"hljs-type\">int</span> <span class=\"hljs-variable\">i</span> <span class=\"hljs-operator\">=</span> parseInt(integerCacheHighPropValue); \n                i = Math.max(i, <span class=\"hljs-number\">127</span>); <span class=\"hljs-comment\">//比较最大值</span>\n                <span class=\"hljs-comment\">// Maximum array size is Integer.MAX_VALUE  避免h超出最大值Integer.MAX_VALUE - 129</span>\n                h = Math.min(i, Integer.MAX_VALUE - (-low) -<span class=\"hljs-number\">1</span>);\n            } <span class=\"hljs-keyword\">catch</span>( NumberFormatException nfe) {\n                <span class=\"hljs-comment\">// If the property cannot be parsed into an int, ignore it.</span>\n            }\n        }\n        high = h;\n\n        cache = <span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">Integer</span>[(high - low) + <span class=\"hljs-number\">1</span>]; <span class=\"hljs-comment\">//构建cache容量</span>\n        <span class=\"hljs-type\">int</span> <span class=\"hljs-variable\">j</span> <span class=\"hljs-operator\">=</span> low;\n        <span class=\"hljs-keyword\">for</span>(<span class=\"hljs-type\">int</span> <span class=\"hljs-variable\">k</span> <span class=\"hljs-operator\">=</span> <span class=\"hljs-number\">0</span>; k &lt; cache.length; k++)\n            cache[k] = <span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">Integer</span>(j++);\n\n        <span class=\"hljs-comment\">// range [-128, 127] must be interned (JLS7 5.1.7)</span>\n        <span class=\"hljs-keyword\">assert</span> IntegerCache.high &gt;= <span class=\"hljs-number\">127</span>;\n    }\n\n    <span class=\"hljs-keyword\">private</span> <span class=\"hljs-title function_\">IntegerCache</span><span class=\"hljs-params\">()</span> {}\n}\n</code></div></pre>\n',0),(101,15,'2024-03-07 22:08:21','## String字符串为什么是不可变的\r\n\r\n### String字符串的不可变性\r\n\r\n- 因为String字符串是被 final 修饰的，它不可以被子类继承，所以子类也无法修改它的方法\r\n- String的数据存储在`char[]`中，它也是被 final 修饰的，数据只会初始一次并且不能被修改\r\n\r\n```java\r\npublic final class String\r\n    implements java.io.Serializable, Comparable<String>, CharSequence {\r\n    /** The value is used for character storage. */\r\n    private final char value[];\r\n}\r\n```\r\n\r\n### String不可变性的优点\r\n\r\n- 可以保证String 对象的安全性，避免被篡改，类似密码这些信息都是保存到String 中的\r\n- 保证 HASH 值不会频繁刷新，经常刷新的话会导致性能下降，毕竟String 的使用量太多了\r\n\r\n```java\r\npublic int hashCode() {\r\n    int h = hash;\r\n    if (h == 0 && value.length > 0) {\r\n        char val[] = value;\r\n\r\n        for (int i = 0; i < value.length; i++) {\r\n            h = 31 * h + val[i];\r\n        }\r\n        hash = h;\r\n    }\r\n    return h;\r\n}\r\n```\r\n\r\n- 可以实现**字符常量池**，Java会将相同内容的字符串存入到常量池中。当具有相同内容的字符串就可以指向一个字符串对象，节省了内存空间\r\n\r\n> 注：由于字符串的不可变性，很多方法都是返回一个新的String 对象\r\n>\r\n> ```java\r\n> public String substring(int beginIndex) {\r\n>     if (beginIndex < 0) {\r\n>         throw new StringIndexOutOfBoundsException(beginIndex);\r\n>     }\r\n>     int subLen = value.length - beginIndex;\r\n>     if (subLen < 0) {\r\n>         throw new StringIndexOutOfBoundsException(subLen);\r\n>     }\r\n>     return (beginIndex == 0) ? this : new String(value, beginIndex, subLen); //创建一个新对象\r\n> }\r\n> \r\n> public String replace(char oldChar, char newChar) {\r\n>     if (oldChar != newChar) {\r\n>         int len = value.length;\r\n>         int i = -1;\r\n>         char[] val = value; /* avoid getfield opcode */\r\n> \r\n>         while (++i < len) {\r\n>             if (val[i] == oldChar) {\r\n>                 break;\r\n>             }\r\n>         }\r\n>         if (i < len) {\r\n>             char buf[] = new char[len];\r\n>             for (int j = 0; j < i; j++) {\r\n>                 buf[j] = val[j];\r\n>             }\r\n>             while (i < len) {\r\n>                 char c = val[i];\r\n>                 buf[i] = (c == oldChar) ? newChar : c;\r\n>                 i++;\r\n>             }\r\n>             return new String(buf, true); //构建一个新的String对象\r\n>         }\r\n>     }\r\n>     return this;\r\n> }\r\n> ```\r\n\r\n\r\n\r\n## 字符串常量池\r\n\r\n### new String()\r\n\r\n`String s = new String(\"test\")`，当使用 `new` 关键字创建String对象时，总共会创建两个对象；\r\n\r\n- 当创建一个新对象时，Java虚拟机会现在字符串常量池中查找有没有 `\"test\"`这个字符串对象，如果没有就会先在字符串常量池中创建一个`\"test\"`对象，然后再在堆中创建一个`\"test\"`字符串对象，最后堆中的字符串对象的引用地址就会赋值给变量 s\r\n- 若字符串常量池中存在`\"test\"`这个字符串对象，就会直接在堆中创建一个`\"test\"`字符串对象，然后把这个对象地址赋值给变量s\r\n\r\n### 字符串常量池的作用\r\n\r\n​		通常情况下，创建字符串的一般使用双引号方式创建字符串`String s = \"test\" `  ，当执行`String s = \"test\" ` 时，JVM会先在字符串常量池中查找有没有 \"test\" 这个字符串。如果有的话，不会创建任何对象，直接将字符串中的对象引用地址赋值给变量；没有的话，则先在字符串常量池中创建一个对象，在将对象引用地址赋值给变量\r\n\r\n- 使用`new `关键字创建字符串时，不会管字符串是否存在相同内容，都会重新创建一个String 对象\r\n- 使用`\"双引号\"`方式创建字符串时，会先从字符串常量池中查找是否用相同内容的字符串，没有才会创建一个新的字符串\r\n\r\n','String字符串','String字符串的不可变性、String字符串常量池介绍','PUBLISHED',NULL,'2024-03-07 22:08:21',0,NULL,0,'{\"isBold\": false, \"textColor\": \"green\", \"rightButton\": {\"show\": false, \"linkTo\": \"\", \"bgColor\": \"\", \"linkType\": \"0\", \"textContent\": \"查看更多\"}, \"articleCoverUrl\": \"https://coding-blog-oss01.oss-cn-hangzhou.aliyuncs.com/codingblog/6dcc653c84cadf2855d9c47186566021.jpg\"}','<h2><a id=\"String_0\"></a>String字符串为什么是不可变的</h2>\n<h3><a id=\"String_2\"></a>String字符串的不可变性</h3>\n<ul>\n<li>因为String字符串是被 final 修饰的，它不可以被子类继承，所以子类也无法修改它的方法</li>\n<li>String的数据存储在<code>char[]</code>中，它也是被 final 修饰的，数据只会初始一次并且不能被修改</li>\n</ul>\n<pre><div class=\"hljs\"><code class=\"lang-java\"><span class=\"hljs-keyword\">public</span> <span class=\"hljs-keyword\">final</span> <span class=\"hljs-keyword\">class</span> <span class=\"hljs-title class_\">String</span>\n    <span class=\"hljs-keyword\">implements</span> <span class=\"hljs-title class_\">java</span>.io.Serializable, Comparable&lt;String&gt;, CharSequence {\n    <span class=\"hljs-comment\">/** The value is used for character storage. */</span>\n    <span class=\"hljs-keyword\">private</span> <span class=\"hljs-keyword\">final</span> <span class=\"hljs-type\">char</span> value[];\n}\n</code></div></pre>\n<h3><a id=\"String_15\"></a>String不可变性的优点</h3>\n<ul>\n<li>可以保证String 对象的安全性，避免被篡改，类似密码这些信息都是保存到String 中的</li>\n<li>保证 HASH 值不会频繁刷新，经常刷新的话会导致性能下降，毕竟String 的使用量太多了</li>\n</ul>\n<pre><div class=\"hljs\"><code class=\"lang-java\"><span class=\"hljs-keyword\">public</span> <span class=\"hljs-type\">int</span> <span class=\"hljs-title function_\">hashCode</span><span class=\"hljs-params\">()</span> {\n    <span class=\"hljs-type\">int</span> <span class=\"hljs-variable\">h</span> <span class=\"hljs-operator\">=</span> hash;\n    <span class=\"hljs-keyword\">if</span> (h == <span class=\"hljs-number\">0</span> &amp;&amp; value.length &gt; <span class=\"hljs-number\">0</span>) {\n        <span class=\"hljs-type\">char</span> val[] = value;\n\n        <span class=\"hljs-keyword\">for</span> (<span class=\"hljs-type\">int</span> <span class=\"hljs-variable\">i</span> <span class=\"hljs-operator\">=</span> <span class=\"hljs-number\">0</span>; i &lt; value.length; i++) {\n            h = <span class=\"hljs-number\">31</span> * h + val[i];\n        }\n        hash = h;\n    }\n    <span class=\"hljs-keyword\">return</span> h;\n}\n</code></div></pre>\n<ul>\n<li>可以实现<strong>字符常量池</strong>，Java会将相同内容的字符串存入到常量池中。当具有相同内容的字符串就可以指向一个字符串对象，节省了内存空间</li>\n</ul>\n<blockquote>\n<p>注：由于字符串的不可变性，很多方法都是返回一个新的String 对象</p>\n<pre><div class=\"hljs\"><code class=\"lang-java\"><span class=\"hljs-keyword\">public</span> String <span class=\"hljs-title function_\">substring</span><span class=\"hljs-params\">(<span class=\"hljs-type\">int</span> beginIndex)</span> {\n    <span class=\"hljs-keyword\">if</span> (beginIndex &lt; <span class=\"hljs-number\">0</span>) {\n        <span class=\"hljs-keyword\">throw</span> <span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">StringIndexOutOfBoundsException</span>(beginIndex);\n    }\n    <span class=\"hljs-type\">int</span> <span class=\"hljs-variable\">subLen</span> <span class=\"hljs-operator\">=</span> value.length - beginIndex;\n    <span class=\"hljs-keyword\">if</span> (subLen &lt; <span class=\"hljs-number\">0</span>) {\n        <span class=\"hljs-keyword\">throw</span> <span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">StringIndexOutOfBoundsException</span>(subLen);\n    }\n    <span class=\"hljs-keyword\">return</span> (beginIndex == <span class=\"hljs-number\">0</span>) ? <span class=\"hljs-built_in\">this</span> : <span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">String</span>(value, beginIndex, subLen); <span class=\"hljs-comment\">//创建一个新对象</span>\n}\n\n<span class=\"hljs-keyword\">public</span> String <span class=\"hljs-title function_\">replace</span><span class=\"hljs-params\">(<span class=\"hljs-type\">char</span> oldChar, <span class=\"hljs-type\">char</span> newChar)</span> {\n    <span class=\"hljs-keyword\">if</span> (oldChar != newChar) {\n        <span class=\"hljs-type\">int</span> <span class=\"hljs-variable\">len</span> <span class=\"hljs-operator\">=</span> value.length;\n        <span class=\"hljs-type\">int</span> <span class=\"hljs-variable\">i</span> <span class=\"hljs-operator\">=</span> -<span class=\"hljs-number\">1</span>;\n        <span class=\"hljs-type\">char</span>[] val = value; <span class=\"hljs-comment\">/* avoid getfield opcode */</span>\n\n        <span class=\"hljs-keyword\">while</span> (++i &lt; len) {\n            <span class=\"hljs-keyword\">if</span> (val[i] == oldChar) {\n                <span class=\"hljs-keyword\">break</span>;\n            }\n        }\n        <span class=\"hljs-keyword\">if</span> (i &lt; len) {\n            <span class=\"hljs-type\">char</span> buf[] = <span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">char</span>[len];\n            <span class=\"hljs-keyword\">for</span> (<span class=\"hljs-type\">int</span> <span class=\"hljs-variable\">j</span> <span class=\"hljs-operator\">=</span> <span class=\"hljs-number\">0</span>; j &lt; i; j++) {\n                buf[j] = val[j];\n            }\n            <span class=\"hljs-keyword\">while</span> (i &lt; len) {\n                <span class=\"hljs-type\">char</span> <span class=\"hljs-variable\">c</span> <span class=\"hljs-operator\">=</span> val[i];\n                buf[i] = (c == oldChar) ? newChar : c;\n                i++;\n            }\n            <span class=\"hljs-keyword\">return</span> <span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">String</span>(buf, <span class=\"hljs-literal\">true</span>); <span class=\"hljs-comment\">//构建一个新的String对象</span>\n        }\n    }\n    <span class=\"hljs-keyword\">return</span> <span class=\"hljs-built_in\">this</span>;\n}\n</code></div></pre>\n</blockquote>\n<h2><a id=\"_81\"></a>字符串常量池</h2>\n<h3><a id=\"new_String_83\"></a>new String()</h3>\n<p><code>String s = new String(&quot;test&quot;)</code>，当使用 <code>new</code> 关键字创建String对象时，总共会创建两个对象；</p>\n<ul>\n<li>当创建一个新对象时，Java虚拟机会现在字符串常量池中查找有没有 <code>&quot;test&quot;</code>这个字符串对象，如果没有就会先在字符串常量池中创建一个<code>&quot;test&quot;</code>对象，然后再在堆中创建一个<code>&quot;test&quot;</code>字符串对象，最后堆中的字符串对象的引用地址就会赋值给变量 s</li>\n<li>若字符串常量池中存在<code>&quot;test&quot;</code>这个字符串对象，就会直接在堆中创建一个<code>&quot;test&quot;</code>字符串对象，然后把这个对象地址赋值给变量s</li>\n</ul>\n<h3><a id=\"_90\"></a>字符串常量池的作用</h3>\n<p>​		通常情况下，创建字符串的一般使用双引号方式创建字符串<code>String s = &quot;test&quot; </code>  ，当执行<code>String s = &quot;test&quot; </code> 时，JVM会先在字符串常量池中查找有没有 “test” 这个字符串。如果有的话，不会创建任何对象，直接将字符串中的对象引用地址赋值给变量；没有的话，则先在字符串常量池中创建一个对象，在将对象引用地址赋值给变量</p>\n<ul>\n<li>使用<code>new </code>关键字创建字符串时，不会管字符串是否存在相同内容，都会重新创建一个String 对象</li>\n<li>使用<code>&quot;双引号&quot;</code>方式创建字符串时，会先从字符串常量池中查找是否用相同内容的字符串，没有才会创建一个新的字符串</li>\n</ul>\n',0),(102,15,'2024-03-13 20:40:18','## 抽象类\r\n\r\n### 抽象类的定义\r\n\r\n​		定义抽象类必须使用`abstract`关键字，并且放在`class`前面。关于抽象类的命名，《阿里的 Java 开发手册》上有强调，“抽象类命名要使用 Abstract 或 Base 开头”\r\n\r\n```java\r\nabstract class BaseFileRead{\r\n}\r\n```\r\n\r\n### 抽象类的特征\r\n\r\n​		抽象类是不能够实例化的，若通过`new`关键字进行创建时，会提示“ 类是抽象的，不能够进行实例化”。虽然抽象类不能实例化，但是子类可以通过`extends`继承抽象类，从而实现实例化。**如果一个类定义了一个或者多个抽象方法，那这个类必须为抽象类。**\r\n\r\n![img](https://blockcloth.cn/codingblog/6b27509db30096d326b5fde5b476a242.png)\r\n\r\n### 抽象类总结\r\n\r\n- 抽象类不能被实例化\r\n- 抽象类中最少包含一个抽象方法\r\n- 抽象类的抽象方法没有方法体\r\n- 抽象类的子类必须给出抽象方法的具体实现，除非它也是抽象类\r\n\r\n\r\n\r\n## 接口\r\n\r\n### 接口的定义\r\n\r\n​		接口是通过`interface`来进行定义的，它可以包含一些常量和方法；\r\n\r\n- 接口不可以实例化，需要有子类实现它才可以实例化\r\n- 接口允许为空\r\n- 定义接口的时候不能使用 `final` 进行修饰，否则会报编译时错误\r\n- 接口的抽象方法不能使用 `private`、`protected`和`final`进行修饰，否则会报错\r\n- 接口的变量是隐式的`(public static final) 常量`，所以无法修改\r\n\r\n```java\r\npublic interface MyInterface {\r\n    //常量\r\n    //接口在编译的时候会自动加上 public static final\r\n    //即 public static final String str = \"INTERFACE\";\r\n    String str = \"INTERFACE\";\r\n\r\n    //抽象方法\r\n    //没有使用 private、default和static 修饰的方法是隐式抽象的\r\n    /*\r\n    	public abstract int sum(int a,int b){\r\n    	\r\n    	}\r\n    */\r\n    int sum(int a,int b);\r\n\r\n    //静态方法\r\n    // 从Java8开始，接口中允许有静态方法\r\n    static boolean isInteger(int data){\r\n        return data > 0;\r\n    }\r\n\r\n    //默认方法\r\n    //从Java8开始，接口中允许有静态方法\r\n    default void printMultiplier(int a,int b){\r\n        System.out.println(a+\"*\"+b+\"=\"+a*b);\r\n    }\r\n}\r\n```\r\n\r\n### 接口的三种模式\r\n\r\n#### 适配者模式\r\n\r\n​		适配器模式的思想是，针对调用者的需求对原有的接口进行转接。生活当中最常见的适配器就是HDMI（英语：`High Definition Multimedia Interface`，中文：高清多媒体接口）线，可以同时发送音频和视频信号。示例如下：\r\n\r\n```java\r\n// 目标接口\r\ninterface Target {\r\n    void request();\r\n}\r\n\r\n// 适配器类\r\nclass Adaptee {\r\n    public void specificRequest() {\r\n        System.out.println(\"适配者方法被调用\");\r\n    }\r\n}\r\n\r\n// 被适配者类\r\nclass Adapter implements Target {\r\n    private Adaptee adaptee;\r\n\r\n    public Adapter(Adaptee adaptee) {\r\n        this.adaptee = adaptee;\r\n    }\r\n\r\n    @Override\r\n    public void request() {\r\n        adaptee.specificRequest();\r\n    }\r\n}\r\n\r\n// 客户端代码\r\npublic class Client {\r\n    public static void main(String[] args) {\r\n        Adaptee adaptee = new Adaptee();\r\n        Target target = new Adapter(adaptee);\r\n        target.request();\r\n    }\r\n}\r\n```\r\n\r\n#### 策略模式\r\n\r\n策略模式的思想是，针对一组算法，将每一种算法封装到具有共同接口的实现类中，接口的设计者可以在不影响调用者的情况下对算法做出改变。示例如下：\r\n\r\n```java\r\n// 定义策略接口\r\ninterface Strategy {\r\n    void execute();\r\n}\r\n\r\nclass ConcreteStrategyA implements Strategy {\r\n    @Override\r\n    public void execute() {\r\n        System.out.println(\"执行策略A\");\r\n    }\r\n}\r\n\r\n// 创建具体策略类，实现策略接口\r\nclass ConcreteStrategyB implements Strategy {\r\n    @Override\r\n    public void execute() {\r\n        System.out.println(\"执行策略B\");\r\n    }\r\n}\r\n\r\nclass ConcreteStrategyC implements Strategy {\r\n    @Override\r\n    public void execute() {\r\n        System.out.println(\"执行策略C\");\r\n    }\r\n}\r\n\r\n// 创建上下文类（Context），它持有一个策略对象，并提供一个方法来执行策略\r\nclass Context {\r\n    private Strategy strategy;\r\n\r\n    public void setStrategy(Strategy strategy) {\r\n        this.strategy = strategy;\r\n    }\r\n\r\n    public void executeStrategy() {\r\n        strategy.execute();\r\n    }\r\n}\r\n\r\n// 在客户端中使用策略模式\r\npublic class StratagyClient {\r\n    public static void main(String[] args) {\r\n        Context context = new Context();\r\n\r\n        Strategy strategyA = new ConcreteStrategyA();\r\n        context.setStrategy(strategyA);\r\n        context.executeStrategy();\r\n\r\n        Strategy strategyB = new ConcreteStrategyB();\r\n        context.setStrategy(strategyB);\r\n        context.executeStrategy();\r\n\r\n        Strategy strategyC = new ConcreteStrategyC();\r\n        context.setStrategy(strategyC);\r\n        context.executeStrategy();\r\n    }\r\n}\r\n```\r\n\r\n#### 工厂模式\r\n\r\n所谓的工厂模式理解起来也不难，就是什么工厂生产什么，比如说宝马工厂生产宝马，奔驰工厂生产奔驰，A 级学院毕业 A 级教练，C 级学院毕业 C 级教练。\r\n\r\n```java\r\n// 抽象产品：电脑\r\ninterface Computer {\r\n    void displayInfo();\r\n}\r\n\r\n// 具体产品：笔记本电脑\r\nclass Laptop implements Computer {\r\n    public void displayInfo() {\r\n        System.out.println(\"This is a laptop computer.\");\r\n    }\r\n}\r\n\r\n// 具体产品：台式电脑\r\nclass Desktop implements Computer {\r\n    public void displayInfo() {\r\n        System.out.println(\"This is a desktop computer.\");\r\n    }\r\n}\r\n\r\n// 抽象工厂：电脑工厂\r\ninterface ComputerFactory {\r\n    Computer createComputer();\r\n}\r\n\r\n// 具体工厂：笔记本电脑工厂\r\nclass LaptopFactory implements ComputerFactory {\r\n    public Computer createComputer() {\r\n        return new Laptop();\r\n    }\r\n}\r\n\r\n// 具体工厂：台式电脑工厂\r\nclass DesktopFactory implements ComputerFactory {\r\n    public Computer createComputer() {\r\n        return new Desktop();\r\n    }\r\n}\r\n\r\n// 客户端代码\r\npublic class FactoryPattern {\r\n    public static void main(String[] args) {\r\n        ComputerFactory computerFactory = new LaptopFactory();\r\n        Computer laptop = computerFactory.createComputer();\r\n        laptop.displayInfo();\r\n\r\n        ComputerFactory factory = new DesktopFactory();\r\n        Computer computer = factory.createComputer();\r\n        computer.displayInfo();\r\n    }\r\n}\r\n```\r\n\r\n\r\n\r\n## 抽象类和接口的区别\r\n\r\n1. 定义方式：抽象类是通过使用关键字 `abstract` 来定义的，可以包含抽象方法和具体方法。接口是通过使用关键字 `interface` 来定义的，只能包含抽象方法和常量（默认为 `public static final`）。\r\n2. 实现限制：一个类可以继承（`extends`）一个抽象类，并且可以同时实现（`implements`）多个接口。但是一个类只能直接继承一个类（抽象类或具体类），无论是抽象类还是具体类，它只能继承一个类。\r\n3. 构造函数：抽象类可以有构造函数，并且可以有实例变量。接口不能有构造函数和实例变量，只能定义常量。\r\n4. 方法实现：抽象类可以包含具体方法的实现，子类可以继承这些实现。接口只能包含抽象方法的声明，具体的方法实现由实现接口的类提供。\r\n5. 多态性：抽象类可以作为父类，通过多态性可以引用子类的实例。接口也可以实现多态性，一个对象可以引用实现了接口的多个类的实例。\r\n6. 设计目的：抽象类用于表示一种类的继承关系，它提供了一些通用的方法和属性，子类可以继承并扩展这些方法和属性。接口用于定义一组相关的操作，一个类可以实现多个接口，从而具备多个不同的行为。\r\n\r\n','抽象类以及接口','总结抽象类和接口的基本特征，以及两者的对比','PUBLISHED',NULL,'2024-03-13 20:40:18',0,NULL,0,'{\"isBold\": false, \"textColor\": \"green\", \"rightButton\": {\"show\": false, \"linkTo\": \"\", \"bgColor\": \"\", \"linkType\": \"0\", \"textContent\": \"查看更多\"}, \"articleCoverUrl\": \"https://blockcloth.cn/codingblog/993bf6cff69ce45d630ffb90106656d4.jpg\"}','<h2><a id=\"_0\"></a>抽象类</h2>\n<h3><a id=\"_2\"></a>抽象类的定义</h3>\n<p>​		定义抽象类必须使用<code>abstract</code>关键字，并且放在<code>class</code>前面。关于抽象类的命名，《阿里的 Java 开发手册》上有强调，“抽象类命名要使用 Abstract 或 Base 开头”</p>\n<pre><div class=\"hljs\"><code class=\"lang-java\"><span class=\"hljs-keyword\">abstract</span> <span class=\"hljs-keyword\">class</span> <span class=\"hljs-title class_\">BaseFileRead</span>{\n}\n</code></div></pre>\n<h3><a id=\"_11\"></a>抽象类的特征</h3>\n<p>​		抽象类是不能够实例化的，若通过<code>new</code>关键字进行创建时，会提示“ 类是抽象的，不能够进行实例化”。虽然抽象类不能实例化，但是子类可以通过<code>extends</code>继承抽象类，从而实现实例化。<strong>如果一个类定义了一个或者多个抽象方法，那这个类必须为抽象类。</strong></p>\n<p><img src=\"https://cdn.tobebetterjavaer.com/tobebetterjavaer/images/object-class/abstract-01.png\" alt=\"img\" /></p>\n<h3><a id=\"_17\"></a>抽象类总结</h3>\n<ul>\n<li>抽象类不能被实例化</li>\n<li>抽象类中最少包含一个抽象方法</li>\n<li>抽象类的抽象方法没有方法体</li>\n<li>抽象类的子类必须给出抽象方法的具体实现，除非它也是抽象类</li>\n</ul>\n<h2><a id=\"_26\"></a>接口</h2>\n<h3><a id=\"_28\"></a>接口的定义</h3>\n<p>​		接口是通过<code>interface</code>来进行定义的，它可以包含一些常量和方法；</p>\n<ul>\n<li>接口不可以实例化，需要有子类实现它才可以实例化</li>\n<li>接口允许为空</li>\n<li>定义接口的时候不能使用 <code>final</code> 进行修饰，否则会报编译时错误</li>\n<li>接口的抽象方法不能使用 <code>private</code>、<code>protected</code>和<code>final</code>进行修饰，否则会报错</li>\n<li>接口的变量是隐式的<code>(public static final) 常量</code>，所以无法修改</li>\n</ul>\n<pre><div class=\"hljs\"><code class=\"lang-java\"><span class=\"hljs-keyword\">public</span> <span class=\"hljs-keyword\">interface</span> <span class=\"hljs-title class_\">MyInterface</span> {\n    <span class=\"hljs-comment\">//常量</span>\n    <span class=\"hljs-comment\">//接口在编译的时候会自动加上 public static final</span>\n    <span class=\"hljs-comment\">//即 public static final String str = &quot;INTERFACE&quot;;</span>\n    <span class=\"hljs-type\">String</span> <span class=\"hljs-variable\">str</span> <span class=\"hljs-operator\">=</span> <span class=\"hljs-string\">&quot;INTERFACE&quot;</span>;\n\n    <span class=\"hljs-comment\">//抽象方法</span>\n    <span class=\"hljs-comment\">//没有使用 private、default和static 修饰的方法是隐式抽象的</span>\n    <span class=\"hljs-comment\">/*\n    	public abstract int sum(int a,int b){\n    	\n    	}\n    */</span>\n    <span class=\"hljs-type\">int</span> <span class=\"hljs-title function_\">sum</span><span class=\"hljs-params\">(<span class=\"hljs-type\">int</span> a,<span class=\"hljs-type\">int</span> b)</span>;\n\n    <span class=\"hljs-comment\">//静态方法</span>\n    <span class=\"hljs-comment\">// 从Java8开始，接口中允许有静态方法</span>\n    <span class=\"hljs-keyword\">static</span> <span class=\"hljs-type\">boolean</span> <span class=\"hljs-title function_\">isInteger</span><span class=\"hljs-params\">(<span class=\"hljs-type\">int</span> data)</span>{\n        <span class=\"hljs-keyword\">return</span> data &gt; <span class=\"hljs-number\">0</span>;\n    }\n\n    <span class=\"hljs-comment\">//默认方法</span>\n    <span class=\"hljs-comment\">//从Java8开始，接口中允许有静态方法</span>\n    <span class=\"hljs-keyword\">default</span> <span class=\"hljs-keyword\">void</span> <span class=\"hljs-title function_\">printMultiplier</span><span class=\"hljs-params\">(<span class=\"hljs-type\">int</span> a,<span class=\"hljs-type\">int</span> b)</span>{\n        System.out.println(a+<span class=\"hljs-string\">&quot;*&quot;</span>+b+<span class=\"hljs-string\">&quot;=&quot;</span>+a*b);\n    }\n}\n</code></div></pre>\n<h3><a id=\"_68\"></a>接口的三种模式</h3>\n<h4><a id=\"_70\"></a>适配者模式</h4>\n<p>​		适配器模式的思想是，针对调用者的需求对原有的接口进行转接。生活当中最常见的适配器就是HDMI（英语：<code>High Definition Multimedia Interface</code>，中文：高清多媒体接口）线，可以同时发送音频和视频信号。示例如下：</p>\n<pre><div class=\"hljs\"><code class=\"lang-java\"><span class=\"hljs-comment\">// 目标接口</span>\n<span class=\"hljs-keyword\">interface</span> <span class=\"hljs-title class_\">Target</span> {\n    <span class=\"hljs-keyword\">void</span> <span class=\"hljs-title function_\">request</span><span class=\"hljs-params\">()</span>;\n}\n\n<span class=\"hljs-comment\">// 适配器类</span>\n<span class=\"hljs-keyword\">class</span> <span class=\"hljs-title class_\">Adaptee</span> {\n    <span class=\"hljs-keyword\">public</span> <span class=\"hljs-keyword\">void</span> <span class=\"hljs-title function_\">specificRequest</span><span class=\"hljs-params\">()</span> {\n        System.out.println(<span class=\"hljs-string\">&quot;适配者方法被调用&quot;</span>);\n    }\n}\n\n<span class=\"hljs-comment\">// 被适配者类</span>\n<span class=\"hljs-keyword\">class</span> <span class=\"hljs-title class_\">Adapter</span> <span class=\"hljs-keyword\">implements</span> <span class=\"hljs-title class_\">Target</span> {\n    <span class=\"hljs-keyword\">private</span> Adaptee adaptee;\n\n    <span class=\"hljs-keyword\">public</span> <span class=\"hljs-title function_\">Adapter</span><span class=\"hljs-params\">(Adaptee adaptee)</span> {\n        <span class=\"hljs-built_in\">this</span>.adaptee = adaptee;\n    }\n\n    <span class=\"hljs-meta\">@Override</span>\n    <span class=\"hljs-keyword\">public</span> <span class=\"hljs-keyword\">void</span> <span class=\"hljs-title function_\">request</span><span class=\"hljs-params\">()</span> {\n        adaptee.specificRequest();\n    }\n}\n\n<span class=\"hljs-comment\">// 客户端代码</span>\n<span class=\"hljs-keyword\">public</span> <span class=\"hljs-keyword\">class</span> <span class=\"hljs-title class_\">Client</span> {\n    <span class=\"hljs-keyword\">public</span> <span class=\"hljs-keyword\">static</span> <span class=\"hljs-keyword\">void</span> <span class=\"hljs-title function_\">main</span><span class=\"hljs-params\">(String[] args)</span> {\n        <span class=\"hljs-type\">Adaptee</span> <span class=\"hljs-variable\">adaptee</span> <span class=\"hljs-operator\">=</span> <span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">Adaptee</span>();\n        <span class=\"hljs-type\">Target</span> <span class=\"hljs-variable\">target</span> <span class=\"hljs-operator\">=</span> <span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">Adapter</span>(adaptee);\n        target.request();\n    }\n}\n</code></div></pre>\n<h4><a id=\"_111\"></a>策略模式</h4>\n<p>策略模式的思想是，针对一组算法，将每一种算法封装到具有共同接口的实现类中，接口的设计者可以在不影响调用者的情况下对算法做出改变。示例如下：</p>\n<pre><div class=\"hljs\"><code class=\"lang-java\"><span class=\"hljs-comment\">// 定义策略接口</span>\n<span class=\"hljs-keyword\">interface</span> <span class=\"hljs-title class_\">Strategy</span> {\n    <span class=\"hljs-keyword\">void</span> <span class=\"hljs-title function_\">execute</span><span class=\"hljs-params\">()</span>;\n}\n\n<span class=\"hljs-keyword\">class</span> <span class=\"hljs-title class_\">ConcreteStrategyA</span> <span class=\"hljs-keyword\">implements</span> <span class=\"hljs-title class_\">Strategy</span> {\n    <span class=\"hljs-meta\">@Override</span>\n    <span class=\"hljs-keyword\">public</span> <span class=\"hljs-keyword\">void</span> <span class=\"hljs-title function_\">execute</span><span class=\"hljs-params\">()</span> {\n        System.out.println(<span class=\"hljs-string\">&quot;执行策略A&quot;</span>);\n    }\n}\n\n<span class=\"hljs-comment\">// 创建具体策略类，实现策略接口</span>\n<span class=\"hljs-keyword\">class</span> <span class=\"hljs-title class_\">ConcreteStrategyB</span> <span class=\"hljs-keyword\">implements</span> <span class=\"hljs-title class_\">Strategy</span> {\n    <span class=\"hljs-meta\">@Override</span>\n    <span class=\"hljs-keyword\">public</span> <span class=\"hljs-keyword\">void</span> <span class=\"hljs-title function_\">execute</span><span class=\"hljs-params\">()</span> {\n        System.out.println(<span class=\"hljs-string\">&quot;执行策略B&quot;</span>);\n    }\n}\n\n<span class=\"hljs-keyword\">class</span> <span class=\"hljs-title class_\">ConcreteStrategyC</span> <span class=\"hljs-keyword\">implements</span> <span class=\"hljs-title class_\">Strategy</span> {\n    <span class=\"hljs-meta\">@Override</span>\n    <span class=\"hljs-keyword\">public</span> <span class=\"hljs-keyword\">void</span> <span class=\"hljs-title function_\">execute</span><span class=\"hljs-params\">()</span> {\n        System.out.println(<span class=\"hljs-string\">&quot;执行策略C&quot;</span>);\n    }\n}\n\n<span class=\"hljs-comment\">// 创建上下文类（Context），它持有一个策略对象，并提供一个方法来执行策略</span>\n<span class=\"hljs-keyword\">class</span> <span class=\"hljs-title class_\">Context</span> {\n    <span class=\"hljs-keyword\">private</span> Strategy strategy;\n\n    <span class=\"hljs-keyword\">public</span> <span class=\"hljs-keyword\">void</span> <span class=\"hljs-title function_\">setStrategy</span><span class=\"hljs-params\">(Strategy strategy)</span> {\n        <span class=\"hljs-built_in\">this</span>.strategy = strategy;\n    }\n\n    <span class=\"hljs-keyword\">public</span> <span class=\"hljs-keyword\">void</span> <span class=\"hljs-title function_\">executeStrategy</span><span class=\"hljs-params\">()</span> {\n        strategy.execute();\n    }\n}\n\n<span class=\"hljs-comment\">// 在客户端中使用策略模式</span>\n<span class=\"hljs-keyword\">public</span> <span class=\"hljs-keyword\">class</span> <span class=\"hljs-title class_\">StratagyClient</span> {\n    <span class=\"hljs-keyword\">public</span> <span class=\"hljs-keyword\">static</span> <span class=\"hljs-keyword\">void</span> <span class=\"hljs-title function_\">main</span><span class=\"hljs-params\">(String[] args)</span> {\n        <span class=\"hljs-type\">Context</span> <span class=\"hljs-variable\">context</span> <span class=\"hljs-operator\">=</span> <span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">Context</span>();\n\n        <span class=\"hljs-type\">Strategy</span> <span class=\"hljs-variable\">strategyA</span> <span class=\"hljs-operator\">=</span> <span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">ConcreteStrategyA</span>();\n        context.setStrategy(strategyA);\n        context.executeStrategy();\n\n        <span class=\"hljs-type\">Strategy</span> <span class=\"hljs-variable\">strategyB</span> <span class=\"hljs-operator\">=</span> <span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">ConcreteStrategyB</span>();\n        context.setStrategy(strategyB);\n        context.executeStrategy();\n\n        <span class=\"hljs-type\">Strategy</span> <span class=\"hljs-variable\">strategyC</span> <span class=\"hljs-operator\">=</span> <span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">ConcreteStrategyC</span>();\n        context.setStrategy(strategyC);\n        context.executeStrategy();\n    }\n}\n</code></div></pre>\n<h4><a id=\"_176\"></a>工厂模式</h4>\n<p>所谓的工厂模式理解起来也不难，就是什么工厂生产什么，比如说宝马工厂生产宝马，奔驰工厂生产奔驰，A 级学院毕业 A 级教练，C 级学院毕业 C 级教练。</p>\n<pre><div class=\"hljs\"><code class=\"lang-java\"><span class=\"hljs-comment\">// 抽象产品：电脑</span>\n<span class=\"hljs-keyword\">interface</span> <span class=\"hljs-title class_\">Computer</span> {\n    <span class=\"hljs-keyword\">void</span> <span class=\"hljs-title function_\">displayInfo</span><span class=\"hljs-params\">()</span>;\n}\n\n<span class=\"hljs-comment\">// 具体产品：笔记本电脑</span>\n<span class=\"hljs-keyword\">class</span> <span class=\"hljs-title class_\">Laptop</span> <span class=\"hljs-keyword\">implements</span> <span class=\"hljs-title class_\">Computer</span> {\n    <span class=\"hljs-keyword\">public</span> <span class=\"hljs-keyword\">void</span> <span class=\"hljs-title function_\">displayInfo</span><span class=\"hljs-params\">()</span> {\n        System.out.println(<span class=\"hljs-string\">&quot;This is a laptop computer.&quot;</span>);\n    }\n}\n\n<span class=\"hljs-comment\">// 具体产品：台式电脑</span>\n<span class=\"hljs-keyword\">class</span> <span class=\"hljs-title class_\">Desktop</span> <span class=\"hljs-keyword\">implements</span> <span class=\"hljs-title class_\">Computer</span> {\n    <span class=\"hljs-keyword\">public</span> <span class=\"hljs-keyword\">void</span> <span class=\"hljs-title function_\">displayInfo</span><span class=\"hljs-params\">()</span> {\n        System.out.println(<span class=\"hljs-string\">&quot;This is a desktop computer.&quot;</span>);\n    }\n}\n\n<span class=\"hljs-comment\">// 抽象工厂：电脑工厂</span>\n<span class=\"hljs-keyword\">interface</span> <span class=\"hljs-title class_\">ComputerFactory</span> {\n    Computer <span class=\"hljs-title function_\">createComputer</span><span class=\"hljs-params\">()</span>;\n}\n\n<span class=\"hljs-comment\">// 具体工厂：笔记本电脑工厂</span>\n<span class=\"hljs-keyword\">class</span> <span class=\"hljs-title class_\">LaptopFactory</span> <span class=\"hljs-keyword\">implements</span> <span class=\"hljs-title class_\">ComputerFactory</span> {\n    <span class=\"hljs-keyword\">public</span> Computer <span class=\"hljs-title function_\">createComputer</span><span class=\"hljs-params\">()</span> {\n        <span class=\"hljs-keyword\">return</span> <span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">Laptop</span>();\n    }\n}\n\n<span class=\"hljs-comment\">// 具体工厂：台式电脑工厂</span>\n<span class=\"hljs-keyword\">class</span> <span class=\"hljs-title class_\">DesktopFactory</span> <span class=\"hljs-keyword\">implements</span> <span class=\"hljs-title class_\">ComputerFactory</span> {\n    <span class=\"hljs-keyword\">public</span> Computer <span class=\"hljs-title function_\">createComputer</span><span class=\"hljs-params\">()</span> {\n        <span class=\"hljs-keyword\">return</span> <span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">Desktop</span>();\n    }\n}\n\n<span class=\"hljs-comment\">// 客户端代码</span>\n<span class=\"hljs-keyword\">public</span> <span class=\"hljs-keyword\">class</span> <span class=\"hljs-title class_\">FactoryPattern</span> {\n    <span class=\"hljs-keyword\">public</span> <span class=\"hljs-keyword\">static</span> <span class=\"hljs-keyword\">void</span> <span class=\"hljs-title function_\">main</span><span class=\"hljs-params\">(String[] args)</span> {\n        <span class=\"hljs-type\">ComputerFactory</span> <span class=\"hljs-variable\">computerFactory</span> <span class=\"hljs-operator\">=</span> <span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">LaptopFactory</span>();\n        <span class=\"hljs-type\">Computer</span> <span class=\"hljs-variable\">laptop</span> <span class=\"hljs-operator\">=</span> computerFactory.createComputer();\n        laptop.displayInfo();\n\n        <span class=\"hljs-type\">ComputerFactory</span> <span class=\"hljs-variable\">factory</span> <span class=\"hljs-operator\">=</span> <span class=\"hljs-keyword\">new</span> <span class=\"hljs-title class_\">DesktopFactory</span>();\n        <span class=\"hljs-type\">Computer</span> <span class=\"hljs-variable\">computer</span> <span class=\"hljs-operator\">=</span> factory.createComputer();\n        computer.displayInfo();\n    }\n}\n</code></div></pre>\n<h2><a id=\"_235\"></a>抽象类和接口的区别</h2>\n<ol>\n<li>定义方式：抽象类是通过使用关键字 <code>abstract</code> 来定义的，可以包含抽象方法和具体方法。接口是通过使用关键字 <code>interface</code> 来定义的，只能包含抽象方法和常量（默认为 <code>public static final</code>）。</li>\n<li>实现限制：一个类可以继承（<code>extends</code>）一个抽象类，并且可以同时实现（<code>implements</code>）多个接口。但是一个类只能直接继承一个类（抽象类或具体类），无论是抽象类还是具体类，它只能继承一个类。</li>\n<li>构造函数：抽象类可以有构造函数，并且可以有实例变量。接口不能有构造函数和实例变量，只能定义常量。</li>\n<li>方法实现：抽象类可以包含具体方法的实现，子类可以继承这些实现。接口只能包含抽象方法的声明，具体的方法实现由实现接口的类提供。</li>\n<li>多态性：抽象类可以作为父类，通过多态性可以引用子类的实例。接口也可以实现多态性，一个对象可以引用实现了接口的多个类的实例。</li>\n<li>设计目的：抽象类用于表示一种类的继承关系，它提供了一些通用的方法和属性，子类可以继承并扩展这些方法和属性。接口用于定义一组相关的操作，一个类可以实现多个接口，从而具备多个不同的行为。</li>\n</ol>\n',0);
+/*!40000 ALTER TABLE `posts` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `resource`
+--
+
 DROP TABLE IF EXISTS `resource`;
-CREATE TABLE `resource`  (
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `resource` (
   `resource_id` bigint NOT NULL AUTO_INCREMENT,
-  `category_id` bigint NULL DEFAULT NULL COMMENT '资源分类ID',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '资源名称',
-  `url` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '资源URL',
-  `description` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `category_id` bigint DEFAULT NULL COMMENT '资源分类ID',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '资源名称',
+  `url` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '资源URL',
+  `description` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '描述',
   PRIMARY KEY (`resource_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 62 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '后台资源表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB AUTO_INCREMENT=147 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='后台资源表';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of resource
--- ----------------------------
-INSERT INTO `resource` VALUES (54, 15, '2023-12-10 15:32:28', '注册用户信息', '/users/register', '用于注册用户信息');
-INSERT INTO `resource` VALUES (55, 15, '2023-12-10 15:33:04', '删除用户信息', '/users/delete', NULL);
-INSERT INTO `resource` VALUES (56, 15, '2023-12-10 15:33:20', '批量删除用户信息', '/users/deleteBatch', NULL);
-INSERT INTO `resource` VALUES (57, 15, '2023-12-10 15:33:36', '修改用户状态', ' /users/enableOrDisable', NULL);
-INSERT INTO `resource` VALUES (58, 15, '2023-12-10 15:34:03', '查询所有用户详细信息', '/users/getAllUserDetail', NULL);
-INSERT INTO `resource` VALUES (59, 15, '2023-12-10 15:34:20', '查询用户详细信息', '/users/getUserDetail', NULL);
-INSERT INTO `resource` VALUES (60, 15, '2023-12-10 15:34:45', '登录用户并返回token', '/users/login', NULL);
+--
+-- Dumping data for table `resource`
+--
 
--- ----------------------------
--- Table structure for resource_category
--- ----------------------------
+LOCK TABLES `resource` WRITE;
+/*!40000 ALTER TABLE `resource` DISABLE KEYS */;
+INSERT INTO `resource` VALUES (54,15,'2023-12-10 15:32:28','注册用户信息','/users/register','用于注册用户信息'),(55,15,'2023-12-10 15:33:04','删除用户信息','/users/delete',NULL),(56,15,'2023-12-10 15:33:20','批量删除用户信息','/users/deleteBatch',NULL),(57,15,'2023-12-10 15:33:36','修改用户状态',' /users/enableOrDisable',NULL),(58,15,'2023-12-10 15:34:03','查询所有用户详细信息','/users/getAllUserDetail',NULL),(59,15,'2023-12-10 15:34:20','查询用户详细信息','/users/getUserDetail',NULL),(62,15,'2024-01-21 22:21:38','修改用户密码','/users/updateUserPass',''),(64,26,'2024-02-29 15:06:09','图片上传','/imageController/upload',''),(66,21,'2024-02-29 15:08:50','获取友链详情','/links/getLinkById',''),(67,21,'2024-02-29 15:12:01','获取所有友链','/links/getLinks',''),(68,21,'2024-02-29 15:12:38','添加友链','/links/save',''),(69,21,'2024-02-29 15:14:11','设置友链可见状态','/links/setVisibility',''),(70,21,'2024-02-29 15:14:32','修改友链','/links/update',''),(71,22,'2024-02-29 15:14:57','删除专栏信息','/termTaxonomy/delete',''),(72,22,'2024-02-29 15:15:10','获取专栏详情','/termTaxonomy/getById',''),(73,22,'2024-02-29 15:15:30','查询所有专栏树','/termTaxonomy/queryAllTermTaxonomyTree',''),(74,22,'2024-02-29 15:15:53','查询所有父专栏','/termTaxonomy/queryTermTaxonmyTreeParent',''),(75,22,'2024-02-29 15:16:14','查询专栏下的文章列表','/termTaxonomy/queryTermTaxonomyPosts',''),(76,22,'2024-02-29 15:16:34','查询专栏树','/termTaxonomy/queryTermTaxonomyTree',''),(77,22,'2024-02-29 15:16:52','保存专栏信息','/termTaxonomy/save',''),(78,22,'2024-02-29 15:17:13','修改专栏信息','/termTaxonomy/update',''),(79,23,'2024-02-29 15:17:40','取消文章指定','/posts/cancelArticleOnTop',''),(80,23,'2024-02-29 15:18:00','删除文章信息','/posts/delete',''),(81,23,'2024-02-29 15:18:17','删除文章的标签信息','/posts/deletePostToTags',''),(82,23,'2024-02-29 15:18:33','删除文章的专栏信息','/posts/deletePostToTerm',''),(83,23,'2024-02-29 15:18:47','绑定文章标签信息','/posts/insertPostToTags',''),(84,23,'2024-02-29 15:19:02','绑定文章专栏信息','/posts/insertPostToTerm',''),(85,23,'2024-02-29 15:19:41','查询文章详细信息','/posts/queryPostDetailById',''),(86,23,'2024-02-29 15:19:57','模糊查询文章列表','/posts/queryPostsList',''),(87,23,'2024-02-29 15:20:17','保存文章信息','/posts/save',''),(88,23,'2024-02-29 15:20:36','设置文章置顶','/posts/setArticleOnTop',''),(89,23,'2024-02-29 15:20:50','修改文章信息','/posts/update',''),(90,23,'2024-02-29 15:21:09','修改文章标签信息','/posts/updatePostToTags',''),(91,23,'2024-02-29 15:21:30','修改文章专栏信息','/posts/updatePostToTerm',''),(92,23,'2024-02-29 15:21:46','解析MD文件','/posts/uploadMd',''),(93,20,'2024-02-29 15:22:37','删除标签','/postTag/delete',''),(94,20,'2024-02-29 15:22:52','查询所有标签','/postTag/listAll',''),(95,20,'2024-02-29 15:23:11','模糊查询所有标签','/postTag/queryAllPostTag',''),(96,20,'2024-02-29 15:23:28','查询标签对应的文章','/postTag/queryPostByTagId',''),(97,20,'2024-02-29 15:23:50','添加标签','/postTag/save',''),(98,20,'2024-02-29 15:24:08','修改标签','/postTag/update',''),(99,15,'2024-02-29 15:25:20','获取用户名','/users',''),(100,15,'2024-02-29 15:26:25','查询当前用户的详细信息','/users/info',''),(101,15,'2024-02-29 15:26:54','用户退出系统','/users/logout',''),(102,15,'2024-02-29 15:27:11','刷新用户token','/users/refreshToken',''),(103,15,'2024-02-29 15:27:58','获取指定用户的角色','/users/role/query',''),(104,15,'2024-02-29 15:28:15','取消用户角色','/users/role/remove',''),(105,15,'2024-02-29 15:28:52','给用户分配角色','/users/role/save',''),(106,15,'2024-02-29 15:29:27','修改用户信息','/users/update',''),(107,24,'2024-02-29 15:30:11','获取站点配置信息','/site/getById',''),(108,24,'2024-02-29 15:30:28','保存站点配置信息','/site/saveSiteInfo',''),(109,16,'2024-02-29 15:31:03','删除菜单','/menu/deleteMenu',''),(110,16,'2024-02-29 15:31:19','获取所有菜单信息','/menu/queryAllMenus',''),(111,16,'2024-02-29 15:31:35','获取菜单详细信息','/menu/queryMenuById',''),(112,16,'2024-02-29 15:32:04','保存菜单信息','/menu/saveMenu',''),(113,16,'2024-02-29 15:32:20','设置菜单是否隐藏','/menu/setMenuHidden',''),(114,16,'2024-02-29 15:32:39','修改菜单','/menu/updateMenu',''),(115,14,'2024-02-29 15:33:01','给角色分配菜单','/role/allocMenu',''),(116,14,'2024-02-29 15:33:17','给角色分配资源','/role/allocResources',''),(117,14,'2024-02-29 15:33:37','删除角色','/role/deleteRole',''),(118,14,'2024-02-29 15:33:50','获取所有角色','/role/listAll',''),(119,14,'2024-02-29 15:34:07','获取角色相关菜单','/role/listMenu',''),(120,14,'2024-02-29 15:34:24','获取角色相关资源','/role/listResource',''),(121,14,'2024-02-29 15:34:40','查询角色列表','/role/queryRolePages',''),(122,14,'2024-02-29 15:34:54','保存角色','/role/saveRole',''),(123,14,'2024-02-29 15:35:07','修改角色','/role/updateRole',''),(124,14,'2024-02-29 15:35:22','修改角色状态','/role/updateStatus',''),(125,25,'2024-02-29 15:35:49','删除资源分类','/resourceCategory/delete',''),(126,25,'2024-02-29 15:36:14','查询所有资源分类','/resourceCategory/listAll',''),(127,25,'2024-02-29 15:36:46','保存资源分类','/resourceCategory/save',''),(128,25,'2024-02-29 15:37:06','修改资源分类','/resourceCategory/update',''),(129,18,'2024-02-29 15:37:27','删除资源','/resource/deleteResource',''),(130,18,'2024-02-29 15:37:46','获取所有资源','/resource/listAll',''),(131,18,'2024-02-29 15:38:10','查询资源详细信息','/resource/queryDetail',''),(132,18,'2024-02-29 15:38:31','分页查询资源信息','/resource/queryListAll',''),(133,18,'2024-02-29 15:38:48','保存资源','/resource/saveResource',''),(134,18,'2024-02-29 15:39:11','修改资源','/resource/updateResource',''),(135,26,'2024-02-29 15:39:35','删除背景图片','/picture/delete',''),(136,26,'2024-02-29 15:39:52','获取所有背景图片','/picture/getAll',''),(137,26,'2024-02-29 15:40:08','添加背景图片','/picture/save',''),(138,26,'2024-02-29 15:40:30','设置背景图片显示状态','/picture/setVisible',''),(139,26,'2024-02-29 15:40:45','修改背景图片','/picture/update',''),(140,21,'2024-03-13 21:16:54','删除友链','/links/delete',''),(141,27,'2024-03-13 22:10:11','获取所有留言信息','/message/getAllList',''),(142,27,'2024-03-13 22:11:08','修改留言信','/message/update',''),(143,27,'2024-03-13 22:11:45','删除留言信息','/message/delete',''),(144,27,'2024-03-13 22:12:59','保存留言标签','/message/saveTag',''),(145,27,'2024-03-13 22:14:04','查询所有留言标签','/message/getTagList',''),(146,27,'2024-03-13 22:14:31','删除留言标签','/message/deleteTag','');
+/*!40000 ALTER TABLE `resource` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `resource_category`
+--
+
 DROP TABLE IF EXISTS `resource_category`;
-CREATE TABLE `resource_category`  (
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `resource_category` (
   `resource_category_id` bigint NOT NULL AUTO_INCREMENT,
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '分类名称',
-  `sort` int NULL DEFAULT NULL COMMENT '排序',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '分类名称',
+  `sort` int DEFAULT NULL COMMENT '排序',
   PRIMARY KEY (`resource_category_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '资源分类表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='资源分类表';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of resource_category
--- ----------------------------
-INSERT INTO `resource_category` VALUES (14, '2023-12-09 17:17:45', '角色管理', 0);
-INSERT INTO `resource_category` VALUES (15, '2023-12-09 17:17:51', '用户管理', 0);
-INSERT INTO `resource_category` VALUES (16, '2023-12-09 17:17:57', '菜单管理', 0);
+--
+-- Dumping data for table `resource_category`
+--
 
--- ----------------------------
--- Table structure for role
--- ----------------------------
+LOCK TABLES `resource_category` WRITE;
+/*!40000 ALTER TABLE `resource_category` DISABLE KEYS */;
+INSERT INTO `resource_category` VALUES (14,'2023-12-09 17:17:45','角色管理',0),(15,'2023-12-09 17:17:51','用户管理',0),(16,'2023-12-09 17:17:57','菜单管理',0),(18,'2024-01-18 22:50:24','资源管理',0),(20,'2024-02-29 14:45:49','标签管理',0),(21,'2024-02-29 14:45:59','友链管理',0),(22,'2024-02-29 14:46:07','专栏管理',0),(23,'2024-02-29 14:46:19','文章管理',0),(24,'2024-02-29 14:46:55','站点管理',0),(25,'2024-02-29 14:47:08','资源分类管理',0),(26,'2024-02-29 14:47:19','背景图片管理',0),(27,'2024-03-13 22:09:20','留言管理',0);
+/*!40000 ALTER TABLE `resource_category` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `role`
+--
+
 DROP TABLE IF EXISTS `role`;
-CREATE TABLE `role`  (
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `role` (
   `role_id` bigint NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '名称',
-  `description` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `status` int NULL DEFAULT 1 COMMENT '启用状态：0->禁用；1->启用',
+  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '名称',
+  `description` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '描述',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `status` int DEFAULT '1' COMMENT '启用状态：0->禁用；1->启用',
   PRIMARY KEY (`role_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '后台用户角色表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='后台用户角色表';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of role
--- ----------------------------
-INSERT INTO `role` VALUES (10, '普通管理员', '可以发布编辑文章，但是只能管理自己的文章，不能调节系统参数', '2023-12-07 09:24:41', 1);
-INSERT INTO `role` VALUES (11, '超级管理员', '我就是这个系统的神！！！', '2023-12-07 09:25:13', 1);
-INSERT INTO `role` VALUES (12, '体验者', '只能体现一些基本功能', '2023-12-07 09:25:47', 1);
+--
+-- Dumping data for table `role`
+--
 
--- ----------------------------
--- Table structure for role_menu_relation
--- ----------------------------
+LOCK TABLES `role` WRITE;
+/*!40000 ALTER TABLE `role` DISABLE KEYS */;
+INSERT INTO `role` VALUES (10,'普通管理员','可以发布编辑文章，但是只能管理自己的文章，不能调节系统参数','2023-12-07 09:24:41',1),(11,'超级管理员','我就是这个系统的神！！！','2023-12-07 09:25:13',1),(12,'体验者','只能体现一些基本功能','2023-12-07 09:25:47',1);
+/*!40000 ALTER TABLE `role` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `role_menu_relation`
+--
+
 DROP TABLE IF EXISTS `role_menu_relation`;
-CREATE TABLE `role_menu_relation`  (
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `role_menu_relation` (
   `role_menu_relation_id` bigint NOT NULL AUTO_INCREMENT,
-  `role_id` bigint NULL DEFAULT NULL COMMENT '角色ID',
-  `menu_id` bigint NULL DEFAULT NULL COMMENT '菜单ID',
+  `role_id` bigint DEFAULT NULL COMMENT '角色ID',
+  `menu_id` bigint DEFAULT NULL COMMENT '菜单ID',
   PRIMARY KEY (`role_menu_relation_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 90 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '后台角色菜单关系表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB AUTO_INCREMENT=250 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='后台角色菜单关系表';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of role_menu_relation
--- ----------------------------
-INSERT INTO `role_menu_relation` VALUES (68, 12, 26);
-INSERT INTO `role_menu_relation` VALUES (69, 12, 27);
-INSERT INTO `role_menu_relation` VALUES (70, 12, 28);
-INSERT INTO `role_menu_relation` VALUES (71, 11, 26);
-INSERT INTO `role_menu_relation` VALUES (72, 11, 27);
-INSERT INTO `role_menu_relation` VALUES (73, 11, 28);
-INSERT INTO `role_menu_relation` VALUES (80, 11, 31);
-INSERT INTO `role_menu_relation` VALUES (81, 11, 32);
-INSERT INTO `role_menu_relation` VALUES (82, 11, 33);
-INSERT INTO `role_menu_relation` VALUES (83, 11, 34);
-INSERT INTO `role_menu_relation` VALUES (84, 11, 35);
-INSERT INTO `role_menu_relation` VALUES (85, 11, 36);
-INSERT INTO `role_menu_relation` VALUES (86, 11, 37);
-INSERT INTO `role_menu_relation` VALUES (87, 11, 38);
-INSERT INTO `role_menu_relation` VALUES (88, 11, 39);
-INSERT INTO `role_menu_relation` VALUES (89, 12, 39);
+--
+-- Dumping data for table `role_menu_relation`
+--
 
--- ----------------------------
--- Table structure for role_resource_relation
--- ----------------------------
+LOCK TABLES `role_menu_relation` WRITE;
+/*!40000 ALTER TABLE `role_menu_relation` DISABLE KEYS */;
+INSERT INTO `role_menu_relation` VALUES (91,10,31),(92,10,32),(93,10,33),(94,10,34),(95,10,40),(96,10,26),(97,10,38),(98,10,39),(216,11,26),(217,11,46),(218,11,52),(219,11,45),(220,11,40),(221,11,39),(222,11,38),(223,11,37),(224,11,36),(225,11,35),(226,11,28),(227,11,27),(228,11,25),(229,11,51),(230,11,31),(231,11,34),(232,11,33),(233,11,32),(234,12,46),(235,12,52),(236,12,45),(237,12,40),(238,12,38),(239,12,37),(240,12,36),(241,12,35),(242,12,28),(243,12,25),(244,12,51),(245,12,31),(246,12,34),(247,12,33),(248,12,32),(249,12,26);
+/*!40000 ALTER TABLE `role_menu_relation` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `role_resource_relation`
+--
+
 DROP TABLE IF EXISTS `role_resource_relation`;
-CREATE TABLE `role_resource_relation`  (
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `role_resource_relation` (
   `role_resource_relation_id` bigint NOT NULL AUTO_INCREMENT,
-  `role_id` bigint NULL DEFAULT NULL COMMENT '角色ID',
-  `resource_id` bigint NULL DEFAULT NULL COMMENT '资源ID',
+  `role_id` bigint DEFAULT NULL COMMENT '角色ID',
+  `resource_id` bigint DEFAULT NULL COMMENT '资源ID',
   PRIMARY KEY (`role_resource_relation_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 207 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '后台角色资源关系表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB AUTO_INCREMENT=628 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='后台角色资源关系表';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of role_resource_relation
--- ----------------------------
-INSERT INTO `role_resource_relation` VALUES (202, 11, 54);
-INSERT INTO `role_resource_relation` VALUES (203, 11, 55);
-INSERT INTO `role_resource_relation` VALUES (204, 11, 56);
-INSERT INTO `role_resource_relation` VALUES (205, 11, 57);
-INSERT INTO `role_resource_relation` VALUES (206, 11, 58);
+--
+-- Dumping data for table `role_resource_relation`
+--
 
--- ----------------------------
--- Table structure for site
--- ----------------------------
+LOCK TABLES `role_resource_relation` WRITE;
+/*!40000 ALTER TABLE `role_resource_relation` DISABLE KEYS */;
+INSERT INTO `role_resource_relation` VALUES (340,10,57),(341,10,54),(517,12,118),(518,12,121),(519,12,110),(520,12,111),(521,12,132),(522,12,130),(523,12,131),(524,12,96),(525,12,94),(526,12,95),(527,12,67),(528,12,74),(529,12,72),(530,12,75),(531,12,73),(532,12,76),(533,12,85),(534,12,86),(535,12,126),(536,12,136),(537,12,141),(538,12,145),(539,11,115),(540,11,116),(541,11,117),(542,11,118),(543,11,119),(544,11,120),(545,11,121),(546,11,122),(547,11,123),(548,11,124),(549,11,54),(550,11,55),(551,11,56),(552,11,57),(553,11,58),(554,11,59),(555,11,62),(556,11,99),(557,11,100),(558,11,101),(559,11,102),(560,11,103),(561,11,104),(562,11,105),(563,11,106),(564,11,109),(565,11,110),(566,11,111),(567,11,112),(568,11,113),(569,11,114),(570,11,129),(571,11,130),(572,11,131),(573,11,132),(574,11,133),(575,11,134),(576,11,93),(577,11,94),(578,11,95),(579,11,96),(580,11,97),(581,11,98),(582,11,66),(583,11,67),(584,11,68),(585,11,69),(586,11,70),(587,11,140),(588,11,71),(589,11,72),(590,11,73),(591,11,74),(592,11,75),(593,11,76),(594,11,77),(595,11,78),(596,11,79),(597,11,80),(598,11,81),(599,11,82),(600,11,83),(601,11,84),(602,11,85),(603,11,86),(604,11,87),(605,11,88),(606,11,89),(607,11,90),(608,11,91),(609,11,92),(610,11,107),(611,11,108),(612,11,125),(613,11,126),(614,11,127),(615,11,128),(616,11,64),(617,11,135),(618,11,136),(619,11,137),(620,11,138),(621,11,139),(622,11,141),(623,11,142),(624,11,143),(625,11,144),(626,11,145),(627,11,146);
+/*!40000 ALTER TABLE `role_resource_relation` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `site`
+--
+
 DROP TABLE IF EXISTS `site`;
-CREATE TABLE `site`  (
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `site` (
   `site_id` bigint NOT NULL AUTO_INCREMENT COMMENT 'site_id',
-  `site_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '名称',
-  `keywords` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '关键字',
-  `site_desc` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '介绍',
-  `attribute` json NULL COMMENT '属性',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `site_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '名称',
+  `announcement` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '公告',
+  `site_introduce` json DEFAULT NULL COMMENT '简介',
+  `site_consult` json DEFAULT NULL COMMENT '站点咨询',
+  `site_desc` json DEFAULT NULL COMMENT '站点备案信息',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`site_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '站点配置' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='站点配置';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of site
--- ----------------------------
+--
+-- Dumping data for table `site`
+--
 
--- ----------------------------
--- Table structure for term_relationships
--- ----------------------------
+LOCK TABLES `site` WRITE;
+/*!40000 ALTER TABLE `site` DISABLE KEYS */;
+INSERT INTO `site` VALUES (1,'codingBlog','夫君子之行，静以修身，俭以养德，非淡泊无以明志，非宁静无以致远','{\"qqImage\": \"https://coding-blog-oss01.oss-cn-hangzhou.aliyuncs.com/codingblog/b725bb67d39b41c9b76202ff2e3f04a3.jpg\", \"wxImage\": \"https://coding-blog-oss01.oss-cn-hangzhou.aliyuncs.com/codingblog/030e9997725fc63d84904370bf4b6f64.png\", \"introduce\": \"志当存高远\", \"background\": \"https://coding-blog-oss01.oss-cn-hangzhou.aliyuncs.com/codingblog/346bdda9670e78b7c1aec4addfbc13e8.jpg\", \"githubLink\": \"https://github.com/blockCloth/coding-blog\", \"headerImage\": \"https://coding-blog-oss01.oss-cn-hangzhou.aliyuncs.com/codingblog/3d2a39eb06ea2c307d9955a90fdcff12.jpg\"}','{\"createTime\": \"2024-02-01\"}','{\"psInfo\": \"\", \"message\": \"青的个人博客 @2024\"}','2024-02-17 16:44:04');
+/*!40000 ALTER TABLE `site` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `term_relationships`
+--
+
 DROP TABLE IF EXISTS `term_relationships`;
-CREATE TABLE `term_relationships`  (
-  `term_relationships_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '对应文章ID/链接ID',
-  `term_taxonomy_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '栏目ID',
-  `term_order` int NOT NULL DEFAULT 0 COMMENT '排序',
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `term_relationships` (
+  `term_relationships_id` bigint unsigned NOT NULL DEFAULT '0' COMMENT '对应文章ID/链接ID',
+  `term_taxonomy_id` bigint unsigned NOT NULL DEFAULT '0' COMMENT '栏目ID',
+  `term_order` int NOT NULL DEFAULT '0' COMMENT '排序',
   `type` int NOT NULL COMMENT '类型,0:内容,1:链接',
-  PRIMARY KEY (`term_relationships_id`, `term_taxonomy_id`, `type`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_520_ci COMMENT = '文章栏目关系表' ROW_FORMAT = Dynamic;
+  PRIMARY KEY (`term_relationships_id`,`term_taxonomy_id`,`type`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci ROW_FORMAT=DYNAMIC COMMENT='文章栏目关系表';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of term_relationships
--- ----------------------------
-INSERT INTO `term_relationships` VALUES (69, 20, 0, 1);
-INSERT INTO `term_relationships` VALUES (70, 21, 0, 1);
+--
+-- Dumping data for table `term_relationships`
+--
 
--- ----------------------------
--- Table structure for term_taxonomy
--- ----------------------------
+LOCK TABLES `term_relationships` WRITE;
+/*!40000 ALTER TABLE `term_relationships` DISABLE KEYS */;
+INSERT INTO `term_relationships` VALUES (84,17,0,1),(96,22,0,1),(98,31,0,1),(99,20,0,1),(100,35,0,1),(101,36,0,1),(102,36,0,1);
+/*!40000 ALTER TABLE `term_relationships` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `term_taxonomy`
+--
+
 DROP TABLE IF EXISTS `term_taxonomy`;
-CREATE TABLE `term_taxonomy`  (
-  `term_taxonomy_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NULL COMMENT '说明',
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `term_taxonomy` (
+  `term_taxonomy_id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci COMMENT '说明',
   `name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NOT NULL COMMENT '栏目名称',
-  `parent_id` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '父栏目id',
-  `create_user_id` bigint NULL DEFAULT NULL COMMENT '创建人id',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `attribute` json NULL COMMENT '属性',
+  `parent_id` bigint unsigned NOT NULL DEFAULT '0' COMMENT '父栏目id',
+  `create_user_id` bigint DEFAULT NULL COMMENT '创建人id',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`term_taxonomy_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 24 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_520_ci COMMENT = '栏目' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci ROW_FORMAT=DYNAMIC COMMENT='栏目';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of term_taxonomy
--- ----------------------------
-INSERT INTO `term_taxonomy` VALUES (15, '后端所有信息归属', '后端', 0, 15, '2023-12-13 15:50:40', '2023-12-13 15:50:40', NULL);
-INSERT INTO `term_taxonomy` VALUES (16, 'SpringBoot文章归属', 'SpingBoot', 15, 15, '2023-12-13 15:51:17', '2023-12-13 15:51:17', NULL);
-INSERT INTO `term_taxonomy` VALUES (17, 'Spring框架文章归属', 'Sping', 15, 15, '2023-12-13 15:51:29', '2023-12-13 15:51:29', NULL);
-INSERT INTO `term_taxonomy` VALUES (18, 'SpingMVC框架文章归属', 'SpingMVC', 15, 15, '2023-12-13 15:51:36', '2023-12-13 15:51:36', NULL);
-INSERT INTO `term_taxonomy` VALUES (19, '常用SQL文章信息', 'SQL', 0, 15, '2023-12-13 15:52:03', '2023-12-13 15:52:03', NULL);
-INSERT INTO `term_taxonomy` VALUES (20, 'MySql文章的总结信息', 'MySql', 19, 15, '2023-12-13 15:52:42', '2023-12-13 15:52:42', NULL);
-INSERT INTO `term_taxonomy` VALUES (21, '常见缓存文章信息', 'Cache', 0, 15, '2023-12-13 15:53:06', '2023-12-13 15:53:06', NULL);
-INSERT INTO `term_taxonomy` VALUES (22, '持久化数据缓存', 'Redis', 21, 15, '2023-12-13 15:53:37', '2023-12-13 15:53:37', NULL);
+--
+-- Dumping data for table `term_taxonomy`
+--
 
--- ----------------------------
--- Table structure for users
--- ----------------------------
+LOCK TABLES `term_taxonomy` WRITE;
+/*!40000 ALTER TABLE `term_taxonomy` DISABLE KEYS */;
+INSERT INTO `term_taxonomy` VALUES (15,'后端所有信息归属','后端',0,15,'2023-12-13 15:50:40','2023-12-13 15:50:40'),(17,'Spring框架类型文章归属','Sping',15,15,'2023-12-13 15:51:29','2024-02-29 15:02:59'),(19,'常用SQL文章信息','SQL',0,15,'2023-12-13 15:52:03','2023-12-13 15:52:03'),(20,'MySql文章的总结信息','MySql',19,15,'2023-12-13 15:52:42','2023-12-13 15:52:42'),(21,'常见缓存文章信息','Cache',0,15,'2023-12-13 15:53:06','2023-12-13 15:53:06'),(22,'持久化数据缓存','Redis',21,15,'2023-12-13 15:53:37','2023-12-13 15:53:37'),(30,'前端所有信息归属','前端',0,15,'2024-02-22 16:50:35','2024-02-22 16:50:52'),(31,'Vue文章信息总结','Vue',30,15,'2024-02-22 16:51:05','2024-02-22 16:51:16'),(35,'Java类型文章归属','Java',15,15,'2024-02-22 16:51:47','2024-02-29 15:03:13'),(36,'java se 内容专栏','JavaSe',15,15,'2024-03-07 22:06:54','2024-03-07 22:06:54');
+/*!40000 ALTER TABLE `term_taxonomy` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `users`
+--
+
 DROP TABLE IF EXISTS `users`;
-CREATE TABLE `users`  ( --密码都默认是123456
-  `users_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'users_id',
-  `user_login` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NULL DEFAULT NULL COMMENT '登录名',
-  `user_pass` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NULL DEFAULT NULL COMMENT '密码',
-  `user_nicename` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NULL DEFAULT NULL COMMENT '昵称',
-  `user_email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NULL DEFAULT NULL COMMENT 'Email',
-  `user_url` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NULL DEFAULT NULL COMMENT '网址',
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `users` (
+  `users_id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT 'users_id',
+  `user_login` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT '登录名',
+  `user_pass` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT '密码',
+  `user_nicename` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT '昵称',
+  `user_email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'Email',
+  `user_url` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT '网址',
   `user_registered` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '注册时间',
-  `user_activation_key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NULL DEFAULT NULL COMMENT '激活码',
-  `user_status` int NOT NULL DEFAULT 0 COMMENT '用户状态',
-  `display_name` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NULL DEFAULT NULL COMMENT '图像',
-  `user_type` int NULL DEFAULT NULL COMMENT '用户类型 0 :后台 1：前端',
-  `open_id` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NULL DEFAULT NULL COMMENT 'open_id',
-  `attribute` json NULL COMMENT '属性',
+  `user_activation_key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT '激活码',
+  `user_status` int NOT NULL DEFAULT '0' COMMENT '用户状态',
+  `display_name` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT '图像',
+  `user_type` int DEFAULT NULL COMMENT '用户类型 0 :后台 1：前端',
+  `open_id` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'open_id',
+  `attribute` json DEFAULT NULL COMMENT '属性',
   PRIMARY KEY (`users_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 24 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_520_ci COMMENT = '用户表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci ROW_FORMAT=DYNAMIC COMMENT='用户表';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of users
--- ----------------------------
-INSERT INTO `users` VALUES (15, 'admin', '$2a$10$2LEcYcyPharStVbfTDmGGeaLu9QuqE4Ui65i6orWlJtGfZSezwgoe', '超级管理员', '1808870333@126.com', NULL, '2023-12-06 13:16:09', NULL, 0, 'hello.png', 0, NULL, NULL);
-INSERT INTO `users` VALUES (16, 'test', '$2a$10$Kieyx9OjZ.t8OPaOrDeFBuBxiQjGAsyIhn4WroGcgb5bHqctH8ymu', 'test管理员', '1808870333@126.com', NULL, '2023-12-06 16:32:20', NULL, 0, 'test', 0, NULL, NULL);
-INSERT INTO `users` VALUES (17, 'test1', '$2a$10$E/xCtTn5YHFHaVB4OYReSew262aNC4dkftBBr2YdXtR2RxpHHkBz6', 'test管理员', '1808870333@126.com', NULL, '2023-12-06 16:33:17', NULL, 0, 'test2', 0, NULL, NULL);
-INSERT INTO `users` VALUES (18, 'test2', '$2a$10$xLkbFgltqucag4ep167tM.mgiObZhovf4c/S.kV2hs9fxNPCmC4zO', 'test管理员', '1808870333@126.com', NULL, '2023-12-06 16:33:21', NULL, 0, 'test2', 0, NULL, NULL);
-INSERT INTO `users` VALUES (19, 'test3', '$2a$10$XyzrIh8XPjoDrGQNwMy.UeleOMX3kz16KF4N1V1x2J00eofb55aVi', 'test管理员', '1808870333@126.com', NULL, '2023-12-06 16:33:25', NULL, 1, 'test2', 0, NULL, NULL);
+--
+-- Dumping data for table `users`
+--
 
-SET FOREIGN_KEY_CHECKS = 1;
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (15,'admin','$2a$10$7s1/0NEE84yBlh5vRaGAAeulgtm4tS8OZTEr9EUxQEAGvA156XBQ2','超级管理员','1808870333@126.com','https://coding-blog-oss01.oss-cn-hangzhou.aliyuncs.com/codingblog/de869f172c5f0526da0792e0eac356c2.jpg','2023-12-06 13:16:09',NULL,0,'hello.png',0,NULL,NULL),(27,'lixiaoying','$2a$10$w8v3hjcMGlCxwxGm9UxiNeoIoXs8f9FspzQXmZb1GP.4KiX.6MomW','英妹妹','','https://coding-blog-oss01.oss-cn-hangzhou.aliyuncs.com/codingblog/e3f6cec468eeef6e8f9ee97de1d24157.jpg','2024-02-29 16:05:36',NULL,0,'',0,NULL,'{}'),(28,'guest','$2a$10$vTT6YOnkLpl6uUSnZU2YUOCVrWg/QHdvT/QfnVDe2F11GHYwdIdpi','游客','','https://blockcloth.cn/codingblog/de869f172c5f0526da0792e0eac356c2.jpg','2024-03-13 20:52:11',NULL,0,'',0,NULL,'{}');
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping events for database 'coding_blog'
+--
+
+--
+-- Dumping routines for database 'coding_blog'
+--
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2024-03-14 20:52:47
