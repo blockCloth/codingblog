@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="http://120.26.94.200/" target="_blank" rel="noopener noreferrer">
+  <a href="https://blockcloth.cn/" target="_blank" rel="noopener noreferrer">
     <img width="180" src="https://img.shields.io/badge/青的个人博客-v1.0.0-important" alt="Blog logo">
   </a>
 </p>
@@ -24,11 +24,12 @@
   </a>
 </p>
 
+
 ## 友情提示
 
-> [前台体验地址](http://120.26.94.200/)
+> [前台体验地址](https://blockcloth.cn/)
 >
-> [后台体验地址](http://120.26.94.200/admin)
+> [后台体验地址](https://blockcloth.cn/admin)
 
 ## 项目介绍       
 

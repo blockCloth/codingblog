@@ -1,7 +1,7 @@
 {
-  "name": "codingmore-admin-web",
+  "name": "codingblog-admin-web",
   "version": "1.0.0",
-  "description": "codingmore后台管理前端项目",
+  "description": "codingblog后台管理前端项目",
   "author": "ming.gu",
   "private": true,
   "scripts": {

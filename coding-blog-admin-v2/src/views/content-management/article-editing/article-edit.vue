@@ -86,7 +86,7 @@
       </el-form>
       <div class="top-bar flex-row-ver-center">
         <div class="logo-title">
-          CodingMore - 编辑文章
+          CodingBlog - 编辑文章
         </div>
         <div>
           <el-button v-if="editMode === 'm'" type="danger" @click="handleDelete">
