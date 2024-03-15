@@ -22,9 +22,11 @@ public class RedisTemplateUtil {
     private RedisTemplate<String,Object> redisTemplate;
 
     /**
-     * 判断key是否存在
+     * 判断key是否存在、
+     * @return  存在返回true 否则返回false
      */
     public Boolean isExist(String key){
+
         return redisTemplate.hasKey(key);
     }
 

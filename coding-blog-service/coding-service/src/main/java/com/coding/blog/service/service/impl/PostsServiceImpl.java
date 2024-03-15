@@ -3,6 +3,7 @@ package com.coding.blog.service.service.impl;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.IORuntimeException;
 import cn.hutool.core.io.IoUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -98,10 +99,17 @@ public class PostsServiceImpl extends ServiceImpl<PostsMapper, Posts> implements
         // 保存标签信息
         insertOrUpdateTags(postsParam, posts);
 
-        // 删除缓存信息
-        redisTemplateUtil.del(RedisConstants.REDIS_KEY_POST);
+        // 添加点赞量以及浏览量
+        insertPostViewAndPraise(posts.getPostsId());
+
         return true;
     }
+
+    private void insertPostViewAndPraise(Long postsId) {
+        redisTemplateUtil.hSet(RedisConstants.POST_PAGE_VIEW,postsId.toString(),0L);
+        redisTemplateUtil.hSet(RedisConstants.POST_PRAISE,postsId.toString(),0L);
+    }
+
 
     @Override
     @Transactional(rollbackFor = SQLDataException.class)
@@ -192,6 +200,7 @@ public class PostsServiceImpl extends ServiceImpl<PostsMapper, Posts> implements
         // 增加浏览量
         redisTemplateUtil.hIncr(RedisConstants.POST_PAGE_VIEW, postId.toString(), 1L);
         postDetailVo.setViewSize(getPostViewSize(postId));
+
         return postDetailVo;
     }
 
@@ -228,7 +237,8 @@ public class PostsServiceImpl extends ServiceImpl<PostsMapper, Posts> implements
     @Override
     public IPage<Posts> queryPostsList(PostsQueryVO postsQueryVO) {
         Page<Posts> page = new Page(postsQueryVO.getPageNum(), postsQueryVO.getPageSize());
-        QueryWrapper<Posts> queryWrapper = new QueryWrapper();
+        QueryWrapper<Posts> queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByDesc("post_date");
 
         if (postsQueryVO.getPostsTitle() != null && postsQueryVO.getPostsTitle() != "")
             queryWrapper.like("post_title", postsQueryVO.getPostsTitle());
@@ -275,6 +285,15 @@ public class PostsServiceImpl extends ServiceImpl<PostsMapper, Posts> implements
         page.setTotal(introductionMsg.size());
         introductionMsg = setPageRecordsSize(introductionMsg,pageNum,pageSize);
 
+        //判断浏览量是否需要初始化
+        if (!redisTemplateUtil.isExist(RedisConstants.POST_PAGE_VIEW))
+            //初始化浏览量
+            initHotPosts("view");
+
+        //判断点赞量是否需要初始化
+        if (!redisTemplateUtil.isExist(RedisConstants.POST_PRAISE))
+            //初始化浏览量
+            initHotPosts("praise");
 
         // 获取点赞数、浏览量
         for (FrontPostVo allPost : introductionMsg) {
@@ -292,8 +311,8 @@ public class PostsServiceImpl extends ServiceImpl<PostsMapper, Posts> implements
                     .collect(Collectors.toList());
             postVo.setPostTagName(tagNames);
         }
-        // 设置分页对象的总记录数和当前页数据
 
+        // 设置分页对象的总记录数和当前页数据
         page.setRecords(introductionMsg);
         return page;
     }
@@ -371,17 +390,18 @@ public class PostsServiceImpl extends ServiceImpl<PostsMapper, Posts> implements
 
     @Override
     public List<Posts> getHotPosts() {
-        List<Posts> topFivePosts = new ArrayList<>();
+        List<Posts> topFivePosts;
         //判断key是否存在
         if (!redisTemplateUtil.isExist(RedisConstants.POST_PAGE_VIEW)){
-            Map<Object, Object> postView = redisTemplateUtil.hGetAll(RedisConstants.POST_PAGE_VIEW);
-            topFivePosts = postView.entrySet().stream()
-                    .sorted((e1, e2) -> ((Integer)e2.getValue()).compareTo((Integer)e1.getValue()))
-                    .limit(5)
-                    .map(entry -> postsMapper.selectById(Long.parseLong((String) entry.getKey())))
-                    .collect(Collectors.toList());
+            initHotPosts("view");
         }
-        topFivePosts = initHotPosts();
+        Map<Object, Object> postView = redisTemplateUtil.hGetAll(RedisConstants.POST_PAGE_VIEW);
+        topFivePosts = postView.entrySet().stream()
+                .sorted((e1, e2) -> ((Integer)e2.getValue()).compareTo((Integer) e1.getValue()))
+                .limit(5)
+                .map(entry -> postsMapper.selectById(Long.parseLong((String) entry.getKey())))
+                .collect(Collectors.toList());
+
         return topFivePosts;
     }
 
@@ -389,22 +409,30 @@ public class PostsServiceImpl extends ServiceImpl<PostsMapper, Posts> implements
      * 初始化所有文章的浏览量
      * @return
      */
-    private List<Posts> initHotPosts(){
+    private void initHotPosts(String str){
         List<Posts> posts = postsMapper.selectList(null);
-        for (Posts post : posts) {
-            //设置默认浏览量为0
-            redisTemplateUtil.hSet(RedisConstants.POST_PAGE_VIEW,post.getPostsId().toString(),0L);
-            //设置默认点赞量为0
-            redisTemplateUtil.hSet(RedisConstants.POST_PRAISE,post.getPostsId().toString(),0L);
+        if (str.equals("view")){
+            //此时需要初始化浏览量
+            for (Posts post : posts) {
+                // 检查文章的浏览量是否已经在Redis中
+                Object pageView = redisTemplateUtil.hGet(RedisConstants.POST_PAGE_VIEW, post.getPostsId().toString());
+                if (ObjectUtil.isEmpty(pageView)) {
+                    // 如果没有，设置默认浏览量为0
+                    redisTemplateUtil.hSet(RedisConstants.POST_PAGE_VIEW, post.getPostsId().toString(), 0L);
+                }
+            }
+        }else {
+            //初始化点赞量
+            for (Posts post : posts) {
+                Object pagePraise = redisTemplateUtil.hGet(RedisConstants.POST_PRAISE, post.getPostsId().toString());
+                // 检查文章的点赞量是否已经在Redis中
+                if (ObjectUtil.isEmpty(pagePraise)) {
+                    // 如果没有，设置默认点赞量为0
+                    redisTemplateUtil.hSet(RedisConstants.POST_PRAISE, post.getPostsId().toString(), 0L);
+                }
+            }
         }
-        List<Posts> lastFivePosts;
-        //获取集合的五条数据
-        if (posts.size() > 5) {
-            lastFivePosts = posts.stream().skip(posts.size() - 5).collect(Collectors.toList());
-        } else {
-            lastFivePosts = new ArrayList<>(posts);
-        }
-        return lastFivePosts;
+
     }
 
     /**
@@ -457,7 +485,6 @@ public class PostsServiceImpl extends ServiceImpl<PostsMapper, Posts> implements
 
 
     private void delPostRedisCache(Long postId) {
-        redisTemplateUtil.del(RedisConstants.REDIS_KEY_POST);
         redisTemplateUtil.hDel(RedisConstants.REDIS_KEY_POST_SINGLE, postId.toString());
     }
 }
