@@ -204,7 +204,6 @@ export default {
             let valuesToSet = []
             res.forEach(item => {
               let marked = this.treeDataList.find(x => x.isLeaf && x.menuId === item.menuId)
-              console.log('marked=', marked)
               if (marked) {
                 valuesToSet.push(item.menuId)
               }
@@ -268,7 +267,6 @@ export default {
     saveUserInfo() {
       this.$refs['editInfoForm'].validate((valid) => {
         if (valid) {
-          console.log('editDataModel=', this.editDataModel)
           const saveFunc = this.editDialog.status === 0 ? addRole : updateRole
           saveFunc(qs.stringify(this.editDataModel)).then(() => {
             this.$notify({
@@ -341,7 +339,6 @@ export default {
         })
       }).then(() => {
         getSourceAllList().then(res => {
-          // console.log('加载所有资源列表', res)
           this.sourceFormdData.forEach(item => {
             let itemOptions = res.filter(x => x.categoryId === item.id)
             if (itemOptions && itemOptions.length > 0) {
@@ -365,7 +362,6 @@ export default {
     getTreeData() {
       getAllMenusTree().then(res => {
         this.initTreeDataList(res)
-        console.log('treeDataList.length', this.treeDataList.length)
         const columns = res
         this.treeData = columns
         if (this.treeSelectedNode === null) {
@@ -397,7 +393,6 @@ export default {
     // 处理当前选中节点改变方法
     handleTreeNodeChange(data, node) {
       if (this.treeSelectedNode !== data) {
-        console.log('handleCurrentChange:重新赋值', data, node)
         this.treeSelectedNode = data
       }
       if (node.expanded === false) {
@@ -410,7 +405,6 @@ export default {
       const halfCheckedData = this.$refs.columnTree.getHalfCheckedKeys()
       const checkManuData = [...checkedData, halfCheckedData]
       const menuIds = checkManuData.length > 0 ? checkManuData.join() : ''
-      console.log('menuIds=', menuIds)
       const reqData = qs.stringify({ roleId: this.operatingRoleId, menuIds })
       setMenuPowerForRole(reqData).then(() => {
         this.$notify({
@@ -431,7 +425,6 @@ export default {
           selectedSourceIds = [...selectedSourceIds, ...item.checkedIds]
         }
       })
-      console.log('selectedSourceIds=', selectedSourceIds)
       const reqData = qs.stringify({ roleId: this.operatingRoleId, resIds: selectedSourceIds.join() })
       setSourcePowerForRole(reqData).then(() => {
         this.$notify({

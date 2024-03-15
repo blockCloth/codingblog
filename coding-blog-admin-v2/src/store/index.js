@@ -41,7 +41,6 @@ export default new Vuex.Store({
         commit('SET_USER_INFO', res)
         return res.menus
       }).catch(rej => {
-        console.log('与服务器通信出现异常，response对象记录', rej)
       })
     },
 

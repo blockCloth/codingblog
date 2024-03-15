@@ -235,7 +235,6 @@ export default {
 
     // 文章搜索方法
     search() {
-      console.log('搜索', this.tableAbout.listQuery)
       this.tableAbout.listQuery.page = 1
       this.getList()
     },
@@ -319,7 +318,6 @@ export default {
     // 处理分配角色点击事件
     handleSetRolePower(row) {
       getUserRoles({ userId: row.usersId }).then(res => {
-        console.log('获取用户角色数据', res)
         this.roleSettingInfo.userId = row.usersId
         this.roleSettingInfo.roleIds = res.map(item => item.roleId)
         this.setRolePowerDialogShow = true

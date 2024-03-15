@@ -51,7 +51,7 @@ export default {
         //设置过期时间
         setExpires(res.expiration)
         // 之后跳转页面到首页
-        this.$router.push('/')
+        this.$router.push('/home')
       })
     },
 

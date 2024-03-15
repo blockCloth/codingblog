@@ -47,7 +47,6 @@ export default {
         // 上传文章封面图成功后回调函数
         handleArticleCoverSuccess(res, file) {
             if (res && res.code === 200) {
-                console.log('图片上传信息',res)
                 this.imageUrl = res.result.imagePath
                 this.$emit('image-uploaded', res.result.imagePath);
             } else {

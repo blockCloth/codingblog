@@ -153,7 +153,6 @@ export default {
 
         this.showPostTagArticle = true
         this.postTagArticle = res
-        console.log('hhhhhh', this.postTagArticle)
 
       })
     },

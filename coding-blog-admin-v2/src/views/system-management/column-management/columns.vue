@@ -188,7 +188,6 @@ export default {
     // 处理当前选中节点改变方法
     handleCurrentChange(data, node) {
       if (this.treeSelectedNode !== data) {
-        console.log('handleCurrentChange:重新赋值', data, node)
         this.treeSelectedNode = data
       }
       if (node.expanded === false) {
@@ -209,9 +208,6 @@ export default {
           this.$refs.columnTree.setCurrentKey(this.treeSelectedNode.termTaxonomyId)
           const theNode = this.$refs.columnTree.getNode(this.treeSelectedNode.termTaxonomyId)
           this.handleCurrentChange(theNode.data, theNode)
-          console.log('获得当前选中节点：：：', theNode)
-          console.log('当前tableKey', this.tableKey)
-          console.log('当前treeSelectedNode', this.treeSelectedNode, theNode.data)
           loopExpendTree(this.$refs.columnTree, theNode, -1)
           if (this.searchTreeText !== '') {
             this.searchTree()

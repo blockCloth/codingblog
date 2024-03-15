@@ -66,5 +66,5 @@ spring:
 jwt:
   tokenHeader: Authorization # 存放jwt存储的请求头
   secret: codingBlog-secret # jwt加解密使用的密钥
-  expiration: 1800000 # token失效时间
+  expiration: 86400000 # token失效时间
   tokenHead: Bearer #JWT负载中拿到开头

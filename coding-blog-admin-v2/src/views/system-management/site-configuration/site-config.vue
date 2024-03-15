@@ -106,8 +106,6 @@ export default {
         if (res.siteConsult) {
           this.siteInfo.siteConsult = JSON.parse(res.siteConsult);
         }
-
-        console.log('站点配置信息：', this.siteInfo)
       })
     },
 
@@ -156,7 +154,6 @@ export default {
   },
   mounted() {
     this.loadData()
-    console.log('站点配置页面',this.siteInfo)
   }
 }
 </script>

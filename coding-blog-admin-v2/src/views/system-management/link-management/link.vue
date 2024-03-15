@@ -140,7 +140,6 @@ export default {
     },
     handleUpdate(row) {
       this.editDataModel = row
-      console.log(this.editDataModel)
       this.openEditDialog(1)
     },
     saveLinkInfo() {

@@ -47,7 +47,7 @@
         <!-- 文章标签 -->
         <el-form-item label="标签">
           <el-select v-model="selectedTagArray" class="full-row" filterable :multiple-limit="5" multiple
-            placeholder="可输入文字查询">
+            placeholder="可输入文字查询，至少选择一个标签">
             <el-option v-for="item in allTagList" :key="item.postTagId" :label="item.description" :value="item.postTagId">
             </el-option>
           </el-select>
@@ -141,7 +141,7 @@ export default {
       // 编辑弹窗校验规则
       rules: {
         postTitle: [{ required: true, validator: emptyChecker, message: '文章标题不能为空', trigger: 'none' }],
-        postContent: [{ required: true, validator: emptyChecker, message: '文章正文不能为空', trigger: 'none' }]
+        postContent: [{ required: true, validator: emptyChecker, message: '文章正文不能为空', trigger: 'none' }],
       },
 
       articleCoverUrl: '',
@@ -392,9 +392,7 @@ export default {
         this.editDataModel.termTaxonomyId = this.editDataModel.termTaxonomyId[this.editDataModel.termTaxonomyId.length - 1]
       
       }
-
-
-      this.$refs['dataForm'].validate((valid, errorInfo) => {
+      this.$refs['dataForm','pubForm'].validate((valid, errorInfo) => {
         if (valid) {
           this.dialogLoading = true
           const postData = qs.stringify(this.editDataModel)

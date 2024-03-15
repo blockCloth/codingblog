@@ -14,8 +14,6 @@ import 'nprogress/nprogress.css' // nprogress样式文件
 import Cookies from 'js-cookie'
 
 router.beforeEach(async (to, from, next) => {
-  console.log('router.beforeEach参数：', 'to=', to, 'from=', from)
-  console.log('router=', router)
   // 开启进度条
   NProgress.start()
 
@@ -43,7 +41,6 @@ router.beforeEach(async (to, from, next) => {
   if (!tokenValue && to.name !== 'login') {
     // 关闭进度条
     NProgress.done()
-    console.log('next:::0')
     next({
       name: 'login',
       replace: true
@@ -55,26 +52,21 @@ router.beforeEach(async (to, from, next) => {
     await initSysPower()
   }
 
-  console.log('to.name=', to.name)
   const sysFind = systemRouters.find(x => x.name === to.name)
   const businessFind = pageRouters.find(x => {
     if (x.name === to.name) {
-      console.log('返回x', x)
       return x
     }
     if (x.children) {
       const child = x.children.find(y => y.name === to.name)
       if (child) {
-        console.log('返回x的child', child)
         return child
       }
     }
     return null
   })
   if (tokenValue && store.state.userInfo) {
-    console.log('store.state.userMenus=', store.state.userMenus)
     if (store.state.userMenus.length == 0 && to.name != 'error-no-any-power') {
-      console.log('next:::1')
       NProgress.done()
       next({
         name: 'error-no-any-power',
@@ -84,7 +76,6 @@ router.beforeEach(async (to, from, next) => {
     const powerFind = store.state.userMenus ? store.state.userMenus.find(x => x === to.name) : null
     // 业务路由匹配，权限没匹配，跳转无权限页面
     if (store.state.userMenus.length > 0 && businessFind && !powerFind && from.path !== '/') {
-      console.log('next:::2, businessFind=', businessFind)
       NProgress.done()
       next({
         name: 'error-no-power'
@@ -93,7 +84,6 @@ router.beforeEach(async (to, from, next) => {
     // 当有token还要跳转login的时候，或者直接跳转 / 的时候，跳转第一个有权限的菜单
     if (store.state.userMenus.length > 0 && !powerFind && (to.path === '/' || to.name === 'login' || from.path === '/')) {
       let targetName = store.state.userMenus[0]
-      console.log('next:::3 targetName=', targetName)
       NProgress.done()
       next({
         name: targetName,
@@ -104,7 +94,6 @@ router.beforeEach(async (to, from, next) => {
 
   // 所有路由都没匹配，跳转404
   if (!sysFind && !businessFind) {
-    console.log('next:::4')
     NProgress.done()
     next({
       name: 'error-page404',
@@ -113,7 +102,6 @@ router.beforeEach(async (to, from, next) => {
   }
 
   // 其他所有情况，直接跳转
-  console.log('next:::5')
   next()
 })
 
@@ -124,7 +112,6 @@ router.afterEach((to, from) => {
 
 async function initSysPower() {
   return store.dispatch('refleshUserInfo').then(menus => {
-    console.log('menus=', menus)
     if (menus && menus.length > 0) {
       // 存储最终要添加到客户端的菜单变量
       let userMenus = menus.map(item => item.name)

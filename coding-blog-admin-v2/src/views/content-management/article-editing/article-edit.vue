@@ -224,10 +224,8 @@ export default {
         this.tagArray.push(temp)
       } else {
         moved = false
-        console.log('不移动分支，targetIndex=', targetIndex, 'index=', index, 'way=', way)
       }
       if (moved) {
-        console.log('移动后结果', this.tagArray, this.$refs[`elpp_${index}`])
         this.tagSelectedIndex = targetIndex
         // this.$refs[`elpp_${index}`].doClose()
         // this.tagArray = JSON.parse(JSON.stringify(this.tagArray))
@@ -345,10 +343,8 @@ export default {
     // 加载编辑的数据
     loadData() {
       getArticleById({ postId: this.editId }).then(res => {
-        console.log('编辑文章信息', res)
         
         this.editDataModel = res.posts
-        console.log('编辑文章信息', this.editDataModel)
         if (this.editDataModel.attribute) {
           // 赋值界面属性对象
           this.titleDisplaySettings = this.editDataModel.attribute

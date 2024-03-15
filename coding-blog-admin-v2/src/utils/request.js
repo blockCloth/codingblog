@@ -93,9 +93,7 @@ httpRequest.interceptors.request.use(
           afreshRequest(getToken());
           // 重置标志
           window.isRefreshing = false;
-
-        }).catch(err => {
-          console.log('refreshToken err =>' + err);
+        }).catch(() => {
           // 重置标志
           window.isRefreshing = false;
           // 删除本地缓存
@@ -133,7 +131,6 @@ httpRequest.interceptors.request.use(
   },
   error => {
     // do something with request error
-    console.log(`发送请求失败${error}`) // for debug
     return Promise.reject(error)
   }
 )
@@ -141,19 +138,17 @@ httpRequest.interceptors.request.use(
 // 响应处理封装
 httpRequest.interceptors.response.use(
   response => {
-    console.log('服务器返回最外层响应：', response)
     const {
       code,
       result,
       message
     } = response.data
-    console.log('服务器返回最外层响应数据：', code, result, message)
+
     if ( // 请求正常的情况
       (code === 200 && response.status === 200) ||
       (response.data instanceof Blob && response.status === 200)
     ) {
       // #region 处理ajax效果
-      console.log('请求正常，响应数据：', response.data)
       ajaxCount--
       checkAllAjaxDone()
       // #endregion
@@ -164,7 +159,6 @@ httpRequest.interceptors.response.use(
       }
     } else {
       // #region 处理ajax效果
-      console.log('请求异常，响应数据：', response.data)
       ajaxCount--
       checkAllAjaxDone()
       // #endregion
@@ -196,7 +190,6 @@ httpRequest.interceptors.response.use(
     ajaxCount--
     checkAllAjaxDone()
     // #endregion
-    console.log('服务器返回异常信息：', error, error.response)
 
     // 当用户登录过期，直接跳转登录页面
     if (error.response.status === 401 || error.response.data.code === 401) {

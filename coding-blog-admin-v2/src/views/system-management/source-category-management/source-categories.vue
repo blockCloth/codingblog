@@ -89,7 +89,6 @@ export default {
     // 列表查询方法
     getList() {
       getSourceCategoryList().then((res) => {
-        console.log(res)
         this.tableAbout.tableData = res
       })
     },
@@ -149,7 +148,6 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        console.log(row)
         deleteSourceCatagory({resourceCategoryId: row.resourceCategoryId}).then(() => {
           this.$notify({
             title: '成功',
