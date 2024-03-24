@@ -20,6 +20,7 @@ import link from '../views/system-management/link-management'
 import background from '../views/system-management/background-management'
 import home from '../views/home-management'
 import messageBoard from '../views/system-management/message-management'
+import talk from '../views/system-management/talks-management'
 
 Vue.use(Router)
 
@@ -231,7 +232,17 @@ export const pageRouters = [
         meta: {
           title: '留言板管理'
         }
+      },
+      {
+        path: 'talk',
+        name: 'talks-management',
+        icon: 'el-icon-chat-round',
+        component: talk,
+        meta: {
+          title: '说说管理'
+        }
       }
+      
       // {
       //   path: 'log',
       //   name: 'log-management',

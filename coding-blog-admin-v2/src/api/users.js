@@ -106,4 +106,4 @@ export function refreshToken(data) {
   })
 }
 
-export const uploadUrl = process.env.VUE_APP_BASE_API + '/imageController/upload'
+export const uploadUrl = '/api/imageController/upload'

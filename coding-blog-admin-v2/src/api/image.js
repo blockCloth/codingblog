@@ -8,6 +8,6 @@ export function deleteArticleCover(data) {
   })
 }
 
-export const uploadUrl = process.env.VUE_APP_BASE_API + '/imageController/upload'
+export const uploadUrl = '/api/imageController/upload'
 
-export const importMdUrl = process.env.VUE_APP_BASE_API + '/posts/uploadMd'
+export const importMdUrl = '/api/posts/uploadMd'
