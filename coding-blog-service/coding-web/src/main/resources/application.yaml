@@ -1,6 +1,6 @@
 spring:
   config:
-    import: application-dev.yaml,application-image.yaml,application-email.yaml
+    import: application-prod.yaml,application-image.yaml,application-email.yaml
   main:
     allow-circular-references: true
   servlet:

@@ -2,4 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.coding.blog.service.mapper.TalkImageRelationMapper">
 
+    <select id="queryImages" resultType="com.coding.blog.service.vo.TalkImageVo">
+        SELECT ti.talk_image_id,
+               ti.talk_image
+        FROM talk_image_relation tir
+                 LEFT JOIN talk_image ti ON tir.talk_image_id = ti.talk_image_id
+        WHERE tir.talk_id = #{talkId}
+    </select>
 </mapper>

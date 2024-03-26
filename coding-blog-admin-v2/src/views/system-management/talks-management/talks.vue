@@ -15,7 +15,10 @@
                                     <i class="el-icon-arrow-down el-icon--right"></i>
                                 </span>
                                 <el-dropdown-menu slot="dropdown">
-                                    <el-dropdown-item @click="alert('111')">
+                                    <el-dropdown-item>
+                                        <el-button type="text" @click="updateTalkById(talk.talkId)">编辑</el-button>
+                                    </el-dropdown-item>
+                                    <el-dropdown-item>
                                         <el-button type="text" @click="deleteTalkById(talk.talkId)">删除</el-button>
                                     </el-dropdown-item>
                                     <el-dropdown-item v-if="talk.talkOrder == 1">
@@ -34,17 +37,18 @@
                             </el-dropdown>
                         </div>
                         <div class="talk-header">
-                            <img :src="userAvatar" alt="User Avatar" class="talk-avatar">
+                            <img :src="talk.talkAvatar" alt="User Avatar" class="talk-avatar">
                             <div class="talk-user">
-                                <div class="talk-username">{{ user }}</div>
+                                <div class="talk-username">{{ talk.talkUser }}</div>
                                 <p>{{ talk.talkContent }}</p>
                             </div>
                         </div>
                         <div class="talk-content">
                             <template>
                                 <div v-if="talk.talkImages">
-                                    <el-image v-for="photo in talkImages(talk.talkImages)" :src="photo" :key="photo"
-                                        :preview-src-list="talkImages(talk.talkImages)" class="photo" />
+                                    <el-image v-for="photo in talk.talkImages" :src="photo.talkImage"
+                                        :key="photo.talkImageId" :preview-src-list="transformImages(talk.talkImages)"
+                                        class="photo" />
                                 </div>
                             </template>
 
@@ -68,16 +72,26 @@
                 </el-form-item>
                 <el-form-item label="说说图片" prop="talkImages">
                     <div class="photo-wall">
-                        <div v-if="editDataModel.talkImages">
+                        <el-upload :action="uploadUrl" name="image" :headers="{ Authorization: getToken() }"
+                            list-type="picture-card" :on-remove="handleRemove" :file-list="fileList"
+                            :on-success="handleUploadSuccess" :before-upload="beforeAvatarUpload">
+                            <i class="el-icon-plus"></i>
+                        </el-upload>
+
+                        <!-- <div v-show="dialogVisible">
+                            <el-image style="width: 100%;" :src="dialogImageUrl" :preview-src-list="srcList" />
+                        </div> -->
+
+                        <!-- <div v-if="editDataModel.talkImages">
                             <el-image v-for="photo in editDataModel.talkImages" :src="photo" :key="photo"
                                 :preview-src-list="editDataModel.talkImages" class="photo" />
-                        </div>
+                        </div> -->
                         <!-- 上传图片 -->
-                        <el-upload class="avatar-uploader" name="image" :action="uploadUrl"
+                        <!-- <el-upload class="avatar-uploader" name="image" :action="uploadUrl"
                             :headers="{ Authorization: getToken() }" :on-success="handleAvatarSuccess"
                             :before-upload="beforeAvatarUpload" :show-file-list="false">
                             <i class="el-icon-plus avatar-uploader-icon"></i>
-                        </el-upload>
+                        </el-upload> -->
                     </div>
                 </el-form-item>
 
@@ -91,7 +105,7 @@
 </template>
 
 <script>
-import { getTalkList, saveTalk, deleteTalk, setTalkStatus, setTalkOrder } from '@/api/talk'
+import { getTalkList, saveTalk, deleteTalk, setTalkStatus, setTalkOrder, getTalkDetail, updateTalk } from '@/api/talk'
 import { uploadUrl } from '@/api/image'
 import { getToken } from '@/utils/auth'
 import { emptyChecker } from '@/utils/validate'
@@ -117,11 +131,45 @@ export default {
             editDataModel: {
                 talkId: null,
                 talkContent: '',
+                talkUser: '',
+                talkAvatar: '',
                 talkImages: []
-            }
+            },
+            dialogImageUrl: '',
+            dialogVisible: false,
+            fileList: [],
+            srcList: []
         }
     },
     methods: {
+        transformImages(images) {
+            return images.map(image => image.talkImage)
+        },
+        updateTalkById(talkId) {
+            getTalkDetail({ talkId: talkId }).then(res => {
+                this.editDataModel = res
+                this.fileList = res.talkImages
+                this.fileList = res.talkImages.map(image => {
+                    return {
+                        url: image.talkImage
+                    }
+                })
+                this.openEditDialog(1)
+            })
+        },
+        handleUploadSuccess(response, file, fileList) {
+            file.url = file.response.result.imagePath
+            this.fileList = fileList
+        },
+        handleRemove(file, fileList) {
+            this.fileList = fileList
+        },
+        handlePictureCardPreview(file) {
+            this.dialogImageUrl = file.url;
+            this.dialogVisible = true;
+
+            this.srcList = this.fileList.map(item => item.url)
+        },
         calculateDays(time) {
             time = time.replace(/-/g, "/"); // 解决ios系统上格式化时间出现NAN的bug
             const times = new Date().getTime() - new Date(time).getTime();
@@ -171,17 +219,27 @@ export default {
         saveTalkInfo() {
             this.$refs['editInfoForm'].validate((valid) => {
                 if (valid) {
-                    saveTalk(JSON.stringify(this.editDataModel)).then(res => {
-                        if (res) {
-                            this.$message.success('保存成功')
-                            this.editDialog.visible = false
-                            this.getAllTalksList()
-                            this.editDataModel = {
-                                talkId: null,
-                                talkContent: '',
-                                talkImages: []
-                            }
+                    this.editDataModel.talkImages = []
+                    this.fileList.forEach(item => {
+                        this.editDataModel.talkImages.push(item.url)
+                    })
+                    this.editDataModel.talkUser = this.user
+                    this.editDataModel.talkAvatar = this.userAvatar
+
+                    console.log(this.editDataModel)
+
+                    const saveFunc = this.editDialog.status === 0 ? saveTalk : updateTalk
+
+                    saveFunc(JSON.stringify(this.editDataModel)).then(res => {
+                        this.$message.success('保存成功')
+                        this.editDialog.visible = false
+                        this.getAllTalksList()
+                        this.editDataModel = {
+                            talkId: null,
+                            talkContent: '',
+                            talkImages: [],
                         }
+                        this.fileList = []
                     })
                 }
             })
@@ -203,13 +261,12 @@ export default {
         },
         getAllTalksList() {
             getTalkList().then(res => {
-                console.log(res)
                 this.talksList = res
             })
         },
         userAvatarUrl() {
             this.userAvatar = this.$store.state.userInfo.userDetail.userUrl
-            this.user = this.$store.state.userInfo.userDetail.userLogin
+            this.user = this.$store.state.userInfo.userDetail.userNicename
         },
         talkImages(talkImage) {
             return talkImage.split(',')

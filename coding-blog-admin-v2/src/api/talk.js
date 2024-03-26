@@ -48,3 +48,23 @@ export function setTalkStatus(params) {
   })
 }
 
+// 查询说说详情方法
+export function getTalkDetail(params) {
+  return request({
+    url: '/talk/getTalkById',
+    method: 'get',
+    params
+  })
+}
+
+// 编辑说说方法
+export function updateTalk(data) {
+  return request({
+    url: '/talk/update',
+    method: 'put',
+    data,
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+}

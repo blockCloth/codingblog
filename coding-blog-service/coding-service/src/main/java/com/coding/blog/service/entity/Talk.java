@@ -37,7 +37,15 @@ public class Talk implements Serializable {
     @TableField("talk_content")
     private String talkContent;
 
-    @ApiModelProperty("文章状态")
+    @ApiModelProperty("说说头像")
+    @TableField("talk_avatar")
+    private String talkAvatar;
+
+    @ApiModelProperty("说说发布者")
+    @TableField("talk_user")
+    private String talkUser;
+
+    @ApiModelProperty("说说状态")
     @TableField("talk_status")
     private String talkStatus;
 

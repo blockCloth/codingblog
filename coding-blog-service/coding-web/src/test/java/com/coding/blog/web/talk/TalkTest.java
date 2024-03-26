@@ -1,5 +1,6 @@
 package com.coding.blog.web.talk;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.coding.blog.service.service.ITalkService;
 import com.coding.blog.service.vo.TalkVo;
 import com.coding.blog.web.CodingBlogApplication;
@@ -31,5 +32,12 @@ public class TalkTest {
     public void listTalks(){
         List<TalkVo> talkVoList = talkService.listTalks();
         log.info("获取说说{}",talkVoList);
+    }
+
+    @Test
+    public void listFrontTalks(){
+        IPage<TalkVo> talkVoIPage = talkService.listFrontTalks(1, 2);
+
+        log.info("获取说说{}",talkVoIPage);
     }
 }

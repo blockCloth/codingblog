@@ -47,9 +47,10 @@ const pageGetTalkList = async () => {
   if (param.current == 1) {
     loading.value = true;
   }
-  let res = await getTalkList(param);
-  if (res.code == 0) {
-    talkList.value = param.current == 1 ? res.result.list : talkList.value.concat(res.result.list);
+  let res = await getTalkList(param.current, param.size);
+
+  if (res.code == 200) {
+    talkList.value = param.current == 1 ? res.result.records : talkList.value.concat(res.result.records);
     total.value = res.result.total;
     loading.value = false;
   }
@@ -58,11 +59,12 @@ const pageGetTalkList = async () => {
 const like = async (item, index) => {
   // 取消点赞
   if (item.is_like) {
-    let tRes = await cancelTalkLike(item.id);
-    if (tRes.code == 0) {
-      await cancelLike({ for_id: item.id, type: 2, user_id: userStore.getUserInfo.id });
+    let tRes = await cancelTalkLike(item.talkId);
+
+    if (tRes.code == 200) {
+      // await cancelLike({ for_id: item.id, type: 2, user_id: userStore.getUserInfo.id });
       talkList.value[index].is_like = false;
-      talkList.value[index].like_times--;
+      talkList.value[index].talkLike--;
 
       ElNotification({
         offset: 60,
@@ -73,11 +75,12 @@ const like = async (item, index) => {
   }
   // 点赞
   else {
-    let tRes = await talkLike(item.id);
-    if (tRes.code == 0) {
-      await addLike({ for_id: item.id, type: 2, user_id: userStore.getUserInfo.id });
+    let tRes = await talkLike(item.talkId);
+
+    if (tRes.code == 200) {
+      
       talkList.value[index].is_like = true;
-      talkList.value[index].like_times++;
+      talkList.value[index].talkLike++;
       ElNotification({
         offset: 60,
         title: "提示",
@@ -103,11 +106,11 @@ onBeforeUnmount(() => {
 <template>
   <PageHeader :loading="loading" />
 
-  <div v-if="talkList.length === 0">
+  <!-- <div v-if="talkList.length === 0">
     <empty />
-  </div>
+  </div> -->
 
-  <div v-else class="talk center_box">
+  <div class="talk center_box">
     <el-card class="talk-card">
       <el-skeleton :loading="loading" style="height: 100%" animated>
         <template #template>
@@ -124,16 +127,16 @@ onBeforeUnmount(() => {
           <div class="w-[100%] talk-item-line" v-for="(talk, index) in talkList" :key="talk.id">
             <div class="talk-card__item animate__animated animate__fadeIn">
               <div class="left">
-                <el-avatar class="left-avatar" :src="talk.avatar" shape="square" />
+                <el-avatar class="left-avatar" :src="talk.talkAvatar" shape="square" />
               </div>
               <div class="w-[100%]">
                 <div class="right">
                   <div class="right-top relative">
                     <i v-if="talk.is_top == 1" class="iconfont icon-zhiding"></i>
-                    <span class="nick-name">{{ talk.nick_name }}</span>
+                    <span class="nick-name">{{ talk.talkUser }}</span>
                     <TextOverflow
                       class="content"
-                      :text="talk.content"
+                      :text="talk.talkContent"
                       :width="308"
                       :maxLines="8"
                       :font-size="14"
@@ -147,22 +150,22 @@ onBeforeUnmount(() => {
                   </div>
                   <div
                     class="right-bottom"
-                    v-if="Array.isArray(talk.talkImgList) && talk.talkImgList.length > 1"
+                    v-if="Array.isArray(talk.talkImages) && talk.talkImages.length > 1"
                   >
                     <div
                       class="image"
-                      v-image="url"
-                      v-for="(url, index) in talk.talkImgList"
+                      v-image="image.talkImage"
+                      v-for="(image, index) in talk.talkImages"
                       :key="index"
                     >
                       <el-image
                         class="w-[100%] h-[100%]"
-                        :src="url"
+                        :src="image.talkImage"
                         loading="lazy"
                         preview-teleported
                         :initial-index="index"
                         fit="cover"
-                        :preview-src-list="talk.talkImgList.map((v) => v)"
+                        :preview-src-list="talk.talkImages.map((v) => v.talkImage)"
                       >
                         <template #error>
                           <div class="w-[100%] h-[100%] grid place-items-center">
@@ -175,20 +178,20 @@ onBeforeUnmount(() => {
                   <!-- 只有一张图片就单独大图展示 -->
                   <div
                     class="right-bottom-one"
-                    v-else-if="Array.isArray(talk.talkImgList) && talk.talkImgList.length == 1"
+                    v-else-if="Array.isArray(talk.talkImages) && talk.talkImages.length == 1"
                   >
                     <div
                       class="flex justify-center items-center w-[100%] h-[100%] overflow-hidden"
-                      v-image="talk.talkImgList[0]"
+                      v-image="talk.talkImages[0].talkImage"
                     >
                       <el-image
                         class="w-[100%] h-[100%]"
-                        :src="talk.talkImgList[0]"
+                        :src="talk.talkImages[0].talkImage"
                         loading="lazy"
                         preview-teleported
                         :initial-index="index"
                         fit="cover"
-                        :preview-src-list="talk.talkImgList.map((v) => v)"
+                        :preview-src-list="talk.talkImages.map((v) => v.talkImage)"
                       >
                         <template #error>
                           <div class="w-[100%] h-[100%] grid place-items-center">
@@ -199,7 +202,7 @@ onBeforeUnmount(() => {
                     </div>
                   </div>
                   <div class="like flex justify-between items-center !mt-[15px]">
-                    <div class="time">{{ returnTime(talk.createdAt) }}前</div>
+                    <div class="time">{{ returnTime(talk.createDate) }}前</div>
                     <div>
                       <i
                         :class="['iconfont', 'icon-icon1', talk.is_like ? 'is-like' : '']"
@@ -207,13 +210,13 @@ onBeforeUnmount(() => {
                       >
                       </i>
                       <span :class="[talk.is_like ? 'is-like' : '', '!ml-[5px]']">{{
-                        talk.like_times
+                        talk.talkLike
                       }}</span>
                     </div>
                   </div>
-                  <div class="!mt-[10px]">
+                  <!-- <div class="!mt-[10px]">
                     <Comment class="w-[100%]" type="talk" :id="talk.id" :author-id="talk.user_id" />
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>

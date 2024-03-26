@@ -2,23 +2,27 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.coding.blog.service.mapper.TalkMapper">
 
-    <select id="listTalks" resultType="com.coding.blog.service.vo.TalkVo">
-        SELECT
-            t.talk_id,
-            t.talk_content,
-            t.talk_status,
-            t.talk_order,
-            t.create_date,
-            GROUP_CONCAT(ti.talk_image) as talk_images
-        FROM
-            talk t
-                LEFT JOIN talk_image_relation tir ON t.talk_id = tir.talk_id
-                LEFT JOIN talk_image ti ON tir.talk_image_id = ti.talk_image_id
-        GROUP BY
-            t.talk_id
-        ORDER BY
-            t.talk_order desc,
-            t.create_date desc
+    <resultMap id="talkResultMap" type="com.coding.blog.service.vo.TalkVo">
+        <id property="talkId" column="talk_id"/>
+        <result property="talkContent" column="talk_content"/>
+        <result property="talkAvatar" column="talk_avatar"/>
+        <result property="talkUser" column="talk_user"/>
+        <result property="talkStatus" column="talk_status"/>
+        <result property="talkOrder" column="talk_order"/>
+        <result property="createDate" column="create_date"/>
+    </resultMap>
+
+    <select id="listTalks" resultMap="talkResultMap">
+        SELECT talk_id,
+               talk_content,
+               talk_avatar,
+               talk_user,
+               talk_status,
+               talk_order,
+               create_date
+        FROM talk
+        ORDER BY talk_order desc,
+                 create_date desc
     </select>
 
     <select id="getTalkById" resultType="com.coding.blog.service.vo.TalkVo">
@@ -33,5 +37,19 @@
                  LEFT JOIN talk_image ti ON tir.talk_image_id = ti.talk_image_id
         WHERE t.talk_id = #{talkId}
         GROUP BY t.talk_id
+    </select>
+
+    <select id="listFrontTalks" resultType="com.coding.blog.service.vo.TalkVo">
+        SELECT talk_id,
+               talk_content,
+               talk_avatar,
+               talk_user,
+               talk_status,
+               talk_order,
+               create_date
+        FROM talk
+        WHERE talk_status = 1
+        ORDER BY talk_order desc,
+                 create_date desc
     </select>
 </mapper>

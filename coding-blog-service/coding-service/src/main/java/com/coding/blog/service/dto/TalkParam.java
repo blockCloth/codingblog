@@ -1,5 +1,6 @@
 package com.coding.blog.service.dto;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -21,6 +22,12 @@ public class TalkParam implements Serializable {
 
     @ApiModelProperty("talk_id")
     private Long talkId;
+
+    @ApiModelProperty("说说头像")
+    private String talkAvatar;
+
+    @ApiModelProperty("说说发布者")
+    private String talkUser;
 
     @ApiModelProperty("说说内容")
     private String talkContent;

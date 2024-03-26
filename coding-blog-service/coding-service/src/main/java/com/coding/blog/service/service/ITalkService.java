@@ -1,5 +1,6 @@
 package com.coding.blog.service.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.coding.blog.service.dto.TalkParam;
 import com.coding.blog.service.entity.Talk;
@@ -27,4 +28,9 @@ public interface ITalkService extends IService<Talk> {
 
     List<TalkVo> listTalks();
 
+    IPage<TalkVo> listFrontTalks(Integer current, Integer size);
+
+    boolean talkLike(Long talkId);
+
+    boolean cancelTalkLike(Long talkId);
 }
