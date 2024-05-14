@@ -117,6 +117,8 @@ const getArticleDetails = async (id) => {
       return res.result.posts.attribute; // 如果解析失败，返回原始值
     }
     articleInfo.value = res.result;
+    console.log(articleInfo.value, 'articleInfo.value');
+    console.log(currentUrl)
 
     //存储文章信息
     sessionStorage.setItem('articleInfo', JSON.stringify(articleInfo.value));
@@ -214,27 +216,27 @@ onBeforeUnmount(() => {
             <div class="article-info-inner">
               <div>
                 <span>文章作者：</span>
-                <a class="to_pointer" href="https://gitee.com/mrzym">{{
+                <a class="to_pointer" href="https://github.com/blockCloth/codingblog">{{
                   articleInfo.authorName
                 }}</a>
               </div>
               <div>
                 <span>类型：</span>
                 <el-tag>{{
-                  articleInfo.type == 1 ? "原创" : articleInfo.type == 2 ? "转载" : "翻译"
+                  articleInfo.posts.postType == 1 ? "原创" : articleInfo.posts.postType == 2 ? "转载" : "翻译"
                 }}</el-tag>
               </div>
-              <div v-if="articleInfo.type != 1">
+              <div v-if="articleInfo.posts.postType != 1">
                 <span>原文链接：</span>
-                <a class="to_pointer" :href="articleInfo.origin_url">{{
-                  articleInfo.origin_url
+                <a class="to_pointer" :href="articleInfo.posts.postLink">{{
+                  articleInfo.posts.postLink
                 }}</a>
               </div>
               <div v-else>
                 <span>本文链接：</span>
                 <a class="to_pointer" v-copy="currentUrl">{{ currentUrl }}</a>
               </div>
-              <p>声明: 此文章版权归 青 所有，如有转载，请注明来自原作者</p>
+              <p>声明: 此文章版权归 {{ articleInfo.authorName }} 所有，如有转载，请注明来自原作者</p>
             </div>
           </div>
           <div :class="['like', isLike ? 'is-like' : '']" @click="like">

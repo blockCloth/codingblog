@@ -29,8 +29,9 @@
             @change="handleEditorChange" @imgAdd="handleEditorImgAdd" :toolbars="toolbars">
             <template v-slot:left-toolbar-before>
               <div class="styleof-inlineblock">
-                <el-upload class="upload-demo" :action="importMdUrl" :headers="{ Authorization: getToken() }" accept=".md"
-                  :show-file-list="false" :on-success="importMdSuccess" :before-upload="beforeImportMdSuccess">
+                <el-upload class="upload-demo" :action="importMdUrl" :headers="{ Authorization: getToken() }"
+                  accept=".md" :show-file-list="false" :on-success="importMdSuccess"
+                  :before-upload="beforeImportMdSuccess">
                   <button type="button" title="导入md文件" class="op-icon fa">
                     <more-icon style="width: 18px; top: 0;" iconClass="iconfont-import"></more-icon>
                   </button>
@@ -48,7 +49,8 @@
         <el-form-item label="标签">
           <el-select v-model="selectedTagArray" class="full-row" filterable :multiple-limit="5" multiple
             placeholder="可输入文字查询，至少选择一个标签">
-            <el-option v-for="item in allTagList" :key="item.postTagId" :label="item.description" :value="item.postTagId">
+            <el-option v-for="item in allTagList" :key="item.postTagId" :label="item.description"
+              :value="item.postTagId">
             </el-option>
           </el-select>
         </el-form-item>
@@ -60,6 +62,20 @@
           <el-input v-model="editDataModel.postExcerpt" :rows="3" :autosize="{ minRows: 3, maxRows: 3 }" type="textarea"
             placeholder="请输入摘要" maxlength="100" show-word-limit />
         </el-form-item>
+        <!-- 文章类型 -->
+        <el-form-item label="文章类型">
+          <el-select v-model="editDataModel.postType" placeholder="请选择文章类型">
+            <el-option label="原创" :value="1"></el-option>
+            <el-option label="转载" :value="2"></el-option>
+            <el-option label="翻译" :value="3"></el-option>
+          </el-select>
+        </el-form-item>
+
+        <!-- 转载链接 -->
+        <el-form-item label="转载链接" v-if="editDataModel.postType !== 1 ">
+          <el-input v-model="editDataModel.postLink" placeholder="请输入转载链接"></el-input>
+        </el-form-item>
+        
         <el-form-item label="封面图">
           <div class="styleof-inlineblock" @mouseover="articleCoverOpLayerShow = true"
             @mouseleave="articleCoverOpLayerShow = false">
@@ -123,11 +139,12 @@ export default {
         postContent: '', // 正文
         htmlContent: '', // html内容，现在转化了，前端直接查询展示就好了
         postExcerpt: '', // 摘要
-        postType: 'POST', // 文章类型
+        postType: 1, // 文章类型
         postStatus: 'DRAFT', // 文章状态
         termTaxonomyId: [], // 所属栏目id
         attribute: '', // 属性
         tags: '', // 标签
+        postLink: '', // 转载链接
       },
 
       // 所有标签列表
@@ -271,9 +288,9 @@ export default {
     },
     // 上传文章封面图之前验证的方法
     beforeArticleCoverUpload(file) {
-      const isLt1M = file.size / 1024 / 1024 < 2
+      const isLt1M = file.size / 1024 / 1024 < 10
       if (!isLt1M) {
-        this.$message.error('封面图片大小不能超过2MB!')
+        this.$message.error('封面图片大小不能超过10MB!')
       }
       return isLt1M
     },
@@ -388,11 +405,11 @@ export default {
         this.editDataModel.tags = this.selectedTagArray
       }
       //设置栏目ID
-      if(this.editDataModel.termTaxonomyId && this.editDataModel.termTaxonomyId.length > 0){
+      if (this.editDataModel.termTaxonomyId && this.editDataModel.termTaxonomyId.length > 0) {
         this.editDataModel.termTaxonomyId = this.editDataModel.termTaxonomyId[this.editDataModel.termTaxonomyId.length - 1]
-      
+
       }
-      this.$refs['dataForm','pubForm'].validate((valid, errorInfo) => {
+      this.$refs['dataForm', 'pubForm'].validate((valid, errorInfo) => {
         if (valid) {
           this.dialogLoading = true
           const postData = qs.stringify(this.editDataModel)
@@ -435,7 +452,7 @@ export default {
         if (this.editDataModel.attribute) {
           // 赋值界面属性对象
           this.otherSettings = JSON.parse(this.editDataModel.attribute)
-          this.articleCoverUrl =  this.otherSettings.articleCoverUrl
+          this.articleCoverUrl = this.otherSettings.articleCoverUrl
         }
         // 赋值界面标签数组对象
         if (!this.editDataModel.tags) {

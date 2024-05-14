@@ -32,7 +32,7 @@ export const reqMusicDetail = ({ id, level }) => {
 // 获取音乐的描述
 export const reqMusicDescription = (id) => {
   return new Promise((resolve, reject) => {
-    http.get(`/wapi//song/detail?ids=${id}`, {}).then((res) => {
+    http.get(`/wapi/song/detail?ids=${id}`, {}).then((res) => {
       resolve(res);
     });
   });
@@ -56,6 +56,7 @@ export const reqSearchSingerHot = ({ id, limit, offset }) => {
       });
   });
 };
+
 // 根据歌曲id获取歌词
 export const reqMusicLyricById = (id) => {
   return new Promise((resolve, reject) => {

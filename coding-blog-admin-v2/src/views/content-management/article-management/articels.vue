@@ -7,7 +7,7 @@
       <div class="flex-fixed-item">
         <el-select v-model="tableAbout.listQuery.postStatus" clearable placeholder="文章状态">
           <el-option v-for="item in statusList" :label="item.label" :value="item.value" :key="item.value">{{ item.label
-          }}</el-option>
+            }}</el-option>
         </el-select>
       </div>
       <div class="flex-fixed-item">
@@ -59,6 +59,13 @@
           <template slot-scope="{row}">
             <el-tag :type="row.postStatus == 'DRAFT' ? 'info' : 'success'">
               {{ statusFilter(row) }}
+            </el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="类型" prop="postType" width="80px" align="center">
+          <template slot-scope="{row}">
+            <el-tag :type="getTypeTagType(row.postType)">
+              {{ getTypeLabel(row.postType) }}
             </el-tag>
           </template>
         </el-table-column>
@@ -256,6 +263,31 @@ export default {
     }
   },
   methods: {
+    // 判断文章类型
+    getTypeLabel(postType) {
+      switch (postType) {
+        case 1:
+          return '原创';
+        case 2:
+          return '转载';
+        case 3:
+          return '翻译';
+        default:
+          return '未知';
+      }
+    },
+    getTypeTagType(postType) {
+      switch (postType) {
+        case 1:
+          return 'success';
+        case 2:
+          return 'primary';
+        case 3:
+          return 'warning';
+        default:
+          return '';
+      }
+    },
     //展示文章详情
     articleDetail(res) {
       getArticleById({ postId: res.postsId }).then(res => {
@@ -314,6 +346,8 @@ export default {
     // 文章列表查询方法
     getList() {
       getArticlePagedList(this.tableAbout.listQuery).then(res => {
+
+        console.log(res)
 
         this.tableAbout.tableData = res.records
         this.tableAbout.listQuery.total = res.total
