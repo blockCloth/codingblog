@@ -182,6 +182,8 @@ public class PostsServiceImpl extends ServiceImpl<PostsMapper, Posts> implements
                 ExceptionUtil.of(StatusEnum.SYSTEM_POST_NOT_EXISTS);
             }
             detailVo.setPosts(posts);
+            // 查询作者名
+            detailVo.setAuthorName(postsMapper.getAuthorName(postId));
             // 查询专栏信息
             TermTaxonomy termTaxonomy = termRelationshipsService.queryTermTaxonomyById(postId);
             if (termTaxonomy != null) {
@@ -192,6 +194,8 @@ public class PostsServiceImpl extends ServiceImpl<PostsMapper, Posts> implements
             if (CollUtil.isNotEmpty(postTags)) {
                 detailVo.setPostTagList(postTags);
             }
+            // postDetailVo = postsMapper.queryPostDetailById(postId);
+
             redisTemplateUtil.hSet(RedisConstants.REDIS_KEY_POST_SINGLE, postId.toString(), detailVo);
             postDetailVo = detailVo;
         }

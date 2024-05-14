@@ -3,6 +3,7 @@ package com.coding.blog.service.mapper;
 import com.coding.blog.service.entity.Posts;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.coding.blog.service.vo.FrontPostVo;
+import com.coding.blog.service.vo.PostDetailVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -28,4 +29,8 @@ public interface PostsMapper extends BaseMapper<Posts> {
     List<Posts> recommendPosts(Long postsId);
 
     List<Posts> getPostsByContent(String content);
+
+    PostDetailVo queryPostDetailById(@Param("postId") Long postId);
+
+    String getAuthorName(@Param("postId") Long postId);
 }

@@ -70,4 +70,9 @@ public class PostsParam implements Serializable {
     @ApiModelProperty("专栏ID")
     private Long termTaxonomyId;
 
+    @ApiModelProperty("文章类型")
+    private Integer postType;
+
+    @ApiModelProperty("文章链接")
+    private String postLink;
 }

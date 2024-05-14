@@ -36,4 +36,8 @@ public class PostDetailVo {
      * 浏览数量
      */
     private Integer viewSize;
+    /**
+     * 作者名
+     */
+    private String authorName;
 }

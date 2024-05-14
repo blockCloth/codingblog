@@ -75,4 +75,31 @@
         WHERE MATCH (post_title, post_content) AGAINST(#{content} IN BOOLEAN MODE)
         ORDER BY posts_id;
     </select>
+
+    <select id="queryPostDetailById" resultType="com.coding.blog.service.vo.PostDetailVo">
+        SELECT
+            p.*,
+            u.user_nicename,
+            t.*,
+            pt.*
+        FROM
+            posts p
+                LEFT JOIN term_relationships tr ON p.posts_id = tr.term_taxonomy_id
+                LEFT JOIN term_taxonomy t ON tr.term_taxonomy_id = t.term_taxonomy_id
+                LEFT JOIN post_tag_relation ptr ON p.posts_id = ptr.post_id
+                LEFT JOIN post_tag pt ON ptr.post_tag_id = pt.post_tag_id
+                LEFT JOIN users u on p.post_author = u.users_id
+        WHERE
+            p.posts_id = #{postId}
+    </select>
+
+    <select id="getAuthorName" resultType="java.lang.String">
+        SELECT
+            u.user_nicename
+        FROM
+            posts p
+                LEFT JOIN users u ON p.post_author = u.users_id
+        WHERE
+            p.posts_id = #{postId}
+    </select>
 </mapper>

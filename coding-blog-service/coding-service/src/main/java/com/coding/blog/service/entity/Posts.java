@@ -73,7 +73,7 @@ public class Posts implements Serializable {
 
     @ApiModelProperty("文章类型（post/page等）")
     @TableField("post_type")
-    private String postType;
+    private Integer postType;
 
     @ApiModelProperty("评论总数")
     @TableField("comment_count")
@@ -90,4 +90,8 @@ public class Posts implements Serializable {
     @ApiModelProperty("浏览量")
     @TableField("page_view")
     private Long pageView;
+
+    @ApiModelProperty("转载链接")
+    @TableField("post_link")
+    private String postLink;
 }
