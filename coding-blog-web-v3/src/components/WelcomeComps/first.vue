@@ -403,7 +403,7 @@ onMounted(() => {
 <template>
   <div class="home_bg">
     <canvas id="canvas"></canvas>
-    <div class="font">M's Blog</div>
+    <div class="font">Qing's Blog</div>
     <TypeWriter class="type-writer" :typeList="saying"></TypeWriter>
     <ul class="home-tab">
       <li v-for="item in menuList" :key="item.path" @click="goMenu(item.path)">{{ item.label }}</li>
@@ -423,7 +423,7 @@ onMounted(() => {
   position: absolute;
   top: 60%;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%) scale(0.8); 
   min-height: 3rem;
   padding: 1rem;
   display: flex;

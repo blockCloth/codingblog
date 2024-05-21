@@ -2,15 +2,19 @@ package com.coding.blog.web.admin;
 
 import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.coding.blog.common.util.ReloadSecurityEvent;
 import com.coding.blog.service.dto.ResourceParam;
 import com.coding.blog.service.entity.Resource;
 import com.coding.blog.service.service.IResourceService;
 import com.coding.blog.service.vo.ResourceQueryVo;
 import com.coding.blog.service.vo.ResultObject;
+import com.coding.blog.web.security.config.DynamicSecurityMetadataSource;
+import com.coding.blog.web.security.config.DynamicSecurityService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,12 +36,16 @@ public class ResourceController {
     @Autowired
     private IResourceService resourceService;
 
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
+
     @ApiOperation("添加资源信息")
     @PostMapping("saveResource")
     public ResultObject saveResource(@Validated ResourceParam resourceParam){
         Resource resource = new Resource();
         BeanUtils.copyProperties(resourceParam,resource);
         if (resource != null && resourceService.saveResource(resource)){
+            eventPublisher.publishEvent(new ReloadSecurityEvent(this));
             return ResultObject.success();
         }
         return ResultObject.failed();
@@ -50,6 +58,7 @@ public class ResourceController {
         BeanUtils.copyProperties(resourceParam,resource);
         if (resource != null && resourceService.updateById(resource)){
             resourceService.delResourceCache();
+            eventPublisher.publishEvent(new ReloadSecurityEvent(this));
             return ResultObject.success();
         }
         return ResultObject.failed();
@@ -61,6 +70,7 @@ public class ResourceController {
         if (resourceId == null) return ResultObject.failed("资源ID不能为空！");
 
         if (resourceService.deleteResource(resourceId)){
+            eventPublisher.publishEvent(new ReloadSecurityEvent(this));
             return ResultObject.success();
         }
         return ResultObject.failed();

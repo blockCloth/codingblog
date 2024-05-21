@@ -1,7 +1,9 @@
 package com.coding.blog.web.security.config;
 
 import cn.hutool.core.util.URLUtil;
+import com.coding.blog.common.util.ReloadSecurityEvent;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.EventListener;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
@@ -27,8 +29,21 @@ public class DynamicSecurityMetadataSource implements FilterInvocationSecurityMe
     }
 
     public void clearDataSource() {
-        configAttributeMap.clear();
-        configAttributeMap = null;
+       if (configAttributeMap != null){
+           configAttributeMap.clear();
+           configAttributeMap = null;
+       }
+    }
+
+    public void reloadDataSource() {
+        clearDataSource();
+        loadDataSource();
+        System.out.println("Data reloaded.");
+    }
+
+    @EventListener
+    public void handleReloadSecurityEvent(ReloadSecurityEvent event) {
+        reloadDataSource();
     }
 
     @Override
