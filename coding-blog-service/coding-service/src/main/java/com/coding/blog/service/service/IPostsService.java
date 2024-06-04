@@ -69,4 +69,5 @@ public interface IPostsService extends IService<Posts> {
 
     List<Posts> getHotPosts();
 
+    boolean setVisible(Long postId, Integer status);
 }

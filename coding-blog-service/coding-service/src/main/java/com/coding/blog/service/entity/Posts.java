@@ -94,4 +94,8 @@ public class Posts implements Serializable {
     @ApiModelProperty("转载链接")
     @TableField("post_link")
     private String postLink;
+
+    @ApiModelProperty("文章是否展示")
+    @TableField("post_visible")
+    private Integer postVisible;
 }

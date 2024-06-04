@@ -34,10 +34,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.sql.SQLDataException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -106,8 +103,12 @@ public class PostsServiceImpl extends ServiceImpl<PostsMapper, Posts> implements
     }
 
     private void insertPostViewAndPraise(Long postsId) {
-        redisTemplateUtil.hSet(RedisConstants.POST_PAGE_VIEW,postsId.toString(),0L);
-        redisTemplateUtil.hSet(RedisConstants.POST_PRAISE,postsId.toString(),0L);
+        //设置随机浏览量(10~20)跟点赞量（5~10）
+        Random rand = new Random();
+        int view = rand.nextInt((20 - 10) + 1) + 10;
+        redisTemplateUtil.hSet(RedisConstants.POST_PAGE_VIEW,postsId.toString(),(long)view);
+        int praise = rand.nextInt((10 - 5) + 1) + 5;
+        redisTemplateUtil.hSet(RedisConstants.POST_PRAISE,postsId.toString(),(long)praise);
     }
 
 
@@ -293,10 +294,9 @@ public class PostsServiceImpl extends ServiceImpl<PostsMapper, Posts> implements
         if (!redisTemplateUtil.isExist(RedisConstants.POST_PAGE_VIEW))
             //初始化浏览量
             initHotPosts("view");
-
-        //判断点赞量是否需要初始化
+            //判断点赞量是否需要初始化
         if (!redisTemplateUtil.isExist(RedisConstants.POST_PRAISE))
-            //初始化浏览量
+            //初始化点赞量
             initHotPosts("praise");
 
         // 获取点赞数、浏览量
@@ -404,9 +404,18 @@ public class PostsServiceImpl extends ServiceImpl<PostsMapper, Posts> implements
                 .sorted((e1, e2) -> ((Integer)e2.getValue()).compareTo((Integer) e1.getValue()))
                 .limit(5)
                 .map(entry -> postsMapper.selectById(Long.parseLong((String) entry.getKey())))
+                .filter(post -> post.getPostVisible() != 1)  // 过滤出visible不等于0的文章
                 .collect(Collectors.toList());
 
         return topFivePosts;
+    }
+
+    @Override
+    public boolean setVisible(Long postId, Integer status) {
+        UpdateWrapper<Posts> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("posts_id",postId);
+        updateWrapper.set("post_visible",status);
+        return postsMapper.update(updateWrapper) > 0;
     }
 
     /**
@@ -415,14 +424,16 @@ public class PostsServiceImpl extends ServiceImpl<PostsMapper, Posts> implements
      */
     private void initHotPosts(String str){
         List<Posts> posts = postsMapper.selectList(null);
+        Random rand = new Random();
         if (str.equals("view")){
             //此时需要初始化浏览量
             for (Posts post : posts) {
                 // 检查文章的浏览量是否已经在Redis中
                 Object pageView = redisTemplateUtil.hGet(RedisConstants.POST_PAGE_VIEW, post.getPostsId().toString());
                 if (ObjectUtil.isEmpty(pageView)) {
-                    // 如果没有，设置默认浏览量为0
-                    redisTemplateUtil.hSet(RedisConstants.POST_PAGE_VIEW, post.getPostsId().toString(), 0L);
+                    // 如果没有，设置默认浏览量为10~20
+                    int view = rand.nextInt((20 - 10) + 1) + 10;
+                    redisTemplateUtil.hSet(RedisConstants.POST_PAGE_VIEW, post.getPostsId().toString(), (long)view);
                 }
             }
         }else {
@@ -431,8 +442,9 @@ public class PostsServiceImpl extends ServiceImpl<PostsMapper, Posts> implements
                 Object pagePraise = redisTemplateUtil.hGet(RedisConstants.POST_PRAISE, post.getPostsId().toString());
                 // 检查文章的点赞量是否已经在Redis中
                 if (ObjectUtil.isEmpty(pagePraise)) {
-                    // 如果没有，设置默认点赞量为0
-                    redisTemplateUtil.hSet(RedisConstants.POST_PRAISE, post.getPostsId().toString(), 0L);
+                    // 如果没有，设置默认点赞量为5~10
+                    int praise = rand.nextInt((10 - 5) + 1) + 10;
+                    redisTemplateUtil.hSet(RedisConstants.POST_PRAISE, post.getPostsId().toString(), (long)praise);
                 }
             }
         }

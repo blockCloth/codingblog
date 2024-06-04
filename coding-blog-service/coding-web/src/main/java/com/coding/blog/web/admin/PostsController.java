@@ -177,6 +177,16 @@ public class PostsController {
         map.put("postTitle",file.getOriginalFilename());
         return ResultObject.success(map);
     }
+
+    @ApiOperation("设置文章展示状态")
+    @PutMapping("setVisible")
+    public ResultObject setVisible(@RequestParam Long postId,
+                                   @RequestParam Integer status){
+        if(postsService.setVisible(postId,status)){
+            return ResultObject.success();
+        }
+        return ResultObject.failed();
+    }
 }
 
 
