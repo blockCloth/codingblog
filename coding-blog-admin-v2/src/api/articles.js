@@ -99,3 +99,11 @@ export function cancelArticleOnTop(data) {
   })
 }
 
+// 设置文章是否展示
+export function setArticleVisible(data) {
+  return request({
+    url: '/posts/setVisible',
+    method: 'put',
+    data
+  })
+}

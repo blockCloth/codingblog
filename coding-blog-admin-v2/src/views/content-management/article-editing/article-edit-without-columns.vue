@@ -79,8 +79,15 @@
         <el-form-item label="封面图">
           <div class="styleof-inlineblock" @mouseover="articleCoverOpLayerShow = true"
             @mouseleave="articleCoverOpLayerShow = false">
-            <el-upload class="article-cover" name="image" :action="uploadUrl" :headers="{ Authorization: getToken() }"
-              :show-file-list="false" :on-success="handleArticleCoverSuccess" :before-upload="beforeArticleCoverUpload">
+            <el-upload 
+              class="article-cover" 
+              name="image" 
+              :action="uploadUrl" 
+              :headers="{ Authorization: getToken() }"
+              :show-file-list="false" 
+              :on-success="handleArticleCoverSuccess" 
+              :on-progress="handleUploadProgress"
+              :before-upload="beforeArticleCoverUpload">
               <el-image v-if="articleCoverUrl" :src="articleCoverUrl" fit="cover" class="article-cover"></el-image>
               <i v-else class="el-icon-plus cover-uploader-icon"></i>
               <div v-show="articleCoverUrl && articleCoverOpLayerShow" class="op-layer">
@@ -88,7 +95,7 @@
               </div>
             </el-upload>
           </div>
-          <div class="red-tip">只能上传jpg/png文件，最佳宽高比为3:2，展示端文章详情页最大宽度820px, 且不超过2M</div>
+          <div class="red-tip">只能上传jpg/png文件，最佳宽高比为3:2，展示端文章详情页最大宽度820px, 且不超过10M</div>
         </el-form-item>
       </el-form>
       <div slot="footer" class="text-right">
@@ -294,11 +301,21 @@ export default {
       }
       return isLt1M
     },
+    handleUploadProgress(event, file, fileList) {
+      this.$message({
+        message: '图片正在上传...',
+        type: 'warning'
+      });
+    },
     // 上传文章封面图成功后回调函数
     handleArticleCoverSuccess(res, file) {
       if (res && res.code === 200) {
         this.articleCoverUrl = res.result.imagePath
         this.imageName = res.result.imageName
+        this.$message({
+          message: '上传成功',
+          type: 'success'
+        });
       } else {
         this.$message.error('上传失败，请重试或联系管理员')
       }

@@ -69,6 +69,13 @@
             </el-tag>
           </template>
         </el-table-column>
+        <el-table-column label="是否展示" prop="postVisible" width="80px" align="center">
+          <template slot-scope="{row}">
+            <el-switch v-model="row.postVisible" :active-value="0" :inactive-value="1"
+              @change="handleSettingVisible($event, row)">
+            </el-switch>
+          </template>
+        </el-table-column>
         <el-table-column label="置顶" prop="menuOrder" width="80px" align="center">
           <template slot-scope="{row}">
             <el-switch v-model="row.menuOrder" :active-value="1" :inactive-value="0"
@@ -169,7 +176,7 @@
 </template>
 
 <script>
-import { getArticlePagedList, deleteArticle, getArticleById, setArticleOnTop, cancelArticleOnTop, getAuthorName } from '@/api/articles'
+import { getArticlePagedList, deleteArticle, getArticleById, setArticleOnTop, cancelArticleOnTop, getAuthorName,setArticleVisible } from '@/api/articles'
 import { loopExpendTree } from '@/utils/common'
 import { getAllColumns } from '@/api/columns'
 import MarkdownIt from 'markdown-it';
@@ -263,6 +270,19 @@ export default {
     }
   },
   methods: {
+    // 设置文章是否展示
+    handleSettingVisible(visible, row) {
+      let reqData = qs.stringify({postId: row.postsId, status: visible})
+      setArticleVisible(reqData).then(() => {
+        this.$notify({
+          title: '成功',
+          message: '操作成功',
+          type: 'success',
+          duration: 2000
+        })
+        this.getList()
+      })
+    },
     // 判断文章类型
     getTypeLabel(postType) {
       switch (postType) {
