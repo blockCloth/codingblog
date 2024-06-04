@@ -185,7 +185,7 @@ watch(
                   size="1.2rem"
                   align="left"
                   :lineHeight="3"
-                  :name="item.article_description"
+                  :name="item.postExcerpt"
                 />
               </div>
             </div>

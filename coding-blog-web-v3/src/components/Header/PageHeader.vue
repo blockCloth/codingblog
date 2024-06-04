@@ -71,12 +71,12 @@ const getBgCover = computed(() => {
   // 做一个根据路由来判断判断页面背景图片
   let url;
   if (route.path == "/article") {
-    url = props.article.posts.attribute.articleCoverUrl || "https://mrzym.gitee.io/blogimg/cover/cute.jpg";
+    url = props.article.posts.attribute.articleCoverUrl || "https://blockcloth.cn/codingblog/00353d62fc253c14c164739b60d4bda6.webp";
   } else if (props.bgUrl) {
-    url = props.bgUrl || "https://mrzym.gitee.io/blogimg/cover/cute.jpg";
+    url = props.bgUrl || "https://blockcloth.cn/codingblog/00353d62fc253c14c164739b60d4bda6.webp";
   } else {
     let index = bgList.findIndex((bg) => bg.pictureName == route.name);
-    url = index == -1 ? "https://mrzym.gitee.io/blogimg/cover/cute.jpg" : bgList[index].pictureUrl;
+    url = index == -1 ? "https://blockcloth.cn/codingblog/00353d62fc253c14c164739b60d4bda6.webp" : bgList[index].pictureUrl;
   }
   // eslint-disable-next-line
   finalUrl.value = url;
