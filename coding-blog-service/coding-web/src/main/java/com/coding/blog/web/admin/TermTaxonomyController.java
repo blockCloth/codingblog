@@ -52,6 +52,7 @@ public class TermTaxonomyController {
         //设置修改时间
         termTaxonomy.setUpdateTime(LocalDateTime.now());
         if (termTaxonomy != null && taxonomyService.updateById(termTaxonomy)){
+            //修改成功，删除缓存内容
             taxonomyService.delTermTaxonomyCache();
             return ResultObject.success();
         }

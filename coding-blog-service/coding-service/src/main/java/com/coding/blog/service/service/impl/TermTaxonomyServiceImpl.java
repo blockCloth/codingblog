@@ -118,6 +118,10 @@ public class TermTaxonomyServiceImpl extends ServiceImpl<TermTaxonomyMapper, Ter
         return taxonomyVoCache;
     }
 
+    /**
+     * 查询所有专栏树
+     * @return
+     */
     @Override
     public List<TermTaxonomyVo> queryAllTermTaxonomyTree() {
         List<TermTaxonomyVo> termTaxonomyVosCache =

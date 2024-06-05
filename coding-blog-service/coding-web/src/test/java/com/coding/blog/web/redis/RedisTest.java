@@ -60,6 +60,9 @@ public class RedisTest {
 
     @Test
     public void testHash(){
+
+        log.info("设置age属性的增量{}",redisTemplateUtil.hIncr("student","age",15L));
+
         // redisTemplateUtil.hSet("user","name","zhangsan");
         // redisTemplateUtil.hSet("user","age",18);
         // redisTemplateUtil.hSet("user","sex",false);

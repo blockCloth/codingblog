@@ -50,9 +50,12 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, Resource> i
         }
         resource.setCreateTime(LocalDateTime.now());
 
-        // 删除缓存
-        delResourceCache();
-        return save(resource);
+        boolean isSaved = save(resource);
+        if (isSaved) {
+            // 删除缓存
+            delResourceCache();
+        }
+        return isSaved;
     }
 
     @Override
@@ -61,8 +64,6 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, Resource> i
                 new QueryWrapper<RoleResourceRelation>().eq("resource_id", resourceId)) > 0) {
             ExceptionUtil.of(StatusEnum.SYSTEM_DATA_USE);
         }
-        // 删除缓存
-        delResourceCache();
         return resourceMapper.deleteById(resourceId) > 0;
     }
 
@@ -87,7 +88,7 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, Resource> i
 
     @Override
     public void delResourceCache() {
-        redisTemplateUtil.del(RedisConstants.REDIS_KEY_RESOURCE);
+        // redisTemplateUtil.del(RedisConstants.REDIS_KEY_RESOURCE);
         redisTemplateUtil.del(RedisConstants.REDIS_KEY_RESOURCE_ADMIN);
     }
 }

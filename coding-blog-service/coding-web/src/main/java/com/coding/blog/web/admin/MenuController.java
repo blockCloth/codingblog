@@ -57,6 +57,8 @@ public class MenuController {
     public ResultObject deleteMenuById(Long menuId){
 
         if (menuId != null && menuService.deleteMenuById(menuId)){
+            //删除缓存
+            menuService.delRedisCache();
             return ResultObject.success();
         }
         return ResultObject.failed();
@@ -89,11 +91,11 @@ public class MenuController {
         if ((menuId == null || hidden == null) || (hidden != 0 && hidden != 1))
             return ResultObject.failed("请填写正确的参数！");
 
-        //隐藏之前删除Redis缓存
-        menuService.delRedisCache();
-        Menu menu = menuService.getById(menuId);
-        menu.setHidden(hidden);
-
-        return menuService.updateById(menu) ? ResultObject.success() : ResultObject.failed();
+        if(menuService.setIsHidden(menuId,hidden)){
+            //隐藏成功删除menu缓存
+            menuService.delRedisCache();
+            return ResultObject.success();
+        }
+        return ResultObject.failed();
     }
 }

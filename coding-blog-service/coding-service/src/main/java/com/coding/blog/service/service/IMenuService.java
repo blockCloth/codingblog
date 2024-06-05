@@ -25,4 +25,6 @@ public interface IMenuService extends IService<Menu> {
     List<MenuDetailVo> queryAllMenus();
 
     void delRedisCache();
+
+    boolean setIsHidden(Long menuId, Integer hidden);
 }

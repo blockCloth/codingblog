@@ -71,6 +71,7 @@ public class ResourceController {
 
         if (resourceService.deleteResource(resourceId)){
             eventPublisher.publishEvent(new ReloadSecurityEvent(this));
+            resourceService.delResourceCache();
             return ResultObject.success();
         }
         return ResultObject.failed();

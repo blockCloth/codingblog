@@ -46,8 +46,11 @@ public class PostTagServiceImpl extends ServiceImpl<PostTagMapper, PostTag> impl
                 new QueryWrapper<PostTag>().eq("description", postTag.getDescription())) > 0) {
             ExceptionUtil.of(StatusEnum.SYSTEM_DATA_USE);
         }
-        delPostTagCache();
-        return save(postTag);
+        boolean isSaved = save(postTag);
+        if (isSaved) {
+            delPostTagCache();
+        }
+        return isSaved;
     }
 
     @Override
@@ -88,6 +91,6 @@ public class PostTagServiceImpl extends ServiceImpl<PostTagMapper, PostTag> impl
     @Override
     public void delPostTagCache() {
         redisTemplateUtil.del(RedisConstants.REDIS_KEY_POST_TAG_VO);
-        redisTemplateUtil.del(RedisConstants.REDIS_KEY_POST_TAG);
+        // redisTemplateUtil.del(RedisConstants.REDIS_KEY_POST_TAG);
     }
 }

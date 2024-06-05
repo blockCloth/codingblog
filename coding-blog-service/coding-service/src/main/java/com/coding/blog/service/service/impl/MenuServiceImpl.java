@@ -2,11 +2,13 @@ package com.coding.blog.service.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.coding.blog.common.enumapi.RedisConstants;
 import com.coding.blog.common.enumapi.StatusEnum;
 import com.coding.blog.common.util.ExceptionUtil;
 import com.coding.blog.common.util.RedisTemplateUtil;
 import com.coding.blog.service.entity.Menu;
+import com.coding.blog.service.entity.Posts;
 import com.coding.blog.service.entity.RoleMenuRelation;
 import com.coding.blog.service.mapper.MenuMapper;
 import com.coding.blog.service.mapper.RoleMenuRelationMapper;
@@ -68,8 +70,11 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
         menu.setHidden(0);
 
         // 删除缓存
-        delRedisCache();
-        return save(menu);
+        boolean isSaved = save(menu);
+        if (isSaved) {
+            delRedisCache();
+        }
+        return isSaved;
     }
 
     @Override
@@ -84,9 +89,6 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
                 new QueryWrapper<Menu>().eq("parent_id", menuId)) > 0) {
             ExceptionUtil.of(StatusEnum.SYSTEM_MENU_IS_CHILDREN);
         }
-        //删除缓存
-        delRedisCache();
-
         return menuMapper.deleteById(menuId) > 0;
     }
 
@@ -162,5 +164,13 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
     public void delRedisCache(){
         redisTemplateUtil.del(RedisConstants.REDIS_KEY_MENU_TREE);
         redisTemplateUtil.del(RedisConstants.REDIS_KEY_MENU);
+    }
+
+    @Override
+    public boolean setIsHidden(Long menuId, Integer hidden) {
+        UpdateWrapper<Menu> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("menu_id",menuId);
+        updateWrapper.set("hidden",hidden);
+        return menuMapper.update(updateWrapper) > 0;
     }
 }

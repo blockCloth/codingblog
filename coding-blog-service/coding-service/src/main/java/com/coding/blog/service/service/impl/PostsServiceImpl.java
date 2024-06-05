@@ -37,6 +37,8 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static sun.font.TrueTypeFont.postTag;
+
 /**
  * <p>
  * 文章 服务实现类
@@ -159,17 +161,24 @@ public class PostsServiceImpl extends ServiceImpl<PostsMapper, Posts> implements
         // 删除专栏信息
         termRelationshipsService.deleteTermRelationships(postId);
 
-        // 删除浏览量
-        redisTemplateUtil.hDel(RedisConstants.POST_PAGE_VIEW, postId.toString());
 
-        // 删除点赞信息
-        redisTemplateUtil.hDel(RedisConstants.POST_PRAISE, postId.toString());
-
-        // 删除缓存信息
-        delPostRedisCache(postId);
-        return removeById(postId);
+        boolean isDeleted = removeById(postId);
+        if (isDeleted) {
+            // 删除浏览量
+            redisTemplateUtil.hDel(RedisConstants.POST_PAGE_VIEW, postId.toString());
+            // 删除点赞信息
+            redisTemplateUtil.hDel(RedisConstants.POST_PRAISE, postId.toString());
+            // 删除缓存信息
+            delPostRedisCache(postId);
+        }
+        return isDeleted;
     }
 
+    /**
+     * 获取文章详细信息
+     * @param postId 文章ID
+     * @return
+     */
     @Override
     public PostDetailVo queryPostDetailById(Long postId) {
         PostDetailVo postDetailVo =
@@ -195,7 +204,6 @@ public class PostsServiceImpl extends ServiceImpl<PostsMapper, Posts> implements
             if (CollUtil.isNotEmpty(postTags)) {
                 detailVo.setPostTagList(postTags);
             }
-            // postDetailVo = postsMapper.queryPostDetailById(postId);
 
             redisTemplateUtil.hSet(RedisConstants.REDIS_KEY_POST_SINGLE, postId.toString(), detailVo);
             postDetailVo = detailVo;
